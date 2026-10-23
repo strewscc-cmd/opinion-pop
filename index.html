@@ -99,7 +99,7 @@
     <h3 style="font:600 1.25rem Fredoka,sans-serif">Quick practice · Try it!</h3><p>Jawab 5 pertanyaan yang dipilih secara acak. Urutan soal dan pilihan jawaban juga berubah di setiap percobaan. Jawaban benar memberimu 1 Pop Point; jawaban salah mengurangi 1 heart.</p>
     <div id="grammarQuestionArea"></div>
     <div id="grammarFeedback" class="note blue hide" aria-live="polite"></div>
-    <div class="bottom-actions"><span class="micro" id="grammarCount">Challenge · 5 questions</span><button class="btn btn-primary" id="grammarSubmit" disabled>Check answer →</button></div><div id="heartShop" class="example hide"><div class="section-label">Pop Point Store</div><h3 style="font:600 1.2rem Fredoka,sans-serif;margin:5px 0">One more heart ❤️</h3><p style="margin:0">Spend 5 Pop Points to buy one extra heart. Maximum: 5 hearts.</p><div class="bottom-actions"><span class="micro" id="shopBalance">Balance: 0 points</span><button class="btn btn-yellow" id="buyHeart" type="button">Buy for 5 points</button></div><div id="shopFeedback" class="micro" aria-live="polite"></div></div><div id="challengeResult" class="note blue hide" aria-live="polite"></div><div id="retryActions" class="bottom-actions hide"><button class="btn btn-soft" id="reviewRetry" type="button">Review & retry ↺</button><button class="btn btn-primary" id="restartJourney" type="button">Restart journey</button></div>
+    <div class="bottom-actions"><span class="micro" id="grammarCount">Challenge · 5 questions</span><button class="btn btn-primary" id="grammarSubmit" disabled>Check answer →</button></div><div id="heartShop" class="example hide"><div class="section-label">Pop Point Store</div><h3 style="font:600 1.2rem Fredoka,sans-serif;margin:5px 0">One more heart ❤️</h3><p style="margin:0">Spend 5 Pop Points to buy one extra heart. Maximum: 5 hearts.</p><div class="bottom-actions"><span class="micro" id="shopBalance">Balance: 0 points</span><button class="btn btn-yellow" id="buyHeart" type="button">Buy for 5 points</button></div><div id="shopFeedback" class="micro" aria-live="polite"></div><button id="resumeAfterPurchase" class="btn btn-primary hide" type="button">Resume challenge →</button></div><div id="challengeResult" class="note blue hide" aria-live="polite"></div><div id="retryActions" class="bottom-actions hide"><button class="btn btn-soft" id="reviewRetry" type="button">Retry Language Lab ↺</button><button class="btn btn-primary" id="reviewStructure" type="button">Review Learning Card 📖</button></div>
     <div class="bottom-actions hide" id="grammarContinueRow"><span class="micro">Nice work—keep going!</span><button class="btn btn-primary" id="grammarContinue">Continue →</button></div>
    </section>
 
@@ -141,13 +141,14 @@ const simplePresentBank=[
  {q:'Choose the correct sentence.',options:['A student does not needs a quiet place.','A student do not need a quiet place.','A student does not need a quiet place.'],correct:2,why:'Setelah “does not”, gunakan base verb “need”, bukan “needs”.'},
  {q:'Which sentence uses the simple present to state a general claim?',options:['The school opened a library yesterday.','A library gives students access to books.','The school will open a library tomorrow.'],correct:1,why:'Kalimat ini menyampaikan klaim umum dengan simple present: “gives”.'}
 ];
-let grammarQuestions=[],grammarIndex=0,grammarSelected=-1,grammarScore=0,grammarWrong=0,challengeFinished=false;
+let grammarQuestions=[],grammarIndex=0,grammarSelected=-1,grammarScore=0,grammarWrong=0,challengeFinished=false,questionPendingAfterPurchase=false;
 const HEART_PRICE=5,MAX_HEARTS=5;
 function updateGameStatus(){
  $('topHeartDisplay').textContent=Array.from({length:hearts},(_,i)=>'♥').join(' ')||'0';
  $('topPointDisplay').textContent=popPoints;
  $('shopBalance').textContent='Balance: '+popPoints+' Pop Points';
  $('buyHeart').disabled=popPoints<HEART_PRICE||hearts>=MAX_HEARTS;
+ $('resumeAfterPurchase').classList.toggle('hide',!questionPendingAfterPurchase);
  $('topHeartShopButton').disabled=current!=='simplePresent';
 }
 function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
@@ -157,7 +158,7 @@ function startGrammarPractice(){
   return {...item,options:options.map(o=>o.text),correct:options.findIndex(o=>o.isCorrect)};
  });
  grammarIndex=0;grammarSelected=-1;grammarScore=0;grammarWrong=0;challengeFinished=false;
- $('grammarFeedback').classList.add('hide');$('grammarContinueRow').classList.add('hide');$('challengeResult').classList.add('hide');$('retryActions').classList.add('hide');$('heartShop').classList.add('hide');
+ $('grammarFeedback').classList.add('hide');$('grammarContinueRow').classList.add('hide');$('challengeResult').classList.add('hide');$('retryActions').classList.add('hide');$('heartShop').classList.add('hide');$('resumeAfterPurchase').classList.add('hide');questionPendingAfterPurchase=false;
  $('grammarSubmit').classList.remove('hide');$('grammarSubmit').disabled=true;
  updateGameStatus();renderGrammarQuestion();
 }
@@ -184,7 +185,7 @@ function finishGrammarChallenge(){
  $('grammarQuestionArea').innerHTML='';
  $('grammarFeedback').classList.add('hide');$('challengeResult').classList.remove('hide');
  if(hearts===0){
-  $('challengeResult').innerHTML='<strong>Out of hearts! ❤️‍🩹</strong><br>Nyawamu habis. Kamu bisa review materi lalu mencoba set soal baru, atau memulai perjalanan belajar dari awal. Pop Points yang sudah dikumpulkan tetap tersimpan selama halaman ini terbuka.';
+  $('challengeResult').innerHTML='<strong>Out of hearts! ❤️‍🩹</strong><br>Nyawamu habis. Jika Pop Points-mu cukup, beli nyawa lalu lanjutkan dari soal yang belum selesai. Kalau ingin mengulang, kamu bisa memilih mengulang Language Lab atau meninjau Learning Card.';
   $('retryActions').classList.remove('hide');
  }else if(grammarScore>=3){
   $('challengeResult').innerHTML='<strong>Lab unlocked! 🔓</strong><br>Kamu mendapat '+grammarScore+'/5 poin pada challenge ini. Materi berikutnya bisa dibuka! Ini skor challenge, sedangkan Pop Points-mu adalah saldo yang bisa digunakan di Heart Shop.';
@@ -205,10 +206,11 @@ $('topHeartShopButton').addEventListener('click',()=>{if(current==='simplePresen
 $('buyHeart').addEventListener('click',()=>{
  if(popPoints<HEART_PRICE){$('shopFeedback').textContent='Not enough points yet. Keep answering correctly!';return;}
  if(hearts>=MAX_HEARTS){$('shopFeedback').textContent='You already have the maximum number of hearts.';return;}
- popPoints-=HEART_PRICE;hearts++;$('shopFeedback').textContent='One heart added! −5 Pop Points.';updateGameStatus();
+ popPoints-=HEART_PRICE;hearts++;$('shopFeedback').textContent='One heart added! −5 Pop Points.';if(hearts>0&&challengeFinished){challengeFinished=false;$('challengeResult').classList.add('hide');$('retryActions').classList.add('hide');$('grammarQuestionArea').innerHTML='';renderGrammarQuestion();$('grammarSubmit').classList.remove('hide');$('grammarSubmit').disabled=true;$('grammarContinueRow').classList.add('hide');questionPendingAfterPurchase=false;}else if(hearts>0&&hearts===1){questionPendingAfterPurchase=true;}updateGameStatus();
 });
 $('reviewRetry').addEventListener('click',()=>{ $('challengeResult').classList.add('hide');$('retryActions').classList.add('hide');$('heartShop').classList.add('hide');startGrammarPractice();});
-$('restartJourney').addEventListener('click',()=>{hearts=3;popPoints=0;startGrammarPractice();go('welcome');});
+$('reviewStructure').addEventListener('click',()=>{ $('challengeResult').classList.add('hide');$('retryActions').classList.add('hide');$('heartShop').classList.add('hide');go('structureIntro');});
+$('resumeAfterPurchase').addEventListener('click',()=>{questionPendingAfterPurchase=false;$('resumeAfterPurchase').classList.add('hide');$('heartShop').classList.add('hide');$('challengeResult').classList.add('hide');$('retryActions').classList.add('hide');challengeFinished=false;renderGrammarQuestion();$('grammarSubmit').classList.remove('hide');$('grammarContinueRow').classList.add('hide');});
 
 document.querySelectorAll('[data-reveal]').forEach(btn=>btn.addEventListener('click',()=>{const target=$(btn.dataset.reveal+'Reveal');target.classList.toggle('hide');btn.classList.toggle('selected',!target.classList.contains('hide'));}));
 $('sampleBack').addEventListener('click',()=>go('structureIntro'));
