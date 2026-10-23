@@ -118,7 +118,7 @@ const $=id=>document.getElementById(id);
 const views=['welcome','classView','hotTake','definition','structureIntro','sampleText','grammarIntro','simplePresent','previewEnd'];
 let current='welcome',studentName='',studentClass='',hotChoice='',definitionChoice='',definitionAttempted=false;
 let hearts=3,popPoints=0,structureRewardClaimed=false;
-function go(id){views.forEach(v=>$(v).classList.toggle('active',v===id));current=id;const idx=views.indexOf(id);$('progressBar').style.width=({welcome:5,classView:8,hotTake:15,definition:30,structureIntro:58,sampleText:75,grammarIntro:82,simplePresent:92,previewEnd:100}[id]||5)+'%';$('progressText').textContent=({welcome:'Welcome',classView:'Getting to know you',hotTake:'Warm-up',definition:'Learning card 01',structureIntro:'Learning card 02',sampleText:'Reading practice',grammarIntro:'Language lab',simplePresent:'Grammar practice',previewEnd:'Preview complete'}[id]);$('stepLabel').textContent= id==='previewEnd'?'NOTEBOOK · PREVIEW':'YOUR NOTEBOOK · STEP '+(idx+1);window.scrollTo({top:0,behavior:'smooth'});}
+function go(id){views.forEach(v=>$(v).classList.toggle('active',v===id));current=id;const idx=views.indexOf(id);$('progressBar').style.width=({welcome:5,classView:8,hotTake:15,definition:30,structureIntro:58,sampleText:75,grammarIntro:82,simplePresent:92,previewEnd:100}[id]||5)+'%';$('progressText').textContent=({welcome:'Welcome',classView:'Getting to know you',hotTake:'Warm-up',definition:'Learning card 01',structureIntro:'Learning card 02',sampleText:'Reading practice',grammarIntro:'Language lab',simplePresent:'Grammar practice',previewEnd:'Preview complete'}[id]);$('stepLabel').textContent= id==='previewEnd'?'NOTEBOOK · PREVIEW':'YOUR NOTEBOOK · STEP '+(idx+1);if(typeof updateGameStatus==='function')updateGameStatus();window.scrollTo({top:0,behavior:'smooth'});}
 function safeName(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function personalize(){document.querySelectorAll('.studentNameSlot').forEach(el=>el.textContent=studentName);$('hotGreeting').innerHTML='Okay, <strong>'+safeName(studentName)+'</strong> from <strong>'+safeName(studentClass)+'</strong>, one question before we learn: have you ever disagreed with someone about school life?';$('definitionGreeting').innerHTML='Interesting choice, <strong>'+safeName(studentName)+'</strong>! Opinions are everywhere—but how do we make one convincing? Let’s find out!';$('nameGreeting').innerHTML='Nice to meet you, <strong>'+safeName(studentName)+'</strong>! Glad you’re here. What class are you in? / Kamu kelas berapa?';$('endGreeting').textContent='Nice work, '+studentName+'! You have explored the first few ideas with Poppy.';}
 $('identityForm').addEventListener('submit',e=>{e.preventDefault();studentName=$('studentName').value.trim().replace(/\s+/g,' ');if(!studentName)return;$('topGameStatus').classList.remove('hide');updateGameStatus(); $('nameGreeting').innerHTML='Nice to meet you, <strong>'+safeName(studentName)+'</strong>! Glad you’re here. What class are you in? / Kamu kelas berapa?';go('classView');$('studentClass').focus();});
@@ -148,6 +148,7 @@ function updateGameStatus(){
  $('topPointDisplay').textContent=popPoints;
  $('shopBalance').textContent='Balance: '+popPoints+' Pop Points';
  $('buyHeart').disabled=popPoints<HEART_PRICE||hearts>=MAX_HEARTS;
+ $('topHeartShopButton').disabled=current!=='simplePresent';
 }
 function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function startGrammarPractice(){
@@ -200,7 +201,7 @@ $('grammarContinue').addEventListener('click',()=>{
  if(grammarIndex<grammarQuestions.length-1){grammarIndex++;renderGrammarQuestion();$('grammarSubmit').classList.remove('hide');$('grammarContinueRow').classList.add('hide');}
  else finishGrammarChallenge();
 });
-$('topHeartShopButton').addEventListener('click',()=>{if(current==='simplePresent'){$('heartShop').classList.toggle('hide');updateGameStatus();}else{go('simplePresent');$('heartShop').classList.remove('hide');updateGameStatus();}});
+$('topHeartShopButton').addEventListener('click',()=>{if(current==='simplePresent'){$('heartShop').classList.toggle('hide');updateGameStatus();}});
 $('buyHeart').addEventListener('click',()=>{
  if(popPoints<HEART_PRICE){$('shopFeedback').textContent='Not enough points yet. Keep answering correctly!';return;}
  if(hearts>=MAX_HEARTS){$('shopFeedback').textContent='You already have the maximum number of hearts.';return;}
