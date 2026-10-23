@@ -388,7 +388,26 @@ function renderOtherLabQuestion(){
  $('otherLabQuestionArea').innerHTML='<div class="example"><strong>'+(otherLabIndex+1)+'. '+q.q+'</strong><div class="choices">'+q.options.map((o,i)=>'<button type="button" class="choice" data-other-answer="'+i+'"><span class="letter">'+String.fromCharCode(65+i)+'</span><span>'+o+'</span></button>').join('')+'</div></div>';
  $('otherLabFeedback').classList.add('hide');$('otherLabSubmit').classList.remove('hide');$('otherLabSubmit').disabled=true;$('otherLabNext').classList.add('hide');otherLabSelected=-1;
 }
-$('otherLabQuestionArea')?.addEventListener('click',e=>{const b=e.target.closest('[data-other-answer]');if(!b||b.disabled)return;otherLabSelected=Number(b.dataset.otherAnswer);document.querySelectorAll('#otherLabQuestionArea [data-other-answer]').forEach(x=>x.classList.toggle('selected',x===b));$('otherLabSubmit').disabled=false;});
+document.addEventListener('click',e=>{
+ const answer=e.target.closest('[data-other-answer]');
+ if(answer&&!answer.disabled){otherLabSelected=Number(answer.dataset.otherAnswer);document.querySelectorAll('#otherLabQuestionArea [data-other-answer]').forEach(x=>x.classList.toggle('selected',x===answer));$('otherLabSubmit').disabled=false;return;}
+ if(e.target.closest('#otherLabSubmit')){
+  if(otherLabSelected<0||otherLabFinished)return;
+  const q=otherLabQuestions[otherLabIndex],correct=otherLabSelected===q.correct;
+  if(correct){otherLabScore++;popPoints++;}else{hearts=Math.max(0,hearts-1);}
+  updateGameStatus();
+  $('otherLabFeedback').classList.remove('hide');$('otherLabFeedback').style.background=correct?'#e8f7ef':'#fff3d0';$('otherLabFeedback').style.borderColor=correct?'#c3e8d2':'#ead99e';
+  $('otherLabFeedback').innerHTML='<strong>'+(correct?'Correct! +1 Pop Point ⭐':'Not quite! −1 heart ❤️')+'</strong><br>'+q.why;
+  document.querySelectorAll('#otherLabQuestionArea [data-other-answer]').forEach((b,i)=>{b.disabled=true;if(i===q.correct)b.style.borderColor='#65ae85';});
+  $('otherLabSubmit').classList.add('hide');$('otherLabNext').classList.remove('hide');
+  $('otherLabNext').textContent=(hearts===0||otherLabIndex===otherLabQuestions.length-1)?'See results →':'Next question →';
+  return;
+ }
+ if(e.target.closest('#otherLabNext')){
+  if(hearts===0||otherLabIndex===otherLabQuestions.length-1){finishOtherLab();return;}
+  otherLabIndex++;renderOtherLabQuestion();
+ }
+});
 function finishOtherLab(){
  otherLabFinished=true;
  const lab=otherLabs[activeOtherLab],res=$('otherLabResult');res.classList.remove('hide');
