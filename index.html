@@ -257,7 +257,7 @@ function finishGrammarChallenge(){
   if(popPoints>=HEART_PRICE&&hearts<MAX_HEARTS){$('heartShop').classList.remove('hide');$('shopFeedback').textContent='You have enough points for an extra heart. Buy one to resume this challenge.';}
  }else if(grammarScore>=3){
   let completionBonus=0;
-  if(!grammarRewardClaimed){completionBonus=3;popPoints+=completionBonus;grammarRewardClaimed=true;updateGameStatus();}
+  if(!grammarRewardClaimed){completionBonus=5;popPoints+=completionBonus;grammarRewardClaimed=true;updateGameStatus();}
   $('challengeResult').innerHTML='<strong>Lab unlocked! 🔓</strong><br>Kamu mendapat '+grammarScore+'/5 poin pada challenge ini.'+(completionBonus?' Bonus menyelesaikan babak: +'+completionBonus+' Pop Points ⭐':'')+'<br>Challenge score adalah nilai latihanmu; Pop Points adalah saldo yang bisa kamu kumpulkan dan gunakan di Heart Shop.';
   $('retryActions').classList.add('hide');
   const next=document.createElement('div');next.className='bottom-actions';next.innerHTML='<span class="micro">Simple Present · Challenge complete</span><button class="btn btn-primary" id="finishGrammarLab" type="button">Continue learning →</button>';$('challengeResult').after(next);
@@ -413,7 +413,7 @@ function finishOtherLab(){
  const lab=otherLabs[activeOtherLab],res=$('otherLabResult');res.classList.remove('hide');
  if(hearts===0){res.innerHTML='<strong>Out of hearts! ❤️‍🩹</strong><br>Nyawamu habis. Kamu bisa mencoba lagi setelah mendapatkan heart tambahan dari Heart Shop ketika tersedia.';$('otherLabRetry').classList.remove('hide');$('otherLabContinueButton').classList.add('hide');return;}
  if(otherLabScore>=3){
-  let bonus=0;if(!otherLabRewards[lab.id]){bonus=3;otherLabRewards[lab.id]=true;popPoints+=bonus;updateGameStatus();}
+  const bonus=5;otherLabRewards[lab.id]=true;popPoints+=bonus;updateGameStatus();
   res.innerHTML='<strong>Lab complete! 🔓</strong><br>Nilaimu '+otherLabScore+'/5.'+(bonus?' Bonus penyelesaian babak: <b>+3 Pop Points ⭐</b>':'')+'<br>Good work! Pahami alasan di balik jawabanmu, bukan hanya pilihannya.';
   $('otherLabRetry').classList.remove('hide');$('otherLabRetryButton').classList.add('hide');$('otherLabContinueButton').classList.remove('hide');$('otherLabContinueButton').textContent=activeOtherLab<otherLabs.length-1?'Next lab →':'Finish learning →';
  }else{
