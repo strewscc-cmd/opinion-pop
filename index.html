@@ -187,6 +187,7 @@ function finishGrammarChallenge(){
  if(hearts===0){
   $('challengeResult').innerHTML='<strong>Out of hearts! ❤️‍🩹</strong><br>Nyawamu habis. Jika Pop Points-mu cukup, beli nyawa lalu lanjutkan dari soal yang belum selesai. Kalau ingin mengulang, kamu bisa memilih mengulang Language Lab atau meninjau Learning Card.';
   $('retryActions').classList.remove('hide');
+  if(popPoints>=HEART_PRICE&&hearts<MAX_HEARTS){$('heartShop').classList.remove('hide');$('shopFeedback').textContent='You have enough points for an extra heart. Buy one to resume this challenge.';}
  }else if(grammarScore>=3){
   $('challengeResult').innerHTML='<strong>Lab unlocked! 🔓</strong><br>Kamu mendapat '+grammarScore+'/5 poin pada challenge ini. Materi berikutnya bisa dibuka! Ini skor challenge, sedangkan Pop Points-mu adalah saldo yang bisa digunakan di Heart Shop.';
   $('retryActions').classList.add('hide');
