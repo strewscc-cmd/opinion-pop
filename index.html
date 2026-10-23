@@ -119,9 +119,9 @@
     <div id="otherLabContent"></div>
    </section>
    <section class="view" id="previewEnd">
-    <div class="hero"><div><span class="pill">✦ PREVIEW COMPLETE</span><h2>You're off to a great start!</h2><p id="endGreeting">Kamu sudah belajar bersama Mrs. Anja dan Poppy, assistant pembelajaran yang membantumu menjelajahi konsep awal Analytical Exposition.</p></div><div class="buddy-art"><div class="buddy">🦊</div><div class="sticker">you did it!</div></div></div>
-    <div class="note blue"><strong>What this prototype includes</strong><br>Personalized chat opening, notebook reminder, Hot Take Corner, introductory definition and purpose, one Quick Check, and an interactive sample of the three-part structure.</div>
-    <p><strong>This is a first playable draft.</strong> Materi lengkap untuk 135 menit, pembahasan grammar yang lebih mendalam, bank soal, penilaian akhir, dan integrasi Google Sheets masih akan dikembangkan dan ditinjau.</p>
+    <div class="hero"><div><span class="pill">✦ LANGUAGE LABS COMPLETE</span><h2>Look how far you've come!</h2><p id="endGreeting">Kamu sudah belajar bersama Mrs. Anja dan Poppy, assistant pembelajaran yang membantumu menjelajahi konsep awal Analytical Exposition.</p></div><div class="buddy-art"><div class="buddy">🦊</div><div class="sticker">you did it!</div></div></div>
+    <div class="note blue"><strong>What you've explored</strong><br>Analytical Exposition structure plus seven Language Labs: Simple Present, Mental Verbs, Relational Processes, Logical Connectors, Evaluative Language, Technical Terms, and Passive Voice.</div>
+    <p>Kamu sudah menyelesaikan rangkaian materi bahasa. Mrs. Anja dan Poppy masih punya satu tahap penting untuk dikembangkan berikutnya: <b>Final Assessment</b> untuk mengecek pemahaman secara menyeluruh. Integrasi Google Sheets untuk merekap nilai juga belum diaktifkan.</p>
     <div class="bottom-actions"><button class="btn btn-soft" id="restart">↺ Start over</button><a class="btn btn-primary" href="https://github.com/strewscc-cmd/opinion-pop" target="_blank" rel="noopener" style="text-decoration:none">View project ↗</a></div>
    </section>
   </div>
@@ -422,7 +422,7 @@ function finishOtherLab(){
  }
 }
 
-$('restart').addEventListener('click',()=>{hearts=3;popPoints=0;structureRewardClaimed=false;grammarRewardClaimed=false;Object.keys(otherLabRewards).forEach(k=>delete otherLabRewards[k]);activeOtherLab=0;$('topGameStatus').classList.add('hide');updateGameStatus();hotChoice='';definitionChoice='';$('studentName').value='';$('studentClass').value='';$('hotFeedback').classList.add('hide');$('definitionFeedback').classList.add('hide');$('hotNext').disabled=true;$('definitionNext').disabled=true;document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));['thesisReveal','argumentsReveal','reiterationReveal'].forEach(id=>$(id).classList.add('hide'));go('welcome');});
+$('restart').addEventListener('click',()=>{hearts=3;popPoints=0;focusLeaveCount=0;focusHeartLossMessage='';focusWasAway=false;focusEpisodeOpen=false;focusOverlayDismissed=false;focusOverlay.classList.remove('show');document.body.style.overflow='';structureRewardClaimed=false;grammarRewardClaimed=false;Object.keys(otherLabRewards).forEach(k=>delete otherLabRewards[k]);activeOtherLab=0;$('topGameStatus').classList.add('hide');updateGameStatus();hotChoice='';definitionChoice='';$('studentName').value='';$('studentClass').value='';$('hotFeedback').classList.add('hide');$('definitionFeedback').classList.add('hide');$('hotNext').disabled=true;$('definitionNext').disabled=true;document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));['thesisReveal','argumentsReveal','reiterationReveal'].forEach(id=>$(id).classList.add('hide'));go('welcome');});
 </script>
 </body>
 </html>
