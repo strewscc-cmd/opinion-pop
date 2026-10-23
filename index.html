@@ -140,29 +140,38 @@
 const $=id=>document.getElementById(id);
 
 const focusOverlay=$('focusOverlay');
-let focusWasAway=false,focusOverlayDismissed=false;
+let focusWasAway=false,focusOverlayDismissed=false,focusEpisodeOpen=false,focusLeaveCount=0,focusHeartLossMessage='';
+function registerFocusLeave(){
+ if(!studentName||focusEpisodeOpen)return;
+ focusEpisodeOpen=true;focusWasAway=true;focusOverlayDismissed=false;
+ focusLeaveCount++;
+ focusHeartLossMessage='';
+ if(focusLeaveCount>=3){
+  hearts=Math.max(0,hearts-1);focusLeaveCount=0;
+  focusHeartLossMessage=' That makes 3 times away from the lesson, so you lost 1 heart. ❤️';
+  if(typeof updateGameStatus==='function')updateGameStatus();
+ }
+ $('focusMessage').textContent='Mau ngapain tuh? Hehehe. Balik fokus, yuk! Materinya masih menunggu kamu. 📚'+focusHeartLossMessage+(focusLeaveCount?' Focus reminder: '+focusLeaveCount+'/3.':'');
+}
 function showPoppyFocusNudge(){
  if(document.visibilityState==='visible'&&focusWasAway&&!focusOverlayDismissed){
+  $('focusMessage').textContent='Mau ngapain tuh? Hehehe. Balik fokus, yuk! Materinya masih menunggu kamu. 📚'+focusHeartLossMessage+(focusLeaveCount?' Focus reminder: '+focusLeaveCount+'/3.':'');
   focusOverlay.classList.add('show');
   document.body.style.overflow='hidden';
+  focusEpisodeOpen=false;
  }
 }
 function hidePoppyFocusNudge(){
  focusOverlay.classList.remove('show');
  document.body.style.overflow='';
- focusOverlayDismissed=true;
+ focusOverlayDismissed=true;focusWasAway=false;focusHeartLossMessage='';
 }
 document.addEventListener('visibilitychange',()=>{
- if(document.visibilityState==='hidden'){
-  focusWasAway=true;
-  focusOverlayDismissed=false;
- }else if(focusWasAway){
-  showPoppyFocusNudge();
- }
+ if(document.visibilityState==='hidden'){registerFocusLeave();}
+ else if(focusWasAway){showPoppyFocusNudge();}
 });
 window.addEventListener('blur',()=>{
- focusWasAway=true;
- focusOverlayDismissed=false;
+ if(document.visibilityState!=='hidden')registerFocusLeave();
 });
 window.addEventListener('focus',()=>{
  if(focusWasAway)showPoppyFocusNudge();
