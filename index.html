@@ -10,6 +10,17 @@
 :root{--pink:#b8dfe0;--pink-deep:#317c80;--pink-light:#eaf6f6;--yellow:#f4d88a;--blue:#c8e7f4;--lilac:#d9d5f3;--ink:#263d45;--muted:#687c82;--paper:#fffefa;--line:#dbe8e8;--green:#cdeedc;--shadow:0 16px 40px rgba(45,87,91,.12)}
 *{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:'DM Sans',sans-serif;background-color:#f4f8f8;background-image:radial-gradient(#c5dddd 1px,transparent 1px),linear-gradient(135deg,#f4f8f8,#fff9ed 55%,#f2f4fc);background-size:18px 18px,auto;min-height:100vh}button,input{font:inherit}button{cursor:pointer;border:0}button:focus-visible,input:focus-visible{outline:3px solid #8c78d8;outline-offset:3px}.app{width:min(100%,900px);margin:auto;padding:18px 16px 34px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 auto 16px;max-width:760px}.brand{display:flex;align-items:center;gap:10px;font-family:Fredoka,sans-serif;font-size:1.2rem;font-weight:600}.brand-icon{display:grid;place-items:center;background:var(--yellow);border:2px solid white;box-shadow:0 4px 0 #ead49a;border-radius:14px;width:42px;height:42px;font-size:1.3rem;transform:rotate(-5deg)}.top-note{font-size:.78rem;color:var(--muted);background:#ffffffb8;padding:9px 12px;border:1px solid white;border-radius:99px}.notebook{position:relative;max-width:760px;margin:auto;background:var(--paper);border:1px solid #d8e5e5;border-radius:22px;box-shadow:var(--shadow);overflow:hidden}.notebook:before{content:"";position:absolute;top:0;bottom:0;left:31px;width:1px;background:#cde0e0;opacity:.85}.paper-head{padding:25px 26px 18px 54px;background:linear-gradient(110deg,#f4fafa,#fffdf8);border-bottom:1px dashed #cbdede;position:relative}.tape{position:absolute;top:-2px;left:48%;width:85px;height:22px;background:#ffe59a9c;transform:rotate(-3deg);border-left:1px dashed #e8c96a;border-right:1px dashed #e8c96a}.eyebrow{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--pink-deep);font-weight:700}.paper-head h1{font:600 clamp(1.8rem,5vw,2.8rem)/1.05 Fredoka,sans-serif;margin:8px 0 7px;letter-spacing:-.025em}.paper-head p{margin:0;color:var(--muted);line-height:1.55}.content{padding:23px 24px 26px 54px}.assignment{display:flex;align-items:center;gap:10px;background:#fff2c6;border:1px solid #f1dda0;border-radius:14px;padding:12px 14px;margin-bottom:18px;font-size:.86rem}.assignment b{display:block;font-size:.9rem}.assignment span{color:#776b53}.view{display:none;animation:rise .28s ease}.view.active{display:block}.app main,.app .topbar,.app .progress-line,.app .progress{transition:filter .22s ease,opacity .22s ease}.app.is-transitioning main,.app.is-transitioning .topbar,.app.is-transitioning .progress-line,.app.is-transitioning .progress{filter:blur(4px);opacity:.68}@media(prefers-reduced-motion:reduce){.app main,.app .topbar,.app .progress-line,.app .progress{transition:none}.view{animation:none}}@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}.hero{display:grid;grid-template-columns:1fr 175px;gap:16px;align-items:center}.pill{display:inline-block;border:1px solid #b9dede;background:#eaf6f6;color:#286b70;font-size:.72rem;font-weight:700;padding:6px 10px;border-radius:99px}.hero h2,.view h2{font:600 clamp(1.45rem,4vw,2.1rem)/1.15 Fredoka,sans-serif;margin:13px 0 10px}.hero p,.view p{line-height:1.7;color:#655866}.buddy-art{position:relative;min-height:155px;display:grid;place-items:center}.buddy{width:136px;height:136px;border-radius:45% 55% 50% 50%;background:linear-gradient(145deg,#ffdce8,#ffc5da);display:grid;place-items:center;font-size:4.8rem;border:5px solid white;box-shadow:0 7px 0 #9dc8ca;transform:rotate(4deg);position:relative}.buddy:before{content:"✦";position:absolute;top:-13px;right:-9px;color:#e5b844;font-size:2rem}.sticker{position:absolute;background:var(--blue);padding:7px 10px;font-size:.73rem;font-weight:700;border:2px solid white;border-radius:9px;transform:rotate(8deg);bottom:4px;right:-2px}.chat{display:flex;align-items:flex-start;gap:10px;margin:17px 0}.avatar{flex:0 0 38px;height:38px;border-radius:13px;background:#d9eeee;border:2px solid white;display:grid;place-items:center;font-size:1.35rem}.bubble{background:white;border:1px solid #d7e5e5;border-radius:5px 17px 17px 17px;padding:13px 15px;line-height:1.65;box-shadow:0 4px 10px #b4839810;max-width:100%}.bubble.you{background:#e8f5f7;border-color:#c6e5e8;border-radius:17px 5px 17px 17px}.chat.you-row{justify-content:flex-end}.chat.you-row .avatar{order:2;background:#dceffc}.chat.you-row .bubble{order:1}.form-row{display:flex;gap:9px;margin-top:12px}.field{width:100%;min-width:0;border:1px solid #d4e4e4;background:white;border-radius:13px;padding:13px 14px;color:var(--ink)}.btn{border-radius:13px;padding:12px 17px;font-weight:700;transition:transform .16s,box-shadow .16s}.btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--pink-deep);color:white;box-shadow:0 4px 0 #974160}.btn-primary:active{transform:translateY(2px);box-shadow:0 2px 0 #974160}.btn-soft{background:white;border:1px solid #d7e5e5;color:var(--ink)}.btn-yellow{background:var(--yellow);color:#5f4c2a;box-shadow:0 3px 0 #e5cd7f}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.choices{display:grid;gap:10px;margin:14px 0}.choice{text-align:left;display:flex;gap:10px;align-items:flex-start;background:white;border:1px solid #d7e5e5;border-radius:14px;padding:13px 14px;line-height:1.45;color:var(--ink)}.choice:hover{border-color:#68a5a7;background:#f4fafa}.choice.selected{border:2px solid var(--pink-deep);background:#eaf6f6;padding:12px 13px}.choice .letter{flex:0 0 27px;width:27px;height:27px;border-radius:9px;display:grid;place-items:center;background:#e1eeee;font-weight:700;color:#286b70}.progress-line{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.77rem;margin-bottom:9px}.progress{height:7px;background:#e4eeee;border-radius:99px;overflow:hidden;margin-bottom:22px}.progress>span{display:block;width:12%;height:100%;background:linear-gradient(90deg,#76b8ba,#d8c6fa);border-radius:99px;transition:width .25s}.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--pink-deep);font-weight:700;margin-bottom:8px}.note{background:#fff3d0;border:1px solid #ead99e;padding:15px 16px;border-radius:5px 15px 15px 15px;line-height:1.65;position:relative;margin:17px 0}.note.blue{background:#e9f6f8;border-color:#c9e6e9}.note.pink{background:#eaf6f6;border-color:#c9e5e5}.note strong{color:#574251}.example{background:white;border:1px solid #e9dce1;border-radius:16px;padding:16px;margin:15px 0}.example blockquote{margin:12px 0 0;padding-left:14px;border-left:3px solid var(--pink);line-height:1.75;color:#655866}.bottom-actions{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:20px}.micro{font-size:.78rem;color:var(--muted)}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}.structure{padding:14px;border:1px solid #eadde2;border-radius:14px;background:white}.structure:nth-child(1){border-top:4px solid #e8a1be}.structure:nth-child(2){border-top:4px solid #edcf68}.structure:nth-child(3){border-top:4px solid #a9dce9}.structure h3{font:600 1.12rem Fredoka,sans-serif;margin:4px 0 6px}.structure p{font-size:.88rem;margin:0}.footer{text-align:center;color:#9b8a97;font-size:.75rem;padding:16px}.toast{padding:12px 14px;background:#e8f7ef;border:1px solid #c3e8d2;border-radius:13px;line-height:1.55;margin-top:12px}.game-status{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;margin:14px 0;background:#f4fafa;border:1px solid #d7e8e8;border-radius:15px}.game-status div{display:flex;flex-direction:column;gap:3px;min-width:80px}.game-status span{font-size:.72rem;color:var(--muted)}.game-status strong{font-size:1.05rem}.game-status button{margin-left:auto}.game-status #heartDisplay,.game-status #topHeartDisplay{color:#d94b55;letter-spacing:.08em}.top-game-status{padding:7px 10px;margin:0;gap:9px;border-radius:12px}.top-game-status div{min-width:54px}.top-game-status span{font-size:.64rem}.top-game-status strong{font-size:.9rem}.top-game-status .btn{padding:8px 10px;font-size:.75rem}.topbar{flex-wrap:wrap}@media(max-width:580px){.top-game-status{width:100%;justify-content:space-between}.top-game-status button{margin-left:0}}.hide{display:none!important}@media(max-width:580px){.app{padding:10px 9px 22px}.topbar{margin-bottom:10px;padding:0 3px}.top-note{font-size:.68rem;padding:7px 9px}.brand{font-size:1.02rem}.brand-icon{width:36px;height:36px}.notebook{border-radius:17px}.notebook:before{left:20px}.paper-head{padding:22px 16px 16px 37px}.content{padding:18px 15px 22px 37px}.hero{grid-template-columns:1fr 93px;gap:8px}.buddy-art{min-height:100px}.buddy{width:88px;height:88px;font-size:3.2rem;border-width:4px;box-shadow:0 5px 0 #9dc8ca}.sticker{font-size:.61rem;padding:5px 7px;right:-4px;bottom:0}.hero h2,.view h2{font-size:1.65rem}.hero p,.view p{font-size:.93rem}.form-row{flex-direction:column}.form-row .btn{width:100%}.two-col{grid-template-columns:1fr}.bottom-actions .btn{padding:11px 12px}.assignment{align-items:flex-start}.tape{left:44%}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Poppy's playful focus overlay */
+.focus-overlay{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:20px;background:rgba(29,43,48,.35);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s ease}
+.focus-overlay.show{opacity:1;visibility:visible}
+.focus-card{width:min(100%,420px);background:#fffefa;border:2px solid #dbe8e8;border-radius:24px;padding:25px;box-shadow:0 22px 70px rgba(25,49,55,.24);text-align:center;transform:translateY(10px) scale(.98);transition:transform .22s ease}
+.focus-overlay.show .focus-card{transform:translateY(0) scale(1)}
+.focus-fox{font-size:3.5rem;line-height:1.1;margin-bottom:8px}
+.focus-card h2{font:600 1.55rem/1.15 Fredoka,sans-serif;margin:8px 0 10px;color:#263d45}
+.focus-card p{line-height:1.6;color:#687c82;margin:8px 0 16px}
+.focus-card .focus-meta{font-size:.82rem;color:#687c82;margin-top:12px}
+@media(prefers-reduced-motion:reduce){.focus-overlay,.focus-card{transition:none}}
 </style>
 </head>
 <body>
@@ -111,10 +122,53 @@
    </section>
   </div>
  </main>
+
+<div class="focus-overlay" id="focusOverlay" role="dialog" aria-modal="true" aria-labelledby="focusTitle" aria-describedby="focusMessage">
+ <div class="focus-card">
+  <div class="focus-fox" aria-hidden="true">🦊👀</div>
+  <div class="section-label">POPPY · MRS. ANJA'S LEARNING ASSISTANT</div>
+  <h2 id="focusTitle">Mrs. Anja is watching you! 👀</h2>
+  <p id="focusMessage">Mau ngapain tuh? Hehehe. Balik fokus, yuk! Materinya masih menunggu kamu. 📚</p>
+  <button class="btn btn-primary" id="focusReturnButton" type="button">I'm back! Let's learn →</button>
+  <div class="focus-meta">Your lesson is still here. Progresmu tetap aman di halaman ini.</div>
+ </div>
+</div>
+
  <div class="footer">Made for curious minds · Opinion Pop! · Prototype v0.2</div>
 </div>
 <script>
 const $=id=>document.getElementById(id);
+
+const focusOverlay=$('focusOverlay');
+let focusWasAway=false,focusOverlayDismissed=false;
+function showPoppyFocusNudge(){
+ if(document.visibilityState==='visible'&&focusWasAway&&!focusOverlayDismissed){
+  focusOverlay.classList.add('show');
+  document.body.style.overflow='hidden';
+ }
+}
+function hidePoppyFocusNudge(){
+ focusOverlay.classList.remove('show');
+ document.body.style.overflow='';
+ focusOverlayDismissed=true;
+}
+document.addEventListener('visibilitychange',()=>{
+ if(document.visibilityState==='hidden'){
+  focusWasAway=true;
+  focusOverlayDismissed=false;
+ }else if(focusWasAway){
+  showPoppyFocusNudge();
+ }
+});
+window.addEventListener('blur',()=>{
+ focusWasAway=true;
+ focusOverlayDismissed=false;
+});
+window.addEventListener('focus',()=>{
+ if(focusWasAway)showPoppyFocusNudge();
+});
+$('focusReturnButton').addEventListener('click',hidePoppyFocusNudge);
+
 const views=['welcome','classView','hotTake','definition','structureIntro','sampleText','grammarIntro','simplePresent','previewEnd'];
 let current='welcome',studentName='',studentClass='',hotChoice='',definitionChoice='',definitionAttempted=false;
 let hearts=3,popPoints=0,structureRewardClaimed=false,grammarRewardClaimed=false;
