@@ -75,6 +75,34 @@
     <div class="note"><strong>🔎 Think critically</strong><br>Ini adalah contoh model, bukan klaim bahwa setiap perpustakaan sekolah harus menerapkan kebijakan yang sama. Kekuatan argumen bergantung pada alasan dan bukti pendukung dalam konteks nyata.</div>
     <div class="bottom-actions"><button class="btn btn-soft" id="sampleBack">← Back</button><button class="btn btn-primary" id="finishSample">Finish this preview ✓</button></div>
    </section>
+
+   <section class="view" id="grammarIntro">
+    <div class="chat"><div class="avatar">🦊</div><div class="bubble"><strong>Poppy</strong><br>Now let’s look inside the language! Grammar and word choices help writers make their arguments clear, logical, and convincing. Kita pelajari satu pola dulu, lalu coba gunakan.</div></div>
+    <div class="section-label">Language lab · Explore the patterns</div><h2>How does the language work? 🔎</h2>
+    <p>Analytical Exposition bukan hanya soal <em>what you think</em>, tetapi juga <em>how you express it</em>. Kita akan menemukan beberapa pola bahasa yang sering digunakan untuk menyampaikan dan mendukung pendapat.</p>
+    <div class="two-col">
+     <div class="structure"><div>⏱️ <span class="pill">GRAMMAR</span></div><h3>Simple Present</h3><p>Untuk menyampaikan pendapat umum, fakta, dan klaim yang dianggap berlaku saat ini.</p></div>
+     <div class="structure"><div>🧠 <span class="pill">VERBS</span></div><h3>Mental Verbs</h3><p>Kata kerja seperti <em>believe, think, argue</em>, dan <em>consider</em>.</p></div>
+     <div class="structure"><div>🔗 <span class="pill">CONNECTION</span></div><h3>Logical Connectors</h3><p>Menghubungkan ide, alasan, kontras, dan kesimpulan.</p></div>
+     <div class="structure"><div>🗣️ <span class="pill">WORD CHOICE</span></div><h3>Evaluative Language</h3><p>Kata-kata yang menunjukkan penilaian, misalnya <em>beneficial</em> atau <em>harmful</em>.</p></div>
+    </div>
+    <div class="note blue"><strong>📝 Catat di buku</strong><br>Grammar = pola pembentukan kalimat. Language features juga mencakup pilihan kata dan cara menghubungkan gagasan. Beberapa kategori dapat saling berkaitan.</div>
+    <div class="example"><div class="section-label">Our first stop</div><h3 style="font:600 1.25rem Fredoka,sans-serif;margin:5px 0">Simple Present Tense</h3><p style="margin:0">Kita mulai dari pola yang paling sering digunakan untuk menyatakan pendapat umum dan alasan.</p></div>
+    <div class="bottom-actions"><button class="btn btn-soft" id="grammarBack">← Back to sample</button><button class="btn btn-primary" id="startSimplePresent">Explore grammar →</button></div>
+   </section>
+   <section class="view" id="simplePresent">
+    <div class="section-label">Language lab 01 · Grammar</div><h2>Simple Present Tense ⏱️</h2>
+    <p>Writers often use the simple present to express general claims, opinions, and situations they consider generally true. Dalam Analytical Exposition, tense ini membantu penulis menyampaikan posisi dan alasan secara langsung.</p>
+    <div class="note blue"><strong>📌 The basic pattern · Pola dasar</strong><br><b>Positive:</b> Subject + base verb (V1) <em>/ V1-s or -es</em><br><b>Negative:</b> Subject + do/does not + base verb<br><b>Question:</b> Do/Does + subject + base verb?<br><br><b>Remember:</b> he, she, it, atau singular noun → verb biasanya mendapat <b>-s/-es</b> pada kalimat positif. Setelah <b>does/doesn't</b>, gunakan base verb.</div>
+    <div class="example"><div class="section-label">See the pattern</div><p><b>Correct:</b> A school library <u>provides</u> a quiet place to study.</p><p><b>Not:</b> A school library <u>provide</u> a quiet place to study.</p><p><b>Why?</b> “A school library” adalah singular subject, jadi verb-nya <em>provides</em>.</p><hr style="border:0;border-top:1px dashed #dbe8e8;margin:13px 0"><p><b>Correct:</b> Students <u>do not need</u> expensive equipment.</p><p><b>Not:</b> Students <u>does not needs</u> expensive equipment.</p><p><b>Why?</b> Dengan <em>do/does not</em>, gunakan base verb: <em>need</em>, bukan <em>needs</em>.</p></div>
+    <div class="note"><strong>⚠️ Common trap</strong><br>“The argument is convincing” menggunakan <b>is</b> karena <em>convincing</em> adalah adjective di sini. Jangan menambahkan <em>do/does</em> pada kalimat positif yang memakai <em>be</em>.</div>
+    <h3 style="font:600 1.25rem Fredoka,sans-serif">Quick practice · Try it!</h3><p>Jawab dua pertanyaan latihan. Pertanyaan dipilih secara acak dari bank latihan Simple Present.</p>
+    <div id="grammarQuestionArea"></div>
+    <div id="grammarFeedback" class="note blue hide" aria-live="polite"></div>
+    <div class="bottom-actions"><span class="micro" id="grammarCount">Practice · 2 questions</span><button class="btn btn-primary" id="grammarSubmit" disabled>Check answer →</button></div>
+    <div class="bottom-actions hide" id="grammarContinueRow"><span class="micro">Nice work—keep going!</span><button class="btn btn-primary" id="grammarContinue">Continue →</button></div>
+   </section>
+
    <section class="view" id="previewEnd">
     <div class="hero"><div><span class="pill">✦ PREVIEW COMPLETE</span><h2>You're off to a great start!</h2><p id="endGreeting">Kamu sudah berkenalan dengan Poppy dan menjelajahi beberapa konsep awal.</p></div><div class="buddy-art"><div class="buddy">🦊</div><div class="sticker">you did it!</div></div></div>
     <div class="note blue"><strong>What this prototype includes</strong><br>Personalized chat opening, notebook reminder, Hot Take Corner, introductory definition and purpose, one Quick Check, and an interactive sample of the three-part structure.</div>
@@ -87,9 +115,9 @@
 </div>
 <script>
 const $=id=>document.getElementById(id);
-const views=['welcome','classView','hotTake','definition','structureIntro','sampleText','previewEnd'];
+const views=['welcome','classView','hotTake','definition','structureIntro','sampleText','grammarIntro','simplePresent','previewEnd'];
 let current='welcome',studentName='',studentClass='',hotChoice='',definitionChoice='',definitionAttempted=false;
-function go(id){views.forEach(v=>$(v).classList.toggle('active',v===id));current=id;const idx=views.indexOf(id);$('progressBar').style.width=({welcome:5,classView:8,hotTake:15,definition:30,structureIntro:58,sampleText:75,previewEnd:100}[id]||5)+'%';$('progressText').textContent=({welcome:'Welcome',classView:'Getting to know you',hotTake:'Warm-up',definition:'Learning card 01',structureIntro:'Learning card 02',sampleText:'Reading practice',previewEnd:'Preview complete'}[id]);$('stepLabel').textContent= id==='previewEnd'?'NOTEBOOK · PREVIEW':'YOUR NOTEBOOK · STEP '+(idx+1);window.scrollTo({top:0,behavior:'smooth'});}
+function go(id){views.forEach(v=>$(v).classList.toggle('active',v===id));current=id;const idx=views.indexOf(id);$('progressBar').style.width=({welcome:5,classView:8,hotTake:15,definition:30,structureIntro:58,sampleText:75,grammarIntro:82,simplePresent:92,previewEnd:100}[id]||5)+'%';$('progressText').textContent=({welcome:'Welcome',classView:'Getting to know you',hotTake:'Warm-up',definition:'Learning card 01',structureIntro:'Learning card 02',sampleText:'Reading practice',grammarIntro:'Language lab',simplePresent:'Grammar practice',previewEnd:'Preview complete'}[id]);$('stepLabel').textContent= id==='previewEnd'?'NOTEBOOK · PREVIEW':'YOUR NOTEBOOK · STEP '+(idx+1);window.scrollTo({top:0,behavior:'smooth'});}
 function safeName(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function personalize(){document.querySelectorAll('.studentNameSlot').forEach(el=>el.textContent=studentName);$('hotGreeting').innerHTML='Okay, <strong>'+safeName(studentName)+'</strong> from <strong>'+safeName(studentClass)+'</strong>, one question before we learn: have you ever disagreed with someone about school life?';$('definitionGreeting').innerHTML='Interesting choice, <strong>'+safeName(studentName)+'</strong>! Opinions are everywhere—but how do we make one convincing? Let’s find out!';$('nameGreeting').innerHTML='Nice to meet you, <strong>'+safeName(studentName)+'</strong>! Glad you’re here. What class are you in? / Kamu kelas berapa?';$('endGreeting').textContent='Nice work, '+studentName+'! You have explored the first few ideas with Poppy.';}
 $('identityForm').addEventListener('submit',e=>{e.preventDefault();studentName=$('studentName').value.trim().replace(/\s+/g,' ');if(!studentName)return; $('nameGreeting').innerHTML='Nice to meet you, <strong>'+safeName(studentName)+'</strong>! Glad you’re here. What class are you in? / Kamu kelas berapa?';go('classView');$('studentClass').focus();});
@@ -99,9 +127,52 @@ $('hotNext').addEventListener('click',()=>go('definition'));
 $('definitionChoices').addEventListener('click',e=>{const btn=e.target.closest('[data-choice]');if(!btn)return;definitionChoice=btn.dataset.choice;document.querySelectorAll('#definitionChoices .choice').forEach(x=>x.classList.toggle('selected',x===btn));definitionAttempted=true;$('definitionFeedback').classList.remove('hide');if(definitionChoice==='b'){$('definitionFeedback').innerHTML='<strong>That’s right! ★</strong><br>An Analytical Exposition states a position and supports it with reasoning. You identified the key idea: the argument matters, not just the opinion.';$('definitionFeedback').style.background='#e8f7ef';$('definitionFeedback').style.borderColor='#c3e8d2';}else{$('definitionFeedback').innerHTML='<strong>Not quite—and that’s how we learn! 🦊</strong><br>Look for the option that includes both a position and supporting reasons. A recount tells events; an unsupported opinion gives readers little explanation.';$('definitionFeedback').style.background='#fff3d0';$('definitionFeedback').style.borderColor='#ead99e';}$('definitionNext').disabled=false;});
 $('definitionNext').addEventListener('click',()=>go('structureIntro'));
 $('nextStructure').addEventListener('click',()=>go('sampleText'));
+
+const simplePresentBank=[
+ {q:'Choose the correct sentence.',options:['School libraries provides useful resources.','School libraries provide useful resources.','School libraries providing useful resources.'],correct:1,why:'“School libraries” adalah plural subject, jadi gunakan base verb “provide”.'},
+ {q:'Complete the sentence: “A longer break ___ students time to rest.”',options:['give','gives','giving'],correct:1,why:'“A longer break” adalah singular subject, sehingga verb positif mendapat -s: “gives”.'},
+ {q:'Choose the correct negative sentence.',options:['Students does not need more time.','Students do not needs more time.','Students do not need more time.'],correct:2,why:'Untuk plural subject, gunakan “do not” + base verb “need”.'},
+ {q:'Which sentence follows the simple present pattern?',options:['Many teenagers uses social media daily.','Many teenagers use social media daily.','Many teenagers used social media daily.'],correct:1,why:'“Many teenagers” adalah plural subject, jadi “use”. Simple past “used” mengubah makna waktunya.'},
+ {q:'Complete: “The writer ___ that reading improves vocabulary.”',options:['argue','argues','arguing'],correct:1,why:'“The writer” adalah singular subject; bentuk positifnya “argues”.'},
+ {q:'Choose the correct question.',options:['Does school start at seven?','Does school starts at seven?','Do school starts at seven?'],correct:0,why:'Gunakan “Does” untuk singular subject, lalu base verb “start”.'},
+ {q:'Which sentence is correct?',options:['Education are important for everyone.','Education is important for everyone.','Education be important for everyone.'],correct:1,why:'“Education” adalah uncountable singular noun, jadi gunakan “is”.'},
+ {q:'Complete: “These arguments ___ the writer’s opinion.”',options:['supports','support','supporting'],correct:1,why:'“These arguments” adalah plural subject, sehingga gunakan “support”.'},
+ {q:'Choose the correct sentence.',options:['A student does not needs a quiet place.','A student do not need a quiet place.','A student does not need a quiet place.'],correct:2,why:'Setelah “does not”, gunakan base verb “need”, bukan “needs”.'},
+ {q:'Which sentence uses the simple present to state a general claim?',options:['The school opened a library yesterday.','A library gives students access to books.','The school will open a library tomorrow.'],correct:1,why:'Kalimat ini menyampaikan klaim umum dengan simple present: “gives”.'}
+];
+let grammarQuestions=[],grammarIndex=0,grammarSelected=-1,grammarScore=0;
+function startGrammarPractice(){
+ grammarQuestions=[...simplePresentBank].sort(()=>Math.random()-.5).slice(0,2);
+ grammarIndex=0;grammarSelected=-1;grammarScore=0;
+ $('grammarFeedback').classList.add('hide');$('grammarContinueRow').classList.add('hide');$('grammarSubmit').classList.remove('hide');$('grammarSubmit').disabled=true;
+ renderGrammarQuestion();
+}
+function renderGrammarQuestion(){
+ const item=grammarQuestions[grammarIndex];
+ $('grammarCount').textContent='Question '+(grammarIndex+1)+' of '+grammarQuestions.length;
+ $('grammarQuestionArea').innerHTML='<div class="example"><strong>'+ (grammarIndex+1)+'. '+item.q+'</strong><div class="choices">'+item.options.map((o,i)=>'<button type="button" class="choice" data-ganswer="'+i+'"><span class="letter">'+String.fromCharCode(65+i)+'</span><span>'+o+'</span></button>').join('')+'</div></div>';
+ $('grammarFeedback').classList.add('hide');$('grammarSubmit').disabled=true;grammarSelected=-1;
+}
+$('grammarQuestionArea').addEventListener('click',e=>{const b=e.target.closest('[data-ganswer]');if(!b)return;grammarSelected=Number(b.dataset.ganswer);document.querySelectorAll('#grammarQuestionArea [data-ganswer]').forEach(x=>x.classList.toggle('selected',x===b));$('grammarSubmit').disabled=false;});
+$('grammarSubmit').addEventListener('click',()=>{
+ if(grammarSelected<0)return;
+ const item=grammarQuestions[grammarIndex],correct=grammarSelected===item.correct;
+ if(correct)grammarScore++;
+ $('grammarFeedback').classList.remove('hide');$('grammarFeedback').style.background=correct?'#e8f7ef':'#fff3d0';$('grammarFeedback').style.borderColor=correct?'#c3e8d2':'#ead99e';
+ $('grammarFeedback').innerHTML='<strong>'+(correct?'Correct! ★':'Not quite—let’s learn from it.')+'</strong><br>'+item.why;
+ document.querySelectorAll('#grammarQuestionArea [data-ganswer]').forEach((b,i)=>{b.disabled=true;if(i===item.correct)b.style.borderColor='#65ae85';});
+ $('grammarSubmit').classList.add('hide');$('grammarContinueRow').classList.remove('hide');$('grammarContinue').textContent=grammarIndex===grammarQuestions.length-1?'Finish practice ✓':'Next question →';
+});
+$('grammarContinue').addEventListener('click',()=>{
+ if(grammarIndex<grammarQuestions.length-1){grammarIndex++;renderGrammarQuestion();$('grammarSubmit').classList.remove('hide');$('grammarContinueRow').classList.add('hide');}
+ else{$('grammarQuestionArea').innerHTML='<div class="note blue"><strong>Practice complete!</strong><br>You got '+grammarScore+' out of '+grammarQuestions.length+' correct. Ini latihan awal, bukan nilai akhir. Kita akan menambahkan topik language features lainnya setelah bagian ini.</div>';$('grammarFeedback').classList.add('hide');$('grammarCount').textContent='Simple Present · Complete';$('grammarSubmit').classList.add('hide');$('grammarContinueRow').classList.remove('hide');$('grammarContinue').textContent='Back to notebook ✓';$('grammarContinue').onclick=()=>go('previewEnd');}
+});
+
 document.querySelectorAll('[data-reveal]').forEach(btn=>btn.addEventListener('click',()=>{const target=$(btn.dataset.reveal+'Reveal');target.classList.toggle('hide');btn.classList.toggle('selected',!target.classList.contains('hide'));}));
 $('sampleBack').addEventListener('click',()=>go('structureIntro'));
-$('finishSample').addEventListener('click',()=>{go('previewEnd');});
+$('finishSample').addEventListener('click',()=>{go('grammarIntro');});
+$('grammarBack').addEventListener('click',()=>go('sampleText'));
+$('startSimplePresent').addEventListener('click',()=>{startGrammarPractice();go('simplePresent');});
 $('restart').addEventListener('click',()=>{hotChoice='';definitionChoice='';$('studentName').value='';$('studentClass').value='';$('hotFeedback').classList.add('hide');$('definitionFeedback').classList.add('hide');$('hotNext').disabled=true;$('definitionNext').disabled=true;document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));['thesisReveal','argumentsReveal','reiterationReveal'].forEach(id=>$(id).classList.add('hide'));go('welcome');});
 </script>
 </body>
