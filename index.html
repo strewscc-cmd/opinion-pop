@@ -217,8 +217,7 @@ let hearts=3,popPoints=0,totalPopPointsEarned=0,structureRewardClaimed=false,gra
 const POP_POINTS_TARGET=35;
 let progressStorageKey='';
 function awardPopPoints(amount){
- const allowed=Math.max(0,POP_POINTS_TARGET-totalPopPointsEarned);
- const awarded=Math.min(Math.max(0,amount),allowed);
+ const awarded=Math.max(0,Number(amount)||0);
  popPoints+=awarded;totalPopPointsEarned+=awarded;
  return awarded;
 }
