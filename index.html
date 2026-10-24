@@ -141,7 +141,7 @@
     <div id="assessmentGate" class="note blue hide"></div>
     <div id="assessmentWork">
      <div class="example"><div class="section-label">PART 1 · TEXT DETECTIVE</div><h3>Put the missing text back together</h3><p>Susun lima paragraf: introduction/context, thesis, argument 1, argument 2, dan reiteration. Gunakan tombol naik/turun agar nyaman di HP.</p><div id="paragraphOrderList" class="choices"></div><div class="bottom-actions"><span class="micro">5 points</span><button class="btn btn-primary" id="checkOrder" type="button">Check paragraph order →</button></div><div id="orderFeedback" class="note blue hide"></div><div id="titleTask" class="hide"><h3>Choose the best title</h3><div id="titleChoices" class="choices"></div></div></div>
-     <div class="example"><div class="section-label">PART 2 · LANGUAGE DETECTIVE</div><h3>Identify the language clues</h3><p>7 pertanyaan dari tujuh Language Labs.</p><div id="languageQuestions"></div></div>
+     <div class="example"><div class="section-label">PART 2 · LANGUAGE DETECTIVE</div><h3>Language Detective: Fix the Evidence</h3><p>Kerjakan berbagai tipe soal: menyusun kata menjadi kalimat, melengkapi bagian rumpang, menemukan kalimat yang salah, dan memilih perbaikannya.</p><div id="languageQuestions"></div></div>
      <div class="example"><div class="section-label">PART 3 · READING COMPREHENSION</div><h3>Read between the lines</h3><p id="readingText" class="note pink"></p><div id="readingQuestions"></div></div>
      <div class="bottom-actions"><span class="micro" id="assessmentProgress">Your answers are saved on this device.</span><button class="btn btn-primary" id="submitAssessment" type="button">Submit final assessment →</button></div>
     </div>
@@ -538,14 +538,14 @@ function buildAssessmentText(topic){
  return [{id:'intro',text:intro},{id:'thesis',text:topic.thesis},{id:'arg1',text:topic.arguments[0][1]},{id:'arg2',text:topic.arguments[1][1]},{id:'reiteration',text:topic.reiteration}];
 }
 function buildLanguageItems(topic){return [
- {feature:'Simple Present',sentence:topic.thesis,question:'Which feature is shown by the general claim in this sentence?'},
- {feature:'Mental Verbs',sentence:'Students may think twice before using unnecessary packaging.',question:'Which feature is shown by the verb “think”?'},
- {feature:'Relational Processes',sentence:'A clear policy is a reasonable compromise for the school.',question:'Which feature links a subject with its quality or identity?'},
- {feature:'Logical Connectors',sentence:'Therefore, the policy should be reviewed carefully.',question:'Which feature does “Therefore” represent?'},
- {feature:'Evaluative Language',sentence:'The policy can be beneficial when it is implemented fairly.',question:'Which feature is shown by “beneficial”?'},
- {feature:'Technical Terms',sentence:'The school should evaluate the policy’s effectiveness and implementation.',question:'Which feature includes topic-specific terms such as “implementation”?'},
- {feature:'Passive Voice',sentence:'The school rules are explained clearly to all students.',question:'Which feature is used in “are explained”?'}
-];}
+ {feature:'Simple Present',type:'scramble',question:'Susun kata-kata berikut menjadi kalimat yang benar.',prompt:'every day / students / useful arguments / discuss',options:['Students discuss useful arguments every day.','Students discusses useful arguments every day.','Every day useful arguments students discusses.','Useful arguments discuss students every day.'],answer:0},
+ {feature:'Mental Verbs',type:'fill',question:'Lengkapi kalimat dengan mental verb yang tepat.',prompt:'The writer ___ that the school should provide more reading spaces.',options:['believes','belief','believing','is believe'],answer:0},
+ {feature:'Relational Processes',type:'findError',question:'Pilih kalimat yang salah secara tata bahasa.',prompt:'Which sentence contains an error?',options:['The policy is effective.','School libraries are useful.','The classroom have clear rules.','Education is important.'],answer:2},
+ {feature:'Logical Connectors',type:'rewrite',question:'Pilih perbaikan yang benar untuk kalimat berikut.',prompt:'Incorrect: “Although the plan is useful, but it is expensive.”',options:['Although the plan is useful, it is expensive.','Although the plan useful, but it expensive.','Although the plan is useful, so it is expensive.','The plan although useful but expensive is.'],answer:0},
+ {feature:'Evaluative Language',type:'fill',question:'Pilih kata yang paling tepat untuk melengkapi klaim evaluatif.',prompt:'Providing safe drinking water is ___ for students’ health.',options:['essential','although','argue','meanwhile'],answer:0},
+ {feature:'Technical Terms',type:'findError',question:'Pilih kalimat yang menggunakan istilah topik dengan tidak tepat.',prompt:'Which sentence uses the technical term incorrectly?',options:['Digital literacy involves evaluating online information.','Biodiversity refers to the variety of living organisms.','Infrastructure includes roads and public transport.','Biodiversity means the ability to use online information.'],answer:3},
+ {feature:'Passive Voice',type:'rewrite',question:'Ubah kalimat aktif berikut menjadi passive voice yang benar.',prompt:'Active: “The school reviews the rules every year.”',options:['The rules are reviewed by the school every year.','The rules is reviewed by the school every year.','The rules reviewed by the school every year.','The school are reviewed the rules every year.'],answer:0}
+ ];}
 function buildReadingItems(topic){
  const raw=[
  {q:'What is the writer’s main position?',o:[topic.thesis,'The writer believes the issue should never be discussed.','The writer only describes a personal experience.','The writer argues that no school policy is necessary.'],a:0},
@@ -564,9 +564,10 @@ function buildReadingItems(topic){
 function escapeAssessment(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function assessmentRadio(name,options,selected){return '<div class="assessment-options">'+options.map((option,i)=>'<label><input type="radio" name="'+name+'" value="'+i+'" '+(String(selected)===String(i)?'checked':'')+'><span>'+escapeAssessment(option)+'</span></label>').join('')+'</div>';}
 function renderParagraphOrder(){
- $('paragraphOrderList').innerHTML=assessmentParagraphs.map((p,i)=>'<div class="paragraph-order-item"><div class="order-controls"><button type="button" data-move="'+i+'" data-dir="-1" '+(i===0?'disabled':'')+'>↑</button><button type="button" data-move="'+i+'" data-dir="1" '+(i===assessmentParagraphs.length-1?'disabled':'')+'>↓</button></div><div class="order-copy"><strong>Paragraph '+(i+1)+'</strong><br>'+escapeAssessment(p.text)+'</div></div>').join('');
- $('paragraphOrderList').querySelectorAll('[data-move]').forEach(btn=>btn.addEventListener('click',()=>{const i=Number(btn.dataset.move),j=i+Number(btn.dataset.dir);if(j<0||j>=assessmentParagraphs.length)return;[assessmentParagraphs[i],assessmentParagraphs[j]]=[assessmentParagraphs[j],assessmentParagraphs[i]];renderParagraphOrder();saveAssessmentState();}));
-}
+  $('paragraphOrderList').innerHTML=assessmentParagraphs.map((p,i)=>'<div class="paragraph-order-item"><div class="order-controls"><button type="button" data-move="'+i+'" data-dir="-1" '+(assessmentState.orderChecked||i===0?'disabled':'')+'>↑</button><button type="button" data-move="'+i+'" data-dir="1" '+(assessmentState.orderChecked||i===assessmentParagraphs.length-1?'disabled':'')+'>↓</button></div><div class="order-copy"><strong>Paragraph '+(i+1)+'</strong><br>'+escapeAssessment(p.text)+'</div></div>').join('');
+  $('paragraphOrderList').querySelectorAll('[data-move]').forEach(btn=>btn.addEventListener('click',()=>{if(assessmentState.orderChecked)return;const i=Number(btn.dataset.move),j=i+Number(btn.dataset.dir);if(j<0||j>=assessmentParagraphs.length)return;[assessmentParagraphs[i],assessmentParagraphs[j]]=[assessmentParagraphs[j],assessmentParagraphs[i]];renderParagraphOrder();saveAssessmentState();}));
+  $('checkOrder').disabled=!!assessmentState.orderChecked;
+ }
 function renderTitleChoices(){
  const titles=assessmentState.titleOptions||shuffle([assessmentTopic.title,'A Day at School: A Personal Story','Why Students Should Avoid All Rules','A List of School Activities']);
  assessmentState.titleOptions=titles;
@@ -574,10 +575,10 @@ function renderTitleChoices(){
  $('titleChoices').querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>{assessmentState.titleAnswer=Number(input.value);saveAssessmentState();}));
 }
 function renderAssessmentQuestions(){
- $('languageQuestions').innerHTML=assessmentLanguageItems.map((q,i)=>'<div class="assessment-question"><h4>'+(i+1)+'. '+escapeAssessment(q.question)+'<br><span class="micro">'+escapeAssessment(q.sentence)+'</span></h4>'+assessmentRadio('lang'+i,LANGUAGE_FEATURES,assessmentState.langAnswers[i])+'</div>').join('');
- $('readingQuestions').innerHTML=assessmentReadingItems.map((q,i)=>'<div class="assessment-question"><h4>'+(i+1)+'. '+escapeAssessment(q.q)+'</h4>'+assessmentRadio('read'+i,q.o,assessmentState.readAnswers[i])+'</div>').join('');
- document.querySelectorAll('#assessmentWork input[type=radio]').forEach(input=>input.addEventListener('change',()=>{const m=input.name.match(/^(lang|read)(\d+)$/);if(!m)return;const i=Number(m[2]);if(m[1]==='lang')assessmentState.langAnswers[i]=Number(input.value);else assessmentState.readAnswers[i]=Number(input.value);saveAssessmentState();}));
-}
+  $('languageQuestions').innerHTML=assessmentLanguageItems.map((q,i)=>'<div class="assessment-question"><h4>'+(i+1)+'. '+escapeAssessment(q.question)+' <span class="pill">'+escapeAssessment(q.feature)+'</span></h4><p>'+escapeAssessment(q.prompt)+'</p>'+assessmentRadio('lang'+i,q.options,assessmentState.langAnswers[i])+'</div>').join('');
+  $('readingQuestions').innerHTML=assessmentReadingItems.map((q,i)=>'<div class="assessment-question"><h4>'+(i+1)+'. '+escapeAssessment(q.q)+'</h4>'+assessmentRadio('read'+i,q.o,assessmentState.readAnswers[i])+'</div>').join('');
+  document.querySelectorAll('#assessmentWork input[type=radio]').forEach(input=>input.addEventListener('change',()=>{const m=input.name.match(/^(lang|read)(\\d+)$/);if(!m)return;const i=Number(m[2]);if(m[1]==='lang')assessmentState.langAnswers[i]=Number(input.value);else assessmentState.readAnswers[i]=Number(input.value);saveAssessmentState();}));
+ }
 function showAssessmentResult(result,count){
  $('assessmentWork').classList.add('hide');$('assessmentResult').classList.remove('hide');$('assessmentGate').classList.add('hide');
  $('assessmentStudent').textContent=studentName+' · '+studentClass;$('assessmentAttempt').textContent=result.attempt+' of '+ASSESSMENT_ATTEMPT_LIMIT;$('assessmentLiveScore').textContent=result.grade+'/100';
@@ -607,13 +608,13 @@ function openAssessment(){
  $('assessmentGate').classList.add('hide');$('assessmentWork').classList.remove('hide');$('assessmentResult').classList.add('hide');
  $('assessmentIntro').textContent='Your assigned text: '+assessmentTopic.title+'. Jawaban tersimpan otomatis di perangkat ini.';
  renderParagraphOrder();
- if(assessmentState.orderChecked){$('orderFeedback').classList.remove('hide');$('orderFeedback').innerHTML='<strong>Order score: '+assessmentState.orderScore+'/5</strong><br>Order checked. Continue with the remaining tasks.';$('titleTask').classList.remove('hide');renderTitleChoices();}
+ if(assessmentState.orderChecked){renderParagraphOrder();$('orderFeedback').classList.remove('hide');$('orderFeedback').innerHTML='<strong>Order score: '+assessmentState.orderScore+'/5</strong><br>Order checked. Continue with the remaining tasks.';$('titleTask').classList.remove('hide');renderTitleChoices();}
  $('readingText').textContent=assessmentParagraphs.slice().sort((a,b)=>['intro','thesis','arg1','arg2','reiteration'].indexOf(a.id)-['intro','thesis','arg1','arg2','reiteration'].indexOf(b.id)).map(p=>p.text).join(' ');
  renderAssessmentQuestions();go('assessmentView');
 }
 function checkParagraphOrder(){
  const correct=['intro','thesis','arg1','arg2','reiteration'];const score=assessmentParagraphs.reduce((sum,p,i)=>sum+(p.id===correct[i]?1:0),0);
- assessmentState.orderScore=score;assessmentState.orderChecked=true;$('orderFeedback').classList.remove('hide');$('orderFeedback').innerHTML='<strong>Order score: '+score+'/5</strong><br>'+(score===5?'Excellent! You reconstructed the text correctly.':'Good try. Your score is recorded for this attempt.');
+ assessmentState.orderScore=score;assessmentState.orderChecked=true;renderParagraphOrder();$('orderFeedback').classList.remove('hide');$('orderFeedback').innerHTML='<strong>Order score: '+score+'/5</strong><br>'+(score===5?'Excellent! You reconstructed the text correctly.':'Good try. Your score is recorded for this attempt.');
  $('titleTask').classList.remove('hide');renderTitleChoices();saveAssessmentState();
 }
 function submitFinalAssessment(){
@@ -621,7 +622,7 @@ function submitFinalAssessment(){
  const missingLang=assessmentState.langAnswers.filter(v=>v===null||v===undefined).length,missingRead=assessmentState.readAnswers.filter(v=>v===null||v===undefined).length;
  if(!assessmentState.orderChecked||assessmentState.titleAnswer===null||missingLang||missingRead){$('assessmentGate').classList.remove('hide');$('assessmentGate').textContent='Lengkapi semua bagian. Sisa Language Detective: '+missingLang+'; reading: '+missingRead+'. Pastikan paragraph order sudah dicek.';return;}
  const titleScore=Number(assessmentState.titleAnswer)===assessmentState.titleOptions.indexOf(assessmentTopic.title)?1:0;
- const languageScore=assessmentState.langAnswers.reduce((sum,a,i)=>sum+(Number(a)===LANGUAGE_FEATURES.indexOf(assessmentLanguageItems[i].feature)?1:0),0);
+ const languageScore=assessmentState.langAnswers.reduce((sum,a,i)=>sum+(Number(a)===assessmentLanguageItems[i].answer?1:0),0);
  const readingScore=assessmentState.readAnswers.reduce((sum,a,i)=>sum+(Number(a)===assessmentReadingItems[i].a?1:0),0);
  const total=(assessmentState.orderScore||0)+titleScore+languageScore+readingScore,max=23,grade=Math.round(total/max*100);
  const saved=loadAssessmentState()||{attempts:[]};const result={attempt:(saved.attempts||[]).length+1,topicTitle:assessmentTopic.title,orderScore:assessmentState.orderScore||0,titleScore,languageScore,readingScore,total,max,grade,submittedAt:Date.now()};
