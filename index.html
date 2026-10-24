@@ -400,6 +400,9 @@ const otherLabs = [
 ];
 let activeOtherLab=0,otherLabQuestions=[],otherLabIndex=0,otherLabSelected=-1,otherLabScore=0,otherLabFinished=false;
 const otherLabRewards={};
+function highlightKeyPhrases(text){
+ return text.replace(/(show what a writer thinks, believes, understands, or argues|connect a subject with its identity, quality, state, or possession|logical connectors|evaluative language|technical terms|passive voice|general truths and claims|a clear position|supporting reasons|supporting arguments|mental verbs|relational processes|simple present|to persuade readers|persuade readers|clear position|logical arguments|base verb|third-person singular|subject|main verb|past participle|contrasting ideas|cause and effect|writer's position|writer's opinion)/gi,'<mark class="key-highlight">$1</mark>');
+}
 function renderOtherLab(){
  const lab=otherLabs[activeOtherLab];
  if(!lab){go('previewEnd');return;}
