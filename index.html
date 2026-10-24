@@ -530,6 +530,7 @@ function finishOtherLab(){
 
 $('restart').addEventListener('click',()=>{if(progressStorageKey){try{localStorage.removeItem(progressStorageKey);}catch(err){}}progressStorageKey='';assessmentState=null;hearts=3;popPoints=0;totalPopPointsEarned=0;firstActivityAt=0;focusLeaveCount=0;focusHeartLossMessage='';focusWasAway=false;focusEpisodeOpen=false;focusOverlayDismissed=false;focusOverlay.classList.remove('show');document.body.style.overflow='';structureRewardClaimed=false;grammarRewardClaimed=false;Object.keys(otherLabRewards).forEach(k=>delete otherLabRewards[k]);activeOtherLab=0;$('topGameStatus').classList.add('hide');updateGameStatus();hotChoice='';definitionChoice='';$('studentName').value='';$('studentClass').value='';$('hotFeedback').classList.add('hide');$('definitionFeedback').classList.add('hide');$('hotNext').disabled=true;$('definitionNext').disabled=true;document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));['thesisReveal','argumentsReveal','reiterationReveal'].forEach(id=>$(id).classList.add('hide'));go('welcome');});
 const ASSESSMENT_ATTEMPT_LIMIT=2;
+const GOOGLE_SHEETS_ENDPOINT='https://script.google.com/macros/s/AKfycbx-50pHOs1jLHPDfS_J9I-vVS92e1jhe_nfnkH58l-pwEaf_FZ0MyiCjAjhnVxCaqES/exec';
 let assessmentState=null,assessmentTopic=null,assessmentParagraphs=[],assessmentLanguageItems=[],assessmentReadingItems=[];
 const LANGUAGE_FEATURES=['Simple Present','Mental Verbs','Relational Processes','Logical Connectors','Evaluative Language','Technical Terms','Passive Voice'];
 function assessmentKey(){return progressStorageKey?progressStorageKey+'::assessment':'';}
@@ -656,6 +657,26 @@ function nextToReading(){
   if(!assessmentState.orderChecked||assessmentState.titleAnswer===null||missingLang){$('assessmentGate').classList.remove('hide');$('assessmentGate').textContent='Selesaikan Part 1 dan Part 2 terlebih dahulu. Pastikan paragraph order sudah dicek, judul dipilih, dan sisa soal Language Detective: '+missingLang+'.';return;}
   assessmentState.stage=3;saveAssessmentState();$('assessmentGate').classList.add('hide');$('assessmentPart12').classList.add('hide');$('assessmentPart3').classList.remove('hide');$('assessmentNextRow').classList.add('hide');$('submitAssessment').classList.remove('hide');window.scrollTo({top:0,behavior:'smooth'});
  }
+ function sendAssessmentResultToSheets(result){
+  const payload={
+   studentName:studentName,
+   studentClass:studentClass,
+   topic:result.topicTitle||'',
+   score:result.grade,
+   attempt:result.attempt,
+   maxScore:result.max
+  };
+  try{
+   fetch(GOOGLE_SHEETS_ENDPOINT,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(payload)
+   });
+  }catch(err){
+   console.warn('Could not submit assessment result to the teacher gradebook.',err);
+  }
+ }
  function submitFinalAssessment(){
  if(!assessmentState||!assessmentState.inProgress)return;
  const missingLang=assessmentState.langAnswers.filter(v=>v===null||v===undefined).length,missingRead=assessmentState.readAnswers.filter(v=>v===null||v===undefined).length;
@@ -667,7 +688,7 @@ function nextToReading(){
  const saved=loadAssessmentState()||{attempts:[]};const result={attempt:(saved.attempts||[]).length+1,topicTitle:assessmentTopic.title,orderScore:assessmentState.orderScore||0,titleScore,languageScore,readingScore,total,max,grade,submittedAt:Date.now()};
  const attempts=(saved.attempts||[]).concat(result);const finalState={version:1,attempts,inProgress:false,lastResult:result};
  try{localStorage.setItem(assessmentKey(),JSON.stringify(finalState));}catch(err){}
- assessmentState=finalState;showAssessmentResult(result,attempts.length);
+ assessmentState=finalState;sendAssessmentResultToSheets(result);showAssessmentResult(result,attempts.length);
 }
 $('checkOrder').addEventListener('click',checkParagraphOrder);
  $('assessmentNext').addEventListener('click',nextToReading);
