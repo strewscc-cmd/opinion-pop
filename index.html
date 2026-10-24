@@ -539,7 +539,15 @@ function buildAssessmentText(topic){
  const context=topic.context;const intro='In many schools, '+context.charAt(0).toLowerCase()+context.slice(1)+' This issue deserves careful consideration because school policies can affect students’ daily experiences and learning.';
  return [{id:'intro',text:intro},{id:'thesis',text:topic.thesis},{id:'arg1',text:topic.arguments[0][1]},{id:'arg2',text:topic.arguments[1][1]},{id:'reiteration',text:topic.reiteration}];
 }
-function buildLanguageItems(topic){return [
+function buildLanguageItems(topic,attemptNumber=1){if(attemptNumber>=2)return [
+  {feature:"Simple Present",type:"scramble",question:"Choose the correctly arranged sentence.",prompt:"often / school rules / students / discuss",options:["Students often discuss school rules.","Students often discusses school rules.","Often school rules discusses students.","Students discuss often school rules is."],answer:0},
+  {feature:"Mental Verbs",type:"fill",question:"Complete the claim with the correct mental verb.",prompt:"The researcher ___ that clear rules can support learning.",options:["argues","argument","arguing","is argue"],answer:0},
+  {feature:"Relational Processes",type:"findError",question:"Which sentence has a subject–verb agreement error?",prompt:"Choose the incorrect sentence.",options:["The guidelines are clear.","A fair policy is important.","The school rules seems reasonable.","Education remains essential."],answer:2},
+  {feature:"Logical Connectors",type:"rewrite",question:"Choose the best correction.",prompt:"Incorrect: “The rule is clear, although students understand it.”",options:["The rule is clear, and students understand it.","Although the rule is clear, but students understand it.","The rule clear although students understands it.","The rule is clear, because although students understand it."],answer:0},
+  {feature:"Evaluative Language",type:"fill",question:"Choose the most suitable evaluative word.",prompt:"A schedule that reduces unnecessary delays is likely to be ___.",options:["effective","although","meanwhile","argue"],answer:0},
+  {feature:"Technical Terms",type:"findError",question:"Which sentence misuses a technical term?",prompt:"Identify the sentence with an incorrect definition.",options:["A thesis states the writer’s position.","Evidence can support an argument.","A reiteration introduces the writer’s position for the first time.","A supporting argument gives a reason for a claim."],answer:2},
+  {feature:"Passive Voice",type:"rewrite",question:"Choose the correct passive form.",prompt:"Active: “Teachers explain the procedure clearly.”",options:["The procedure is explained clearly by teachers.","The procedure are explained clearly by teachers.","The procedure explained clearly by teachers.","Teachers are explained the procedure clearly."],answer:0}
+ ];return [
  {feature:'Simple Present',type:'scramble',question:'Susun kata-kata berikut menjadi kalimat yang benar.',prompt:'every day / students / useful arguments / discuss',options:['Students discuss useful arguments every day.','Students discusses useful arguments every day.','Every day useful arguments students discusses.','Useful arguments discuss students every day.'],answer:0},
  {feature:'Mental Verbs',type:'fill',question:'Lengkapi kalimat dengan mental verb yang tepat.',prompt:'The writer ___ that the school should provide more reading spaces.',options:['believes','belief','believing','is believe'],answer:0},
  {feature:'Relational Processes',type:'findError',question:'Pilih kalimat yang salah secara tata bahasa.',prompt:'Which sentence contains an error?',options:['The policy is effective.','School libraries are useful.','The classroom have clear rules.','Education is important.'],answer:2},
@@ -548,7 +556,19 @@ function buildLanguageItems(topic){return [
  {feature:'Technical Terms',type:'findError',question:'Pilih kalimat yang menggunakan istilah topik dengan tidak tepat.',prompt:'Which sentence uses the technical term incorrectly?',options:['Digital literacy involves evaluating online information.','Biodiversity refers to the variety of living organisms.','Infrastructure includes roads and public transport.','Biodiversity means the ability to use online information.'],answer:3},
  {feature:'Passive Voice',type:'rewrite',question:'Ubah kalimat aktif berikut menjadi passive voice yang benar.',prompt:'Active: “The school reviews the rules every year.”',options:['The rules are reviewed by the school every year.','The rules is reviewed by the school every year.','The rules reviewed by the school every year.','The school are reviewed the rules every year.'],answer:0}
  ];}
-function buildReadingItems(topic){
+function buildReadingItems(topic,attemptNumber=1){
+  if(attemptNumber>=2){const rawSecond=[
+  {q:"Which statement best expresses the writer’s claim?",o:[topic.thesis,"The text only narrates a past event.","The writer refuses to give a position.","The topic has no effect on students."],a:0},
+  {q:"What is the purpose of the supporting reasons?",o:["To explain why the writer’s position is reasonable","To replace the thesis with a story","To introduce unrelated facts","To confuse the reader"],a:0},
+  {q:"Which detail would best strengthen the writer’s argument?",o:["Relevant data or a concrete example","An unrelated personal preference","A repeated title","A statement without explanation"],a:0},
+  {q:"How does the conclusion relate to the thesis?",o:["It reinforces the writer’s main position","It introduces an unrelated debate","It lists characters in a story","It removes the writer’s position"],a:0},
+  {q:"Which word is most likely to signal contrast?",o:["However","Therefore","For example","Similarly"],a:0},
+  {q:"Why should readers evaluate evidence carefully?",o:["Evidence helps determine whether a claim is well supported","Every claim is automatically true","Evidence makes a conclusion unnecessary","Opinions never need reasons"],a:0},
+  {q:"Which choice describes a balanced argument?",o:["It supports a position while considering relevant limitations","It ignores all opposing considerations","It uses emotional words instead of reasons","It repeats one reason without development"],a:0},
+  {q:"What is the role of the thesis in an Analytical Exposition?",o:["To state the writer’s position","To provide the final summary only","To list every detail in the text","To introduce a fictional character"],a:0},
+  {q:"Which sentence is an example of an evaluative claim?",o:["The policy is practical because it saves time.","The meeting starts at eight.","The notice is on the door.","The school has three buildings."],a:0},
+  {q:"What is the strongest basis for accepting the writer’s conclusion?",o:["The thesis is supported by relevant reasons and evidence","The conclusion is the last paragraph","The text uses long sentences","The writer repeats the same word"],a:0}
+  ];return rawSecond.map(item=>{const opts=shuffle(item.o.map((text,i)=>({text,correct:i===item.a})));return {...item,o:opts.map(x=>x.text),a:opts.findIndex(x=>x.correct)};});}
  const raw=[
  {q:'What is the writer’s main position?',o:[topic.thesis,'The writer believes the issue should never be discussed.','The writer only describes a personal experience.','The writer argues that no school policy is necessary.'],a:0},
  {q:'What is the main idea of the first argument?',o:[topic.arguments[0][1],'The school should ignore the issue.','The writer changes the topic completely.','The conclusion is more important than reasons.'],a:0},
@@ -602,7 +622,7 @@ function openAssessment(){
  }else{
   const attempts=saved&&Array.isArray(saved.attempts)?saved.attempts:[];
   if(attempts.length>=ASSESSMENT_ATTEMPT_LIMIT){showAssessmentFinal(saved);go('assessmentView');return;}
-  assessmentTopic=hotTopicData[Math.floor(Math.random()*hotTopicData.length)];assessmentParagraphs=shuffle(buildAssessmentText(assessmentTopic));assessmentLanguageItems=buildLanguageItems(assessmentTopic);assessmentReadingItems=buildReadingItems(assessmentTopic);
+  const previousTopic=saved&&saved.attempts&&saved.attempts.length?saved.attempts[saved.attempts.length-1].topicTitle:null;const availableTopics=hotTopicData.filter(t=>t.title!==previousTopic);assessmentTopic=availableTopics.length?availableTopics[Math.floor(Math.random()*availableTopics.length)]:hotTopicData[Math.floor(Math.random()*hotTopicData.length)];const nextAttempt=attempts.length+1;assessmentParagraphs=shuffle(buildAssessmentText(assessmentTopic));assessmentLanguageItems=buildLanguageItems(assessmentTopic,nextAttempt);assessmentReadingItems=buildReadingItems(assessmentTopic,nextAttempt);
   assessmentState={version:2,topicTitle:assessmentTopic.title,attempts,inProgress:true,attemptNumber:attempts.length+1,startedAt:Date.now(),paragraphs:assessmentParagraphs,languageItems:assessmentLanguageItems,readingItems:assessmentReadingItems,orderChecked:false,orderScore:0,titleAnswer:null,titleOptions:null,langAnswers:Array(7).fill(null),readAnswers:Array(10).fill(null),stage:2};
   saveAssessmentState();
  }
