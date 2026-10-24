@@ -370,7 +370,9 @@ $('grammarContinue').addEventListener('click',()=>{
  if(grammarIndex<grammarQuestions.length-1){grammarIndex++;renderGrammarQuestion();$('grammarSubmit').classList.remove('hide');$('grammarContinueRow').classList.add('hide');}
  else finishGrammarChallenge();
 });
-$('topHeartShopButton').addEventListener('click',()=>{if(current==='simplePresent'||current==='otherLabView'){$('heartShop').classList.remove('hide');updateGameStatus();}});\n$('closeHeartShop').addEventListener('click',()=>{$('heartShop').classList.add('hide');});\n$('heartShop').addEventListener('click',e=>{if(e.target===$('heartShop'))$('heartShop').classList.add('hide');});
+$('topHeartShopButton').addEventListener('click',()=>{if(current==='simplePresent'||current==='otherLabView'){$('heartShop').classList.remove('hide');updateGameStatus();}});
+$('closeHeartShop').addEventListener('click',()=>{$('heartShop').classList.add('hide');});
+$('heartShop').addEventListener('click',e=>{if(e.target===$('heartShop'))$('heartShop').classList.add('hide');});
 $('buyHeart').addEventListener('click',()=>{
  if(popPoints<HEART_PRICE){$('shopFeedback').textContent='Not enough points yet. Keep answering correctly!';return;}
  if(hearts>=MAX_HEARTS){$('shopFeedback').textContent='You already have the maximum number of hearts.';return;}
