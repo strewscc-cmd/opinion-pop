@@ -140,10 +140,10 @@
     <div class="game-status"><div><span>Student</span><strong id="assessmentStudent">—</strong></div><div><span>Attempt</span><strong id="assessmentAttempt">—</strong></div><div><span>Score</span><strong id="assessmentLiveScore">In progress</strong></div></div>
     <div id="assessmentGate" class="note blue hide"></div>
     <div id="assessmentWork">
-     <div class="example"><div class="section-label">PART 1 · TEXT DETECTIVE</div><h3>Put the missing text back together</h3><p>Susun lima paragraf: introduction/context, thesis, argument 1, argument 2, dan reiteration. Gunakan tombol naik/turun agar nyaman di HP.</p><div id="paragraphOrderList" class="choices"></div><div class="bottom-actions"><span class="micro">5 points</span><button class="btn btn-primary" id="checkOrder" type="button">Check paragraph order →</button></div><div id="orderFeedback" class="note blue hide"></div><div id="titleTask" class="hide"><h3>Choose the best title</h3><div id="titleChoices" class="choices"></div></div></div>
+     <div id="assessmentPart12"><div class="example"><div class="section-label">PART 1 · TEXT DETECTIVE</div><h3>Put the missing text back together</h3><p>Susun lima paragraf: introduction/context, thesis, argument 1, argument 2, dan reiteration. Gunakan tombol naik/turun agar nyaman di HP.</p><div id="paragraphOrderList" class="choices"></div><div class="bottom-actions"><span class="micro">5 points</span><button class="btn btn-primary" id="checkOrder" type="button">Check paragraph order →</button></div><div id="orderFeedback" class="note blue hide"></div><div id="titleTask" class="hide"><h3>Choose the best title</h3><div id="titleChoices" class="choices"></div></div></div>
      <div class="example"><div class="section-label">PART 2 · LANGUAGE DETECTIVE</div><h3>Language Detective: Fix the Evidence</h3><p>Kerjakan berbagai tipe soal: menyusun kata menjadi kalimat, melengkapi bagian rumpang, menemukan kalimat yang salah, dan memilih perbaikannya.</p><div id="languageQuestions"></div></div>
      <div class="example"><div class="section-label">PART 3 · READING COMPREHENSION</div><h3>Read between the lines</h3><p id="readingText" class="note pink"></p><div id="readingQuestions"></div></div>
-     <div class="bottom-actions"><span class="micro" id="assessmentProgress">Your answers are saved on this device.</span><button class="btn btn-primary" id="submitAssessment" type="button">Submit final assessment →</button></div>
+     <div class="bottom-actions"><span class="micro" id="assessmentProgress">Your answers are saved on this device.</span><button class="btn btn-primary" id="submitAssessment" type="button">Submit final assessment →</button></div></div>
     </div>
     <div id="assessmentResult" class="hide"><div class="note blue"><strong>Assessment submitted!</strong><p id="assessmentResultSummary"></p></div><div class="example"><h3>Score breakdown</h3><div id="assessmentBreakdown"></div></div><div class="bottom-actions"><span class="micro">Refresh tidak mengembalikan kesempatan.</span><button class="btn btn-soft" id="assessmentBack" type="button">Back to learning summary</button></div></div>
    </section>
@@ -578,7 +578,7 @@ function renderTitleChoices(){
 function renderAssessmentQuestions(){
   $('languageQuestions').innerHTML=assessmentLanguageItems.map((q,i)=>'<div class="assessment-question"><h4>'+(i+1)+'. '+escapeAssessment(q.question)+' <span class="pill">'+escapeAssessment(q.feature)+'</span></h4><p>'+escapeAssessment(q.prompt)+'</p>'+assessmentRadio('lang'+i,q.options,assessmentState.langAnswers[i])+'</div>').join('');
   $('readingQuestions').innerHTML=assessmentReadingItems.map((q,i)=>'<div class="assessment-question"><h4>'+(i+1)+'. '+escapeAssessment(q.q)+'</h4>'+assessmentRadio('read'+i,q.o,assessmentState.readAnswers[i])+'</div>').join('');
-  document.querySelectorAll('#assessmentWork input[type=radio]').forEach(input=>input.addEventListener('change',()=>{const m=input.name.match(/^(lang|read)(\\d+)$/);if(!m)return;const i=Number(m[2]);if(m[1]==='lang')assessmentState.langAnswers[i]=Number(input.value);else assessmentState.readAnswers[i]=Number(input.value);saveAssessmentState();}));
+  document.querySelectorAll('#assessmentWork input[type=radio]').forEach(input=>input.addEventListener('change',()=>{const m=input.name.match(/^(lang|read)(\d+)$/);if(!m)return;const i=Number(m[2]);if(m[1]==='lang')assessmentState.langAnswers[i]=Number(input.value);else assessmentState.readAnswers[i]=Number(input.value);saveAssessmentState();}));
  }
 function showAssessmentResult(result,count){
  $('assessmentWork').classList.add('hide');$('assessmentResult').classList.remove('hide');$('assessmentGate').classList.add('hide');
@@ -602,7 +602,7 @@ function openAssessment(){
   const attempts=saved&&Array.isArray(saved.attempts)?saved.attempts:[];
   if(attempts.length>=ASSESSMENT_ATTEMPT_LIMIT){showAssessmentFinal(saved);go('assessmentView');return;}
   assessmentTopic=hotTopicData[Math.floor(Math.random()*hotTopicData.length)];assessmentParagraphs=shuffle(buildAssessmentText(assessmentTopic));assessmentLanguageItems=buildLanguageItems(assessmentTopic);assessmentReadingItems=buildReadingItems(assessmentTopic);
-  assessmentState={version:1,topicTitle:assessmentTopic.title,attempts,inProgress:true,attemptNumber:attempts.length+1,startedAt:Date.now(),paragraphs:assessmentParagraphs,languageItems:assessmentLanguageItems,readingItems:assessmentReadingItems,orderChecked:false,orderScore:0,titleAnswer:null,titleOptions:null,langAnswers:Array(7).fill(null),readAnswers:Array(10).fill(null)};
+  assessmentState={version:2,topicTitle:assessmentTopic.title,attempts,inProgress:true,attemptNumber:attempts.length+1,startedAt:Date.now(),paragraphs:assessmentParagraphs,languageItems:assessmentLanguageItems,readingItems:assessmentReadingItems,orderChecked:false,orderScore:0,titleAnswer:null,titleOptions:null,langAnswers:Array(7).fill(null),readAnswers:Array(10).fill(null),stage:2};
   saveAssessmentState();
  }
  $('assessmentStudent').textContent=studentName+' · '+studentClass;$('assessmentAttempt').textContent=assessmentState.attemptNumber+' of '+ASSESSMENT_ATTEMPT_LIMIT;$('assessmentLiveScore').textContent='In progress';
@@ -611,14 +611,25 @@ function openAssessment(){
  renderParagraphOrder();
  if(assessmentState.orderChecked){renderParagraphOrder();$('orderFeedback').classList.remove('hide');$('orderFeedback').innerHTML='<strong>Order score: '+assessmentState.orderScore+'/5</strong><br>Order checked. Continue with the remaining tasks.';$('titleTask').classList.remove('hide');renderTitleChoices();}
  $('readingText').textContent=assessmentParagraphs.slice().sort((a,b)=>['intro','thesis','arg1','arg2','reiteration'].indexOf(a.id)-['intro','thesis','arg1','arg2','reiteration'].indexOf(b.id)).map(p=>p.text).join(' ');
- renderAssessmentQuestions();go('assessmentView');
+ renderAssessmentQuestions();
+  $('assessmentPart12').classList.toggle('hide',assessmentState.stage===3);
+  $('assessmentPart3').classList.toggle('hide',assessmentState.stage!==3);
+  $('assessmentNextRow').classList.toggle('hide',assessmentState.stage===3);
+  $('submitAssessment').classList.toggle('hide',assessmentState.stage!==3);
+  go('assessmentView');
 }
 function checkParagraphOrder(){
  const correct=['intro','thesis','arg1','arg2','reiteration'];const score=assessmentParagraphs.reduce((sum,p,i)=>sum+(p.id===correct[i]?1:0),0);
  assessmentState.orderScore=score;assessmentState.orderChecked=true;renderParagraphOrder();$('orderFeedback').classList.remove('hide');$('orderFeedback').innerHTML='<strong>Order score: '+score+'/5</strong><br>'+(score===5?'Excellent! You reconstructed the text correctly.':'Good try. Your score is recorded for this attempt.');
  $('titleTask').classList.remove('hide');renderTitleChoices();saveAssessmentState();
 }
-function submitFinalAssessment(){
+function nextToReading(){
+  if(!assessmentState||!assessmentState.inProgress)return;
+  const missingLang=assessmentState.langAnswers.filter(v=>v===null||v===undefined).length;
+  if(!assessmentState.orderChecked||assessmentState.titleAnswer===null||missingLang){$('assessmentGate').classList.remove('hide');$('assessmentGate').textContent='Selesaikan Part 1 dan Part 2 terlebih dahulu. Pastikan paragraph order sudah dicek, judul dipilih, dan sisa soal Language Detective: '+missingLang+'.';return;}
+  assessmentState.stage=3;saveAssessmentState();$('assessmentGate').classList.add('hide');$('assessmentPart12').classList.add('hide');$('assessmentPart3').classList.remove('hide');$('assessmentNextRow').classList.add('hide');$('submitAssessment').classList.remove('hide');window.scrollTo({top:0,behavior:'smooth'});
+ }
+ function submitFinalAssessment(){
  if(!assessmentState||!assessmentState.inProgress)return;
  const missingLang=assessmentState.langAnswers.filter(v=>v===null||v===undefined).length,missingRead=assessmentState.readAnswers.filter(v=>v===null||v===undefined).length;
  if(!assessmentState.orderChecked||assessmentState.titleAnswer===null||missingLang||missingRead){$('assessmentGate').classList.remove('hide');$('assessmentGate').textContent='Lengkapi semua bagian. Sisa Language Detective: '+missingLang+'; reading: '+missingRead+'. Pastikan paragraph order sudah dicek.';return;}
@@ -632,6 +643,7 @@ function submitFinalAssessment(){
  assessmentState=finalState;showAssessmentResult(result,attempts.length);
 }
 $('checkOrder').addEventListener('click',checkParagraphOrder);
+ $('assessmentNext').addEventListener('click',nextToReading);
 $('submitAssessment').addEventListener('click',submitFinalAssessment);
 $('assessmentBack').addEventListener('click',()=>go('previewEnd'));
 $('startAssessment').addEventListener('click',openAssessment);
