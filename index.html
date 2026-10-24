@@ -146,7 +146,7 @@
      <div id="assessmentPart3" class="hide"><div class="example"><div class="section-label">PART 3 · READING COMPREHENSION</div><h3>Read between the lines</h3><p id="readingText" class="note pink"></p><div id="readingQuestions"></div></div>
      <div class="bottom-actions"><span class="micro" id="assessmentProgress">Your answers are saved on this device.</span><button class="btn btn-primary" id="submitAssessment" type="button">Submit final assessment →</button></div></div>
     </div>
-    <div id="assessmentResult" class="hide"><div class="note blue"><strong>Assessment submitted!</strong><p id="assessmentResultSummary"></p></div><div class="example"><h3>Score breakdown</h3><div id="assessmentBreakdown"></div></div><div class="bottom-actions"><span class="micro">Refresh tidak mengembalikan kesempatan.</span><button class="btn btn-soft" id="assessmentBack" type="button">Back to learning summary</button></div></div>
+    <div id="assessmentResult" class="hide"><div class="note blue"><strong id="assessmentResultHeading">Assessment submitted!</strong><p id="assessmentResultSummary"></p><div id="assessmentMarukoMessage" class="note pink" style="margin-bottom:0"></div></div><div class="example"><h3>Score breakdown</h3><div id="assessmentBreakdown"></div></div><div class="bottom-actions"><span class="micro">Refresh tidak mengembalikan kesempatan.</span><button class="btn btn-soft" id="assessmentBack" type="button">Back to learning summary</button></div></div>
    </section>
    <section class="view" id="previewEnd">
     <div class="hero"><div><span class="pill">✦ LANGUAGE LABS COMPLETE</span><h2>Look how far you've come!</h2><p id="endGreeting">You have started exploring Analytical Exposition with Mrs. Anja and Maruko. Kamu sudah mengenal konsep dasar dan berlatih menggunakan bahasa untuk menyampaikan pendapat.</p></div><div class="buddy-art"><img class="buddy" src="assets/maruko/maruko-cheering.jpg" alt="Maruko cheering" onerror="this.onerror=null;this.src='assets/maruko/maruko-bow.jpg'"><div class="sticker">you did it!</div></div></div>
@@ -605,6 +605,12 @@ function showAssessmentResult(result,count){
  $('assessmentWork').classList.add('hide');$('assessmentResult').classList.remove('hide');$('assessmentGate').classList.add('hide');
  $('assessmentStudent').textContent=studentName+' · '+studentClass;$('assessmentAttempt').textContent=result.attempt+' of '+ASSESSMENT_ATTEMPT_LIMIT;$('assessmentLiveScore').textContent=result.grade+'/100';
  $('assessmentResultSummary').innerHTML='<strong>'+result.grade+'/100</strong> · '+result.total+'/'+result.max+' points.<br>Attempt '+result.attempt+' of '+ASSESSMENT_ATTEMPT_LIMIT+' recorded. '+(count<ASSESSMENT_ATTEMPT_LIMIT?'One attempt remains.':'Both attempts have been used.');
+ const encouraging=result.grade<80;
+ $('assessmentResultHeading').textContent=encouraging?'Maruko says: Keep going! 🌸':'Great work! 🌟';
+ $('assessmentMarukoMessage').innerHTML=encouraging
+  ?(count<ASSESSMENT_ATTEMPT_LIMIT?'<strong>🌸 Maruko:</strong> “Aww, don’t give up, study buddy! 💗 You scored below 80, but this is not the end. Review your mistakes, revisit the learning cards, and try again. You still have <strong>one more attempt</strong>—you can do it! Ganbatte! 📚✨':'<strong>🌸 Maruko:</strong> “You’ve used both attempts, study buddy. Don’t be discouraged! Check your mistakes and remember what you’ve learned. Every challenge helps you grow. I’m cheering for you! 💗📚')
+  :'<strong>🌸 Maruko:</strong> “You did it, study buddy! 🎉 Keep building your arguments with clear reasons and strong language. I’m cheering for you! 💗';
+ $('assessmentMarukoMessage').style.background=encouraging?'#fff0f5':'#e8f7ef';
  $('assessmentBreakdown').innerHTML=[['Paragraph order',result.orderScore,5],['Best title',result.titleScore,1],['Language Detective',result.languageScore,7],['Reading comprehension',result.readingScore,10]].map(x=>'<div class="assessment-result-line"><span>'+x[0]+'</span><strong>'+x[1]+'/'+x[2]+'</strong></div>').join('');
  $('assessmentIntro').textContent='Assessment completed: '+result.topicTitle;
 }
