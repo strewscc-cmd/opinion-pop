@@ -597,7 +597,7 @@ function openAssessment(){
  if(totalPopPointsEarned<POP_POINTS_TARGET){$('assessmentGate').classList.remove('hide');$('assessmentGate').textContent='Kamu membutuhkan total 35 Pop Points untuk membuka assessment. Total poin yang pernah diperoleh: '+totalPopPointsEarned+'/35.';$('assessmentWork').classList.add('hide');$('assessmentResult').classList.add('hide');go('assessmentView');return;}
  let saved=loadAssessmentState();
  if(saved&&Array.isArray(saved.attempts)&&saved.attempts.length>=ASSESSMENT_ATTEMPT_LIMIT&&!saved.inProgress){showAssessmentFinal(saved);go('assessmentView');return;}
- if(saved&&saved.inProgress){
+ if(saved&&saved.inProgress&&saved.version===2&&saved.languageItems&&saved.languageItems.every(q=>Number.isInteger(q.answer))){
   assessmentState=saved;assessmentTopic=hotTopicData.find(t=>t.title===saved.topicTitle)||hotTopicData[0];assessmentParagraphs=saved.paragraphs;assessmentLanguageItems=saved.languageItems;assessmentReadingItems=saved.readingItems;
  }else{
   const attempts=saved&&Array.isArray(saved.attempts)?saved.attempts:[];
