@@ -125,7 +125,7 @@
    </section>
    <section class="view" id="previewEnd">
     <div class="hero"><div><span class="pill">✦ LANGUAGE LABS COMPLETE</span><h2>Look how far you've come!</h2><p id="endGreeting">Kamu sudah belajar bersama Mrs. Anja dan Foxy, assistant pembelajaran yang membantumu menjelajahi konsep awal Analytical Exposition.</p></div><div class="buddy-art"><div class="buddy">🦊</div><div class="sticker">you did it!</div></div></div>
-    <div class="example"><div class="section-label">Your badges · Koleksi pencapaian</div><p>Setiap badge menunjukkan usaha dan pencapaianmu selama belajar.</p><div id="badgeCollection" class="badge-grid"></div></div><div class="note blue"><strong>What you've explored</strong><br>Analytical Exposition structure plus seven Language Labs: Simple Present, Mental Verbs, Relational Processes, Logical Connectors, Evaluative Language, Technical Terms, and Passive Voice.</div>
+    <div class="example"><div class="section-label">Your badge · Pencapaianmu</div><p>Satu badge untuk menandai perjalanan belajarmu bersama Foxy.</p><div id="badgeCollection" class="badge-grid"></div><div class="note blue" style="margin-top:14px"><strong>⏱️ Your learning time · Total waktu belajar</strong><p id="studyTime" style="margin:6px 0 0">Menghitung waktu belajarmu…</p></div></div><div class="note blue"><strong>What you've explored</strong><br>Analytical Exposition structure plus seven Language Labs: Simple Present, Mental Verbs, Relational Processes, Logical Connectors, Evaluative Language, Technical Terms, and Passive Voice.</div>
     <p>Kamu sudah menyelesaikan rangkaian materi bahasa. Mrs. Anja dan Foxy masih punya satu tahap penting untuk dikembangkan berikutnya: <b>Final Assessment</b> untuk mengecek pemahaman secara menyeluruh. Integrasi Google Sheets untuk merekap nilai juga belum diaktifkan.</p>
     <div class="bottom-actions"><button class="btn btn-soft" id="restart">↺ Start over</button><a class="btn btn-primary" href="https://github.com/strewscc-cmd/opinion-pop" target="_blank" rel="noopener" style="text-decoration:none">View project ↗</a></div>
    </section>
@@ -191,26 +191,19 @@ const views=['welcome','classView','hotTake','definition','structureIntro','samp
 let current='welcome',studentName='',studentClass='',hotChoice='',definitionChoice='',definitionAttempted=false;
 let hearts=3,popPoints=0,structureRewardClaimed=false,grammarRewardClaimed=false,pointsSpent=0,grammarAttempts=0,otherLabAttempts=0,perfectChallenges=0,firstActivityAt=0;
 function renderBadgeCollection(){
+ const elapsedMs=firstActivityAt?Math.max(0,Date.now()-firstActivityAt):0;
+ const totalMinutes=Math.floor(elapsedMs/60000);
+ const hours=Math.floor(totalMinutes/60);
+ const minutes=totalMinutes%60;
+ const seconds=Math.floor((elapsedMs%60000)/1000);
+ const timeLabel=hours>0?hours+' jam '+minutes+' menit':totalMinutes>0?totalMinutes+' menit '+seconds+' detik':seconds+' detik';
  const labsPassed=Object.values(otherLabRewards).filter(Boolean).length+(grammarRewardClaimed?1:0);
  const allLabsPassed=labsPassed>=otherLabs.length+1;
- const elapsed=firstActivityAt?Math.floor((Date.now()-firstActivityAt)/60000):999;
- const definitions=[
-  ['fast','⚡','Fast Learner','Menyelesaikan perjalanan belajar dalam 30 menit.',elapsed<=30],
-  ['active','🙋','The Active One','Menyelesaikan seluruh Language Labs.',allLabsPassed],
-  ['persist','🌱','Never Give Up','Mencoba ulang setidaknya satu challenge.',grammarAttempts+otherLabAttempts>otherLabs.length+1],
-  ['saver','💰','Smart Saver','Mengumpulkan minimal 10 Pop Points tanpa membeli heart.',pointsSpent===0&&popPoints>=10],
-  ['heart','❤️','Heart Guardian','Menyelesaikan seluruh lab dengan minimal 3 hearts tersisa.',hearts>=3&&allLabsPassed],
-  ['grammar','🔎','Grammar Explorer','Menyelesaikan Simple Present dan enam lab bahasa lainnya.',allLabsPassed],
-  ['perfect','🏆','Perfect Challenger','Meraih nilai 5/5 pada setidaknya satu challenge.',perfectChallenges>0],
-  ['final','🚀','Ready for the Final','Menyelesaikan seluruh Language Labs.',allLabsPassed]
- ];
- let previouslyEarned={};
- const badgeStorageKey='opinionPopBadges:'+String(studentName||'guest').trim().toLowerCase()+':'+String(studentClass||'no-class').trim().toLowerCase();
- try{previouslyEarned=JSON.parse(localStorage.getItem(badgeStorageKey)||'{}')||{};}catch(e){}
- definitions.forEach(b=>{if(b[4])previouslyEarned[b[0]]=true;});
- try{localStorage.setItem(badgeStorageKey,JSON.stringify(previouslyEarned));}catch(e){}
- const el=$('badgeCollection');if(!el)return;
- el.innerHTML=definitions.map(b=>{const earned=!!previouslyEarned[b[0]];return '<div class="badge-card '+(earned?'earned':'')+'"><span style="font-size:1.5rem">'+b[1]+'</span> <span class="badge-name">'+b[2]+'</span><span class="badge-desc">'+b[3]+'</span><div class="badge-status">'+(earned?'★ Earned':'Not earned yet')+'</div></div>';}).join('');
+ const earned=allLabsPassed;
+ const el=$('badgeCollection');
+ if(el)el.innerHTML='<div class="badge-card '+(earned?'earned':'')+'"><span style="font-size:1.8rem">🦊</span> <span class="badge-name">Foxy’s Learning Explorer</span><span class="badge-desc">Menyelesaikan perjalanan belajar Analytical Exposition bersama Foxy.</span><div class="badge-status">'+(earned?'★ Earned · Journey complete':'In progress · Keep learning')+'</div></div>';
+ const timeEl=$('studyTime');
+ if(timeEl)timeEl.textContent=firstActivityAt?timeLabel:'Waktu belajar belum tercatat.';
 }
 function go(id){if(id==="previewEnd")renderBadgeCollection();views.forEach(v=>$(v).classList.toggle('active',v===id));current=id;const shop=$('heartShop');if(id==='otherLabView'){$('otherLabView').appendChild(shop);}else if(id==='simplePresent'){$('simplePresent').insertBefore(shop,$('challengeResult'));}shop.classList.add('hide');const idx=views.indexOf(id);$('progressBar').style.width=({welcome:5,classView:8,hotTake:15,definition:30,structureIntro:58,sampleText:75,grammarIntro:82,simplePresent:92,otherLabView:96,previewEnd:100}[id]||5)+'%';$('progressText').textContent=({welcome:'Welcome',classView:'Getting to know you',hotTake:'Warm-up',definition:'Learning card 01',structureIntro:'Learning card 02',sampleText:'Reading practice',grammarIntro:'Language lab',simplePresent:'Grammar practice',otherLabView:'Language lab',previewEnd:'Learning journey complete'}[id]);$('stepLabel').textContent= id==='previewEnd'?'NOTEBOOK · PREVIEW':'YOUR NOTEBOOK · STEP '+(idx+1);if(typeof updateGameStatus==='function')updateGameStatus();window.scrollTo({top:0,behavior:'smooth'});}
 function safeName(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
