@@ -189,7 +189,45 @@ $('focusReturnButton').addEventListener('click',hideFoxyFocusNudge);
 
 const views=['welcome','classView','hotTake','definition','structureIntro','sampleText','grammarIntro','simplePresent','otherLabView','previewEnd'];
 let current='welcome',studentName='',studentClass='',hotChoice='',definitionChoice='',definitionAttempted=false;
-let hearts=3,popPoints=0,structureRewardClaimed=false,grammarRewardClaimed=false,pointsSpent=0,grammarAttempts=0,otherLabAttempts=0,perfectChallenges=0,firstActivityAt=0;
+let hearts=3,popPoints=0,totalPopPointsEarned=0,structureRewardClaimed=false,grammarRewardClaimed=false,pointsSpent=0,grammarAttempts=0,otherLabAttempts=0,perfectChallenges=0,firstActivityAt=0;
+const POP_POINTS_TARGET=35;
+let progressStorageKey='';
+function awardPopPoints(amount){
+ const allowed=Math.max(0,POP_POINTS_TARGET-totalPopPointsEarned);
+ const awarded=Math.min(Math.max(0,amount),allowed);
+ popPoints+=awarded;totalPopPointsEarned+=awarded;
+ return awarded;
+}
+function makeProgressKey(name,klass){return 'opinionPopProgress::'+name.trim().toLocaleLowerCase()+'::'+klass.trim().toLocaleLowerCase();}
+function saveProgress(){
+ if(!progressStorageKey||!studentName||!studentClass)return;
+ try{
+  localStorage.setItem(progressStorageKey,JSON.stringify({version:1,studentName,studentClass,current,hearts,popPoints,totalPopPointsEarned,structureRewardClaimed,grammarRewardClaimed,pointsSpent,grammarAttempts,otherLabAttempts,perfectChallenges,firstActivityAt,hotChoice,definitionChoice,definitionAttempted,activeOtherLab,otherLabRewards:{...otherLabRewards},savedAt:Date.now()}));
+ }catch(err){/* Progress remains available for this session if storage is unavailable. */}
+}
+function loadProgress(name,klass){
+ const key=makeProgressKey(name,klass);
+ try{const raw=localStorage.getItem(key);if(!raw)return null;const data=JSON.parse(raw);if(!data||data.version!==1)return null;progressStorageKey=key;return data;}catch(err){return null;}
+}
+function restoreProgress(data){
+ studentName=data.studentName||studentName;studentClass=data.studentClass||studentClass;
+ hearts=Number.isFinite(data.hearts)?Math.max(0,Math.min(5,data.hearts)):3;
+ popPoints=Number.isFinite(data.popPoints)?Math.max(0,data.popPoints):0;
+ totalPopPointsEarned=Number.isFinite(data.totalPopPointsEarned)?Math.max(0,Math.min(POP_POINTS_TARGET,data.totalPopPointsEarned)):popPoints;
+ structureRewardClaimed=!!data.structureRewardClaimed;grammarRewardClaimed=!!data.grammarRewardClaimed;
+ pointsSpent=Number(data.pointsSpent)||0;grammarAttempts=Number(data.grammarAttempts)||0;otherLabAttempts=Number(data.otherLabAttempts)||0;perfectChallenges=Number(data.perfectChallenges)||0;
+ firstActivityAt=Number(data.firstActivityAt)||Date.now();hotChoice=data.hotChoice||'';definitionChoice=data.definitionChoice||'';definitionAttempted=!!data.definitionAttempted;
+ activeOtherLab=Math.max(0,Number(data.activeOtherLab)||0);
+ Object.keys(otherLabRewards).forEach(k=>delete otherLabRewards[k]);Object.assign(otherLabRewards,data.otherLabRewards||{});
+ $('studentName').value=studentName;$('studentClass').value=studentClass;
+ personalize();$('topGameStatus').classList.remove('hide');updateGameStatus();
+ const destination=data.current||'hotTake';
+ if(destination==='welcome'||destination==='classView')go('hotTake');
+ else if(destination==='otherLabView'){renderOtherLabAt(Math.min(activeOtherLab,otherLabs.length-1));}
+ else if(destination==='simplePresent'){go('simplePresent');startGrammarPractice();}
+ else if(views.includes(destination))go(destination);else go('hotTake');
+ saveProgress();
+}
 function renderBadgeCollection(){
  const elapsedMs=firstActivityAt?Math.max(0,Date.now()-firstActivityAt):0;
  const totalMinutes=Math.floor(elapsedMs/60000);
@@ -205,11 +243,11 @@ function renderBadgeCollection(){
  const timeEl=$('studyTime');
  if(timeEl)timeEl.textContent=firstActivityAt?timeLabel:'Waktu belajar belum tercatat.';
 }
-function go(id){if(id==="previewEnd")renderBadgeCollection();views.forEach(v=>$(v).classList.toggle('active',v===id));current=id;const shop=$('heartShop');if(id==='otherLabView'){$('otherLabView').appendChild(shop);}else if(id==='simplePresent'){$('simplePresent').insertBefore(shop,$('challengeResult'));}shop.classList.add('hide');const idx=views.indexOf(id);$('progressBar').style.width=({welcome:5,classView:8,hotTake:15,definition:30,structureIntro:58,sampleText:75,grammarIntro:82,simplePresent:92,otherLabView:96,previewEnd:100}[id]||5)+'%';$('progressText').textContent=({welcome:'Welcome',classView:'Getting to know you',hotTake:'Warm-up',definition:'Learning card 01',structureIntro:'Learning card 02',sampleText:'Reading practice',grammarIntro:'Language lab',simplePresent:'Grammar practice',otherLabView:'Language lab',previewEnd:'Learning journey complete'}[id]);$('stepLabel').textContent= id==='previewEnd'?'NOTEBOOK · PREVIEW':'YOUR NOTEBOOK · STEP '+(idx+1);if(typeof updateGameStatus==='function')updateGameStatus();window.scrollTo({top:0,behavior:'smooth'});}
+function go(id){if(id==="previewEnd")renderBadgeCollection();views.forEach(v=>$(v).classList.toggle('active',v===id));current=id;const shop=$('heartShop');if(id==='otherLabView'){$('otherLabView').appendChild(shop);}else if(id==='simplePresent'){$('simplePresent').insertBefore(shop,$('challengeResult'));}shop.classList.add('hide');const idx=views.indexOf(id);$('progressBar').style.width=({welcome:5,classView:8,hotTake:15,definition:30,structureIntro:58,sampleText:75,grammarIntro:82,simplePresent:92,otherLabView:96,previewEnd:100}[id]||5)+'%';$('progressText').textContent=({welcome:'Welcome',classView:'Getting to know you',hotTake:'Warm-up',definition:'Learning card 01',structureIntro:'Learning card 02',sampleText:'Reading practice',grammarIntro:'Language lab',simplePresent:'Grammar practice',otherLabView:'Language lab',previewEnd:'Learning journey complete'}[id]);$('stepLabel').textContent= id==='previewEnd'?'NOTEBOOK · PREVIEW':'YOUR NOTEBOOK · STEP '+(idx+1);if(typeof updateGameStatus==='function')updateGameStatus();saveProgress();window.scrollTo({top:0,behavior:'smooth'});}
 function safeName(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function personalize(){document.querySelectorAll('.studentNameSlot').forEach(el=>el.textContent=studentName);$('hotGreeting').innerHTML='Okay, <strong>'+safeName(studentName)+'</strong> from <strong>'+safeName(studentClass)+'</strong>, one question before we learn: have you ever disagreed with someone about school life?';$('definitionGreeting').innerHTML='Interesting choice, <strong>'+safeName(studentName)+'</strong>! Opinions are everywhere—but how do we make one convincing? Let’s find out!';$('nameGreeting').innerHTML='Nice to meet you, <strong>'+safeName(studentName)+'</strong>! Glad you’re here. What class are you in? / Kamu kelas berapa?';$('endGreeting').textContent='Nice work, '+studentName+'! You have started learning Analytical Exposition with Mrs. Anja and Foxy, her learning assistant.';}
-$('identityForm').addEventListener('submit',e=>{e.preventDefault();studentName=$('studentName').value.trim().replace(/\s+/g,' ');if(!studentName)return;firstActivityAt=Date.now();$('topGameStatus').classList.remove('hide');updateGameStatus(); $('nameGreeting').innerHTML='Nice to meet you, <strong>'+safeName(studentName)+'</strong>! Glad you’re here. What class are you in? / Kamu kelas berapa?';go('classView');$('studentClass').focus();});
-$('classForm').addEventListener('submit',e=>{e.preventDefault();studentClass=$('studentClass').value.trim().replace(/\s+/g,' ');if(!studentClass)return;personalize();go('hotTake');});
+$('identityForm').addEventListener('submit',e=>{e.preventDefault();studentName=$('studentName').value.trim().replace(/\s+/g,' ');if(!studentName)return;firstActivityAt=firstActivityAt||Date.now();$('topGameStatus').classList.remove('hide');updateGameStatus(); $('nameGreeting').innerHTML='Nice to meet you, <strong>'+safeName(studentName)+'</strong>! Glad you’re here. What class are you in? / Kamu kelas berapa?';go('classView');$('studentClass').focus();});
+$('classForm').addEventListener('submit',e=>{e.preventDefault();studentClass=$('studentClass').value.trim().replace(/\s+/g,' ');if(!studentClass)return;const saved=loadProgress(studentName,studentClass);if(saved){restoreProgress(saved);return;}progressStorageKey=makeProgressKey(studentName,studentClass);firstActivityAt=firstActivityAt||Date.now();personalize();go('hotTake');saveProgress();});
 const hotTopicData=[
  {statement:'“Students should be allowed to wear make-up on Thursdays.”',context:'Consider self-expression, school identity, fairness, and the purpose of the rule.',title:'Should Students Be Allowed to Wear Make-up on Thursdays?',thesis:'Students should be allowed to wear make-up on Thursdays because a clear, limited policy can support self-expression without removing the school’s focus on learning.',thesisNote:'Penulis menyatakan posisi yang jelas: make-up boleh digunakan pada hari tertentu dengan aturan yang jelas.',arguments:[['Reason 1 · Self-expression','First, make-up can be a form of self-expression. Allowing it on one designated day gives students some freedom to express their style while keeping expectations clear on other school days.'],['Reason 2 · Clear boundaries','Second, a specific day and set of rules can make the policy easier to manage. For example, the school can clarify what is appropriate instead of leaving students uncertain about what is allowed.'],['Reason 3 · Fairness and focus','Finally, a consistent rule can be fairer than rules that are interpreted differently from one student to another. The school should still make sure that appearance does not become more important than learning or respectful behaviour.']],reiteration:'Therefore, allowing make-up on Thursdays may be a reasonable compromise if the school sets fair boundaries and keeps learning as its priority.',reiterationNote:'Posisi awal ditegaskan kembali dengan menyebut syarat utama kebijakan.'},
  {statement:'“GERIMIS is an effective way to reduce waste at school.”',context:'Every Friday, classroom bins are put away and students take their rubbish home. Consider responsibility, cleanliness, and practicality.',title:'Is GERIMIS an Effective Way to Reduce Waste at School?',thesis:'GERIMIS can help reduce school waste because it encourages personal responsibility, makes students more aware of rubbish, and supports a cleaner classroom environment.',thesisNote:'Penulis mendukung GERIMIS, lalu akan mengembangkan beberapa alasan yang mendukung pendapat itu.',arguments:[['Reason 1 · Personal responsibility','First, taking rubbish home encourages students to think about the waste they create. Instead of leaving everything for cleaning staff, students are reminded to manage their own rubbish.'],['Reason 2 · Awareness and habits','Second, the routine can make waste more visible to students. When they must carry their rubbish, they may think twice before using unnecessary packaging and gradually build better habits.'],['Reason 3 · Clean classrooms','Finally, removing classroom bins for the day may help prevent rubbish from being left in overflowing bins. However, the school still needs clear arrangements for students who cannot safely or practically take certain waste home.']],reiteration:'Overall, GERIMIS can support waste reduction when students understand its purpose and the school provides practical guidance for handling rubbish responsibly.',reiterationNote:'Kesimpulan menguatkan dukungan, tetapi juga mengakui bahwa pelaksanaan yang baik tetap diperlukan.'},
@@ -226,7 +264,7 @@ renderReadingCard();
  $('hotNext').addEventListener('click',()=>go('definition'));
 $('definitionChoices').addEventListener('click',e=>{const btn=e.target.closest('[data-choice]');if(!btn)return;definitionChoice=btn.dataset.choice;document.querySelectorAll('#definitionChoices .choice').forEach(x=>x.classList.toggle('selected',x===btn));definitionAttempted=true;$('definitionFeedback').classList.remove('hide');if(definitionChoice==='b'){$('definitionFeedback').innerHTML='<strong>That’s right! ★</strong><br>An Analytical Exposition states a position and supports it with reasoning. You identified the key idea: the argument matters, not just the opinion.';$('definitionFeedback').style.background='#e8f7ef';$('definitionFeedback').style.borderColor='#c3e8d2';}else{$('definitionFeedback').innerHTML='<strong>Not quite—and that’s how we learn! 🦊</strong><br>Look for the option that includes both a position and supporting reasons. A recount tells events; an unsupported opinion gives readers little explanation.';$('definitionFeedback').style.background='#fff3d0';$('definitionFeedback').style.borderColor='#ead99e';}$('definitionNext').disabled=false;});
 $('definitionNext').addEventListener('click',()=>go('structureIntro'));
-$('nextStructure').addEventListener('click',()=>{if(!structureRewardClaimed){popPoints+=5;structureRewardClaimed=true;updateGameStatus();}go('sampleText');});
+$('nextStructure').addEventListener('click',()=>{if(!structureRewardClaimed){awardPopPoints(5);structureRewardClaimed=true;updateGameStatus();}go('sampleText');});
 
 const simplePresentBank=[
  {q:'Choose the correct sentence.',options:['School libraries provides useful resources.','School libraries provide useful resources.','School libraries providing useful resources.'],correct:1,why:'“School libraries” adalah plural subject, jadi gunakan base verb “provide”.'},
@@ -249,6 +287,7 @@ function updateGameStatus(){
  $('buyHeart').disabled=popPoints<HEART_PRICE||hearts>=MAX_HEARTS;
  $('resumeAfterPurchase').classList.toggle('hide',!questionPendingAfterPurchase);
  $('topHeartShopButton').disabled=!(current==='simplePresent'||current==='otherLabView');
+ saveProgress();
 }
 function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function startGrammarPractice(){
@@ -272,7 +311,7 @@ $('grammarQuestionArea').addEventListener('click',e=>{const b=e.target.closest('
 $('grammarSubmit').addEventListener('click',()=>{
  if(grammarSelected<0||challengeFinished)return;
  const item=grammarQuestions[grammarIndex],correct=grammarSelected===item.correct;
- if(correct){grammarScore++;popPoints++;}else{hearts=Math.max(0,hearts-1);grammarWrong++;}
+ if(correct){grammarScore++;awardPopPoints(1);}else{hearts=Math.max(0,hearts-1);grammarWrong++;}
  updateGameStatus();
  $('grammarFeedback').classList.remove('hide');$('grammarFeedback').style.background=correct?'#e8f7ef':'#fff3d0';$('grammarFeedback').style.borderColor=correct?'#c3e8d2':'#ead99e';
  $('grammarFeedback').innerHTML='<strong>'+(correct?'Correct! +1 Pop Point ★':'Not quite! −1 heart')+'</strong><br>'+item.why;
@@ -291,7 +330,7 @@ function finishGrammarChallenge(){
  }else if(hearts>0&&grammarScore===5)perfectChallenges++;
  if(hearts>0&&grammarScore>=3){
   let completionBonus=0;
-  if(!grammarRewardClaimed){completionBonus=5;popPoints+=completionBonus;grammarRewardClaimed=true;updateGameStatus();}
+  if(!grammarRewardClaimed){completionBonus=awardPopPoints(5);grammarRewardClaimed=true;updateGameStatus();}
   $('challengeResult').innerHTML='<strong>Lab unlocked! 🔓</strong><br>Kamu mendapat '+grammarScore+'/5 poin pada challenge ini.'+(completionBonus?' Bonus menyelesaikan babak: +'+completionBonus+' Pop Points ⭐':'')+'<br>Challenge score adalah nilai latihanmu; Pop Points adalah saldo yang bisa kamu kumpulkan dan gunakan di Heart Shop.';
   $('retryActions').classList.add('hide');
   const next=document.createElement('div');next.className='bottom-actions';next.innerHTML='<span class="micro">Simple Present · Challenge complete</span><button class="btn btn-primary" id="finishGrammarLab" type="button">Continue learning →</button>';$('challengeResult').after(next);
@@ -432,7 +471,7 @@ document.addEventListener('click',e=>{
  if(e.target.closest('#otherLabSubmit')){
   if(otherLabSelected<0||otherLabFinished)return;
   const q=otherLabQuestions[otherLabIndex],correct=otherLabSelected===q.correct;
-  if(correct){otherLabScore++;popPoints++;}else{hearts=Math.max(0,hearts-1);}
+  if(correct){otherLabScore++;awardPopPoints(1);}else{hearts=Math.max(0,hearts-1);}
   updateGameStatus();
   $('otherLabFeedback').classList.remove('hide');$('otherLabFeedback').style.background=correct?'#e8f7ef':'#fff3d0';$('otherLabFeedback').style.borderColor=correct?'#c3e8d2':'#ead99e';
   $('otherLabFeedback').innerHTML='<strong>'+(correct?'Correct! +1 Pop Point ⭐':'Not quite! −1 heart ❤️')+'</strong><br>'+q.why;
@@ -452,7 +491,7 @@ function finishOtherLab(){
  if(hearts>0&&otherLabScore===5)perfectChallenges++;
  if(hearts===0){res.innerHTML='<strong>Out of hearts! ❤️‍🩹</strong><br>Nyawamu habis. Kamu bisa mencoba lagi setelah mendapatkan heart tambahan dari Heart Shop ketika tersedia.';$('otherLabRetry').classList.remove('hide');$('otherLabContinueButton').classList.add('hide');return;}
  if(otherLabScore>=3){
-  const bonus=otherLabRewards[lab.id]?0:5;otherLabRewards[lab.id]=true;popPoints+=bonus;updateGameStatus();
+  const bonus=otherLabRewards[lab.id]?0:awardPopPoints(5);otherLabRewards[lab.id]=true;updateGameStatus();
   res.innerHTML='<strong>Lab complete! 🔓</strong><br>Nilaimu '+otherLabScore+'/5.'+(bonus?' Bonus penyelesaian babak: <b>+5 Pop Points ⭐</b>':'<br>Bonus penyelesaian lab sudah kamu dapatkan sebelumnya.')+'<br>Good work! Pahami alasan di balik jawabanmu, bukan hanya pilihannya.';
   $('otherLabRetry').classList.remove('hide');$('otherLabRetryButton').classList.add('hide');$('otherLabContinueButton').classList.remove('hide');$('otherLabContinueButton').textContent=activeOtherLab<otherLabs.length-1?'Next lab →':'Finish learning →';
  }else{
@@ -461,7 +500,7 @@ function finishOtherLab(){
  }
 }
 
-$('restart').addEventListener('click',()=>{hearts=3;popPoints=0;focusLeaveCount=0;focusHeartLossMessage='';focusWasAway=false;focusEpisodeOpen=false;focusOverlayDismissed=false;focusOverlay.classList.remove('show');document.body.style.overflow='';structureRewardClaimed=false;grammarRewardClaimed=false;Object.keys(otherLabRewards).forEach(k=>delete otherLabRewards[k]);activeOtherLab=0;$('topGameStatus').classList.add('hide');updateGameStatus();hotChoice='';definitionChoice='';$('studentName').value='';$('studentClass').value='';$('hotFeedback').classList.add('hide');$('definitionFeedback').classList.add('hide');$('hotNext').disabled=true;$('definitionNext').disabled=true;document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));['thesisReveal','argumentsReveal','reiterationReveal'].forEach(id=>$(id).classList.add('hide'));go('welcome');});
+$('restart').addEventListener('click',()=>{if(progressStorageKey){try{localStorage.removeItem(progressStorageKey);}catch(err){}}progressStorageKey='';hearts=3;popPoints=0;totalPopPointsEarned=0;firstActivityAt=0;focusLeaveCount=0;focusHeartLossMessage='';focusWasAway=false;focusEpisodeOpen=false;focusOverlayDismissed=false;focusOverlay.classList.remove('show');document.body.style.overflow='';structureRewardClaimed=false;grammarRewardClaimed=false;Object.keys(otherLabRewards).forEach(k=>delete otherLabRewards[k]);activeOtherLab=0;$('topGameStatus').classList.add('hide');updateGameStatus();hotChoice='';definitionChoice='';$('studentName').value='';$('studentClass').value='';$('hotFeedback').classList.add('hide');$('definitionFeedback').classList.add('hide');$('hotNext').disabled=true;$('definitionNext').disabled=true;document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));['thesisReveal','argumentsReveal','reiterationReveal'].forEach(id=>$(id).classList.add('hide'));go('welcome');});
 </script>
 </body>
 </html>
