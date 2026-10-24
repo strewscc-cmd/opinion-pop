@@ -205,9 +205,10 @@ function renderBadgeCollection(){
   ['final','🚀','Ready for the Final','Menyelesaikan seluruh Language Labs.',allLabsPassed]
  ];
  let previouslyEarned={};
- try{previouslyEarned=JSON.parse(localStorage.getItem('opinionPopBadges')||'{}')||{};}catch(e){}
+ const badgeStorageKey='opinionPopBadges:'+String(studentName||'guest').trim().toLowerCase()+':'+String(studentClass||'no-class').trim().toLowerCase();
+ try{previouslyEarned=JSON.parse(localStorage.getItem(badgeStorageKey)||'{}')||{};}catch(e){}
  definitions.forEach(b=>{if(b[4])previouslyEarned[b[0]]=true;});
- try{localStorage.setItem('opinionPopBadges',JSON.stringify(previouslyEarned));}catch(e){}
+ try{localStorage.setItem(badgeStorageKey,JSON.stringify(previouslyEarned));}catch(e){}
  const el=$('badgeCollection');if(!el)return;
  el.innerHTML=definitions.map(b=>{const earned=!!previouslyEarned[b[0]];return '<div class="badge-card '+(earned?'earned':'')+'"><span style="font-size:1.5rem">'+b[1]+'</span> <span class="badge-name">'+b[2]+'</span><span class="badge-desc">'+b[3]+'</span><div class="badge-status">'+(earned?'★ Earned':'Not earned yet')+'</div></div>';}).join('');
 }
