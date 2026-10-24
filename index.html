@@ -195,17 +195,21 @@ function renderBadgeCollection(){
  const allLabsPassed=labsPassed>=otherLabs.length+1;
  const elapsed=firstActivityAt?Math.floor((Date.now()-firstActivityAt)/60000):999;
  const definitions=[
-  ['⚡','Fast Learner','Menyelesaikan perjalanan belajar dalam 30 menit.',elapsed<=30],
-  ['🙋','The Active One','Menyelesaikan seluruh lab dan aktif berlatih.',allLabsPassed],
-  ['🌱','Never Give Up','Terus mencoba setelah latihan pertama.',grammarAttempts+otherLabAttempts>=(otherLabs.length+2)],
-  ['💰','Smart Saver','Mengumpulkan poin tanpa membelanjakannya.',pointsSpent===0&&popPoints>=10],
-  ['❤️','Heart Guardian','Menyelesaikan seluruh lab dengan setidaknya 3 hearts.',hearts>=3&&allLabsPassed],
-  ['🔎','Grammar Explorer','Menyelesaikan seluruh Language Labs.',allLabsPassed],
-  ['🏆','Perfect Challenger','Meraih skor sempurna 5/5 pada challenge.',perfectChallenges>0],
-  ['🚀','Ready for the Final','Menyelesaikan seluruh Language Labs.',allLabsPassed]
+  ['fast','⚡','Fast Learner','Menyelesaikan perjalanan belajar dalam 30 menit.',elapsed<=30],
+  ['active','🙋','The Active One','Menyelesaikan seluruh Language Labs.',allLabsPassed],
+  ['persist','🌱','Never Give Up','Mencoba ulang setidaknya satu challenge.',grammarAttempts+otherLabAttempts>otherLabs.length+1],
+  ['saver','💰','Smart Saver','Mengumpulkan minimal 10 Pop Points tanpa membeli heart.',pointsSpent===0&&popPoints>=10],
+  ['heart','❤️','Heart Guardian','Menyelesaikan seluruh lab dengan minimal 3 hearts tersisa.',hearts>=3&&allLabsPassed],
+  ['grammar','🔎','Grammar Explorer','Menyelesaikan Simple Present dan enam lab bahasa lainnya.',allLabsPassed],
+  ['perfect','🏆','Perfect Challenger','Meraih nilai 5/5 pada setidaknya satu challenge.',perfectChallenges>0],
+  ['final','🚀','Ready for the Final','Menyelesaikan seluruh Language Labs.',allLabsPassed]
  ];
+ let previouslyEarned={};
+ try{previouslyEarned=JSON.parse(localStorage.getItem('opinionPopBadges')||'{}')||{};}catch(e){}
+ definitions.forEach(b=>{if(b[4])previouslyEarned[b[0]]=true;});
+ try{localStorage.setItem('opinionPopBadges',JSON.stringify(previouslyEarned));}catch(e){}
  const el=$('badgeCollection');if(!el)return;
- el.innerHTML=definitions.map(b=>'<div class="badge-card '+(b[3]?'earned':'')+'"><span style="font-size:1.5rem">'+b[0]+'</span> <span class="badge-name">'+b[1]+'</span><span class="badge-desc">'+b[2]+'</span><div class="badge-status">'+(b[3]?'★ Earned':'Not earned yet')+'</div></div>').join('');
+ el.innerHTML=definitions.map(b=>{const earned=!!previouslyEarned[b[0]];return '<div class="badge-card '+(earned?'earned':'')+'"><span style="font-size:1.5rem">'+b[1]+'</span> <span class="badge-name">'+b[2]+'</span><span class="badge-desc">'+b[3]+'</span><div class="badge-status">'+(earned?'★ Earned':'Not earned yet')+'</div></div>';}).join('');
 }
 function go(id){if(id==="previewEnd")renderBadgeCollection();views.forEach(v=>$(v).classList.toggle('active',v===id));current=id;const shop=$('heartShop');if(id==='otherLabView'){$('otherLabView').appendChild(shop);}else if(id==='simplePresent'){$('simplePresent').insertBefore(shop,$('challengeResult'));}shop.classList.add('hide');const idx=views.indexOf(id);$('progressBar').style.width=({welcome:5,classView:8,hotTake:15,definition:30,structureIntro:58,sampleText:75,grammarIntro:82,simplePresent:92,otherLabView:96,previewEnd:100}[id]||5)+'%';$('progressText').textContent=({welcome:'Welcome',classView:'Getting to know you',hotTake:'Warm-up',definition:'Learning card 01',structureIntro:'Learning card 02',sampleText:'Reading practice',grammarIntro:'Language lab',simplePresent:'Grammar practice',otherLabView:'Language lab',previewEnd:'Learning journey complete'}[id]);$('stepLabel').textContent= id==='previewEnd'?'NOTEBOOK · PREVIEW':'YOUR NOTEBOOK · STEP '+(idx+1);if(typeof updateGameStatus==='function')updateGameStatus();window.scrollTo({top:0,behavior:'smooth'});}
 function safeName(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -290,8 +294,8 @@ function finishGrammarChallenge(){
   $('challengeResult').innerHTML='<strong>Out of hearts! ❤️‍🩹</strong><br>Nyawamu habis. Jika Pop Points-mu cukup, beli nyawa lalu lanjutkan dari soal yang belum selesai. Kalau ingin mengulang, kamu bisa memilih mengulang Language Lab atau meninjau Learning Card.';
   $('retryActions').classList.remove('hide');
   if(popPoints>=HEART_PRICE&&hearts<MAX_HEARTS){$('heartShop').classList.remove('hide');$('shopFeedback').textContent='You have enough points for an extra heart. Buy one to resume this challenge.';}
- }else if(grammarScore===5)perfectChallenges++;
- if(grammarScore>=3){
+ }else if(hearts>0&&grammarScore===5)perfectChallenges++;
+ if(hearts>0&&grammarScore>=3){
   let completionBonus=0;
   if(!grammarRewardClaimed){completionBonus=5;popPoints+=completionBonus;grammarRewardClaimed=true;updateGameStatus();}
   $('challengeResult').innerHTML='<strong>Lab unlocked! 🔓</strong><br>Kamu mendapat '+grammarScore+'/5 poin pada challenge ini.'+(completionBonus?' Bonus menyelesaikan babak: +'+completionBonus+' Pop Points ⭐':'')+'<br>Challenge score adalah nilai latihanmu; Pop Points adalah saldo yang bisa kamu kumpulkan dan gunakan di Heart Shop.';
@@ -407,7 +411,7 @@ function renderOtherLab(){
  const lab=otherLabs[activeOtherLab];
  if(!lab){go('previewEnd');return;}
  const el=$('otherLabContent');
- el.innerHTML='<div class="section-label">Language lab '+String(activeOtherLab+2).padStart(2,'0')+' · '+lab.tag+'</div><h2>'+lab.icon+' '+lab.title+'</h2><p>'+lab.purpose+'</p><div class="example"><div class="section-label">What does it do? · Fungsinya</div><p>'+lab.purposeId+'</p></div><div class="example"><div class="section-label">Notice the pattern · Kenali polanya</div>'+lab.examples.map(x=>'<p><b>'+x[0]+'</b> '+x[1]+'</p>').join('')+'</div><div class="note blue"><strong>📌 Language pattern · Pola bahasa</strong><br><b>'+lab.pattern+'</b><br><br>'+lab.explain+'</div><div class="note"><strong>⚠️ Common mistake</strong><br>'+lab.mistake+'</div><div class="example"><div class="section-label">Pop Challenge</div><h3>'+lab.challenge+'</h3><p>Jawab 5 pertanyaan untuk menguji pemahamanmu. Jawaban benar memberi <b>+1 Pop Point</b>; jawaban salah mengurangi <b>1 heart</b>.</p><div id="otherLabQuestionArea"></div><div id="otherLabFeedback" class="note blue hide" aria-live="polite"></div><div class="bottom-actions"><span class="micro" id="otherLabCount">Question 1 of 5</span><button class="btn btn-primary" id="otherLabSubmit" type="button" disabled>Check answer →</button><button class="btn btn-primary hide" id="otherLabNext" type="button">Next question →</button></div><div id="otherLabResult" class="note blue hide" aria-live="polite"></div><div class="bottom-actions hide" id="otherLabRetry"><button class="btn btn-soft" id="otherLabRetryButton" type="button">Retry this lab ↺</button><button class="btn btn-primary" id="otherLabContinueButton" type="button">Continue →</button></div></div><div class="bottom-actions"><button class="btn btn-soft" id="otherLabBack" type="button">← Previous section</button><span class="micro">Lab '+(activeOtherLab+2)+' of '+(otherLabs.length+1)+'</span></div>';
+ el.innerHTML='<div class="section-label">Language lab '+String(activeOtherLab+2).padStart(2,'0')+' · '+lab.tag+'</div><h2>'+lab.icon+' '+lab.title+'</h2><p>'+highlightKeyPhrases(lab.purpose)+'</p><div class="example"><div class="section-label">What does it do? · Fungsinya</div><p>'+highlightKeyPhrases(lab.purposeId)+'</p></div><div class="example"><div class="section-label">Notice the pattern · Kenali polanya</div>'+lab.examples.map(x=>'<p><b>'+x[0]+'</b> '+x[1]+'</p>').join('')+'</div><div class="note blue"><strong>📌 Language pattern · Pola bahasa</strong><br><b>'+lab.pattern+'</b><br><br>'+highlightKeyPhrases(lab.explain)+'</div><div class="note"><strong>⚠️ Common mistake</strong><br>'+highlightKeyPhrases(lab.mistake)+'</div><div class="example"><div class="section-label">Pop Challenge</div><h3>'+lab.challenge+'</h3><p>Jawab 5 pertanyaan untuk menguji pemahamanmu. Jawaban benar memberi <b>+1 Pop Point</b>; jawaban salah mengurangi <b>1 heart</b>.</p><div id="otherLabQuestionArea"></div><div id="otherLabFeedback" class="note blue hide" aria-live="polite"></div><div class="bottom-actions"><span class="micro" id="otherLabCount">Question 1 of 5</span><button class="btn btn-primary" id="otherLabSubmit" type="button" disabled>Check answer →</button><button class="btn btn-primary hide" id="otherLabNext" type="button">Next question →</button></div><div id="otherLabResult" class="note blue hide" aria-live="polite"></div><div class="bottom-actions hide" id="otherLabRetry"><button class="btn btn-soft" id="otherLabRetryButton" type="button">Retry this lab ↺</button><button class="btn btn-primary" id="otherLabContinueButton" type="button">Continue →</button></div></div><div class="bottom-actions"><button class="btn btn-soft" id="otherLabBack" type="button">← Previous section</button><span class="micro">Lab '+(activeOtherLab+2)+' of '+(otherLabs.length+1)+'</span></div>';
  $('otherLabGreeting').innerHTML='<strong>Foxy</strong><br>Welcome to '+lab.title+'! Kita lihat bagaimana pilihan bahasa bisa membuat argumen lebih jelas. Read the examples, take notes, and then try the challenge.';
  $('otherLabBack').addEventListener('click',()=>{if(activeOtherLab===0)go('simplePresent');else renderOtherLabAt(activeOtherLab-1);});
  $('otherLabRetryButton').addEventListener('click',()=>startOtherLabChallenge());
@@ -451,11 +455,11 @@ document.addEventListener('click',e=>{
 function finishOtherLab(){
  otherLabFinished=true;
  const lab=otherLabs[activeOtherLab],res=$('otherLabResult');res.classList.remove('hide');
- if(otherLabScore===5)perfectChallenges++;
+ if(hearts>0&&otherLabScore===5)perfectChallenges++;
  if(hearts===0){res.innerHTML='<strong>Out of hearts! ❤️‍🩹</strong><br>Nyawamu habis. Kamu bisa mencoba lagi setelah mendapatkan heart tambahan dari Heart Shop ketika tersedia.';$('otherLabRetry').classList.remove('hide');$('otherLabContinueButton').classList.add('hide');return;}
  if(otherLabScore>=3){
-  const bonus=5;otherLabRewards[lab.id]=true;popPoints+=bonus;updateGameStatus();
-  res.innerHTML='<strong>Lab complete! 🔓</strong><br>Nilaimu '+otherLabScore+'/5.'+(bonus?' Bonus penyelesaian babak: <b>+3 Pop Points ⭐</b>':'')+'<br>Good work! Pahami alasan di balik jawabanmu, bukan hanya pilihannya.';
+  const bonus=otherLabRewards[lab.id]?0:5;otherLabRewards[lab.id]=true;popPoints+=bonus;updateGameStatus();
+  res.innerHTML='<strong>Lab complete! 🔓</strong><br>Nilaimu '+otherLabScore+'/5.'+(bonus?' Bonus penyelesaian babak: <b>+5 Pop Points ⭐</b>':'<br>Bonus penyelesaian lab sudah kamu dapatkan sebelumnya.')+'<br>Good work! Pahami alasan di balik jawabanmu, bukan hanya pilihannya.';
   $('otherLabRetry').classList.remove('hide');$('otherLabRetryButton').classList.add('hide');$('otherLabContinueButton').classList.remove('hide');$('otherLabContinueButton').textContent=activeOtherLab<otherLabs.length-1?'Next lab →':'Finish learning →';
  }else{
   res.innerHTML='<strong>Not unlocked yet. 🔒</strong><br>Nilaimu '+otherLabScore+'/5. Kamu perlu minimal 3/5. Review penjelasan dan coba lagi.';
