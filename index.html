@@ -126,7 +126,7 @@
     <h3 style="font:600 1.25rem Fredoka,sans-serif">Quick practice · Try it!</h3><p>Jawab 5 pertanyaan untuk menguji pemahamanmu. Jawaban benar memberimu <b>+1 Pop Point</b>; jawaban salah mengurangi <b>1 heart</b>. Gunakan Pop Points yang kamu kumpulkan untuk membeli heart tambahan jika diperlukan.</p>
     <div id="grammarQuestionArea"></div>
     <div id="grammarFeedback" class="note blue hide" aria-live="polite"></div>
-    <div class="bottom-actions"><span class="micro" id="grammarCount">Challenge · 5 questions</span><button class="btn btn-primary" id="grammarSubmit" disabled>Check answer →</button></div><div id="heartShop" class="heart-shop-overlay hide" role="dialog" aria-modal="true" aria-labelledby="heartShopTitle"><div class="heart-shop-card"><button class="heart-shop-close" id="closeHeartShop" type="button" aria-label="Close Heart Shop">✕</button><div class="section-label">POP POINT STORE</div><h3 id="heartShopTitle">One more heart ❤️</h3><p>Spend 5 Pop Points to buy one extra heart. Maximum: 5 hearts.</p><div class="bottom-actions"><span class="micro" id="shopBalance">Balance: 0 points</span><button class="btn btn-yellow" id="buyHeart" type="button">Buy for 5 points</button></div><div id="shopFeedback" class="micro" aria-live="polite"></div><button id="resumeAfterPurchase" class="btn btn-primary hide" type="button">Resume challenge →</button></div></div><div id="challengeResult" class="note blue hide" aria-live="polite"></div><div id="retryActions" class="bottom-actions hide"><button class="btn btn-soft" id="reviewRetry" type="button">Retry Language Lab ↺</button><button class="btn btn-primary" id="reviewStructure" type="button">Review Learning Card 📖</button></div>
+    <div class="bottom-actions"><span class="micro" id="grammarCount">Challenge · 5 questions</span><button class="btn btn-primary" id="grammarSubmit" disabled>Check answer →</button></div><div id="challengeResult" class="note blue hide" aria-live="polite"></div><div id="retryActions" class="bottom-actions hide"><button class="btn btn-soft" id="reviewRetry" type="button">Retry Language Lab ↺</button><button class="btn btn-primary" id="reviewStructure" type="button">Review Learning Card 📖</button></div>
     <div class="bottom-actions hide" id="grammarContinueRow"><span class="micro">Nice work—keep going!</span><button class="btn btn-primary" id="grammarContinue">Continue →</button></div>
    </section>
 
@@ -156,7 +156,8 @@
   </div>
  </main>
 
-<div class="focus-overlay" id="focusOverlay" role="dialog" aria-modal="true" aria-labelledby="focusTitle" aria-describedby="focusMessage">
+<div id="heartShop" class="heart-shop-overlay hide" role="dialog" aria-modal="true" aria-labelledby="heartShopTitle"><div class="heart-shop-card"><button class="heart-shop-close" id="closeHeartShop" type="button" aria-label="Close Heart Shop">✕</button><div class="section-label">POP POINT STORE</div><h3 id="heartShopTitle">One more heart ❤️</h3><p>Spend 5 Pop Points to buy one extra heart. Maximum: 5 hearts.</p><div class="bottom-actions"><span class="micro" id="shopBalance">Balance: 0 points</span><button class="btn btn-yellow" id="buyHeart" type="button">Buy for 5 points</button></div><div id="shopFeedback" class="micro" aria-live="polite"></div><button id="resumeAfterPurchase" class="btn btn-primary hide" type="button">Resume challenge →</button></div></div>
+ <div class="focus-overlay" id="focusOverlay" role="dialog" aria-modal="true" aria-labelledby="focusTitle" aria-describedby="focusMessage">
  <div class="focus-card">
   <img class="focus-fox" src="assets/maruko/maruko-eye-roll.jpg" alt="Maruko giving a suspicious look" onerror="this.onerror=null;this.src='assets/maruko/maruko-smug.jpg'">
   <div class="section-label">MARUKO · MRS. ANJA'S STUDY BUDDY</div>
@@ -281,7 +282,7 @@ const hotTopicData=[
 ];
 let assignedHotTopic=hotTopicData[Math.floor(Math.random()*hotTopicData.length)];
 function assignRandomHotTopic(){assignedHotTopic=hotTopicData[Math.floor(Math.random()*hotTopicData.length)];$('hotTopicStatement').textContent=assignedHotTopic.statement;$('hotTopicContext').textContent=assignedHotTopic.context;}
-function renderReadingCard(){const topic=assignedHotTopic;$('readingTitle').textContent=topic.title;$('readingThesis').textContent=topic.thesis;$('readingThesisNote').textContent=topic.thesisNote;$('readingReiteration').textContent=topic.reiteration;$('readingReiterationNote').textContent=topic.reiterationNote;$('readingArguments').innerHTML=topic.arguments.map((arg,i)=>'<button class="choice" data-reveal="arguments"><span class="letter">'+(i+1)+'</span><span><strong>'+arg[0]+'</strong><br>'+arg[1]+'</span></button>').join('');$('readingArguments').querySelectorAll('[data-reveal="arguments"]').forEach(btn=>btn.addEventListener('click',()=>{const note=$('argumentsReveal');note.classList.remove('hide');btn.classList.toggle('selected');}));}
+function renderReadingCard(){const topic=assignedHotTopic;$('readingTitle').textContent=topic.title;$('readingThesis').textContent=topic.thesis;$('readingThesisNote').textContent=topic.thesisNote;$('readingReiteration').textContent=topic.reiteration;$('readingReiterationNote').textContent=topic.reiterationNote;$('readingArguments').innerHTML=topic.arguments.map((arg,i)=>'<button type="button" class="choice argument-choice"><span class="letter">'+(i+1)+'</span><span><strong>'+arg[0]+'</strong><br>'+arg[1]+'</span></button>').join('');$('readingArguments').querySelectorAll('.argument-choice').forEach(btn=>btn.addEventListener('click',()=>{const note=$('argumentsReveal');const wasSelected=btn.classList.contains('selected');$('readingArguments').querySelectorAll('.argument-choice').forEach(other=>other.classList.remove('selected'));if(wasSelected){note.classList.add('hide');}else{btn.classList.add('selected');note.classList.remove('hide');}}));}
 assignRandomHotTopic();
 renderReadingCard();
  $('hotChoices').addEventListener('click',e=>{const btn=e.target.closest('[data-choice]');if(!btn)return;hotChoice=btn.dataset.choice;document.querySelectorAll('#hotChoices .choice').forEach(x=>x.classList.toggle('selected',x===btn));$('hotFeedback').classList.remove('hide');$('hotFeedback').innerHTML=hotChoice==='agree'?'<strong>Maruko:</strong> Interesting! What reasons or evidence could support your position? A convincing argument needs more than agreement. Pendapatmu perlu alasan atau bukti yang mendukungnya. 💭':hotChoice==='disagree'?'<strong>Maruko:</strong> That is a valid position to explore! What reasons or evidence explain your disagreement? 💭':'<strong>Maruko:</strong> That is okay, too. Think about who is affected, the purpose of the rule, and the possible benefits or drawbacks. Pertimbangkan siapa yang terdampak dan apa manfaat atau kekurangannya. 🌿';$('hotNext').disabled=false;});
@@ -310,7 +311,7 @@ function updateGameStatus(){
  $('shopBalance').textContent='Balance: '+popPoints+' Pop Points';
  $('buyHeart').disabled=popPoints<HEART_PRICE||hearts>=MAX_HEARTS;
  $('resumeAfterPurchase').classList.toggle('hide',!questionPendingAfterPurchase);
- $('topHeartShopButton').disabled=!(current==='simplePresent'||current==='otherLabView');
+ $('topHeartShopButton').disabled=!studentName;
  saveProgress();
 }
 function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
@@ -369,7 +370,7 @@ $('grammarContinue').addEventListener('click',()=>{
  if(grammarIndex<grammarQuestions.length-1){grammarIndex++;renderGrammarQuestion();$('grammarSubmit').classList.remove('hide');$('grammarContinueRow').classList.add('hide');}
  else finishGrammarChallenge();
 });
-$('topHeartShopButton').addEventListener('click',()=>{if(current==='simplePresent'||current==='otherLabView'){$('heartShop').classList.remove('hide');updateGameStatus();}});
+$('topHeartShopButton').addEventListener('click',()=>{if(!studentName)return;$('heartShop').classList.remove('hide');updateGameStatus();});
 $('closeHeartShop').addEventListener('click',()=>{$('heartShop').classList.add('hide');});
 $('heartShop').addEventListener('click',e=>{if(e.target===$('heartShop'))$('heartShop').classList.add('hide');});
 $('buyHeart').addEventListener('click',()=>{
