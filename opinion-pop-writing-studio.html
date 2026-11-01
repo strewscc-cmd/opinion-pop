@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f8f8">
+<title>Opinion Pop! Part 2 — Writing Studio</title>
+<script>
+function imgFallback(img,alt,emoji){if(alt&&!img.dataset.tried){img.dataset.tried='1';img.src=alt;return;}var s=document.createElement('span');s.className=img.className+' emoji-fallback';s.setAttribute('role','img');s.setAttribute('aria-label',img.alt||'Foxy');s.textContent=emoji||'🦊';img.replaceWith(s);}
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&display=swap');
+:root{--pink:#b8dfe0;--pink-deep:#317c80;--pink-light:#eaf6f6;--yellow:#f4d88a;--blue:#c8e7f4;--lilac:#d9d5f3;--ink:#263d45;--muted:#687c82;--paper:#fffefa;--line:#dbe8e8;--green:#cdeedc;--shadow:0 16px 40px rgba(45,87,91,.12)}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:'DM Sans',sans-serif;background-color:#f4f8f8;background-image:radial-gradient(#c5dddd 1px,transparent 1px),linear-gradient(135deg,#f4f8f8,#fff9ed 55%,#f2f4fc);background-size:18px 18px,auto;min-height:100vh}button,input{font:inherit}button{cursor:pointer;border:0}button:focus-visible,input:focus-visible{outline:3px solid #8c78d8;outline-offset:3px}.app{width:min(100%,900px);margin:auto;padding:18px 16px 34px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 auto 16px;max-width:760px}.brand{display:flex;align-items:center;gap:10px;font-family:Fredoka,sans-serif;font-size:1.2rem;font-weight:600}.brand-icon{display:grid;place-items:center;background:var(--yellow);border:2px solid white;box-shadow:0 4px 0 #ead49a;border-radius:14px;width:42px;height:42px;font-size:1.3rem;transform:rotate(-5deg)}.top-note{font-size:.78rem;color:var(--muted);background:#ffffffb8;padding:9px 12px;border:1px solid white;border-radius:99px}.notebook{position:relative;max-width:760px;margin:auto;background:var(--paper);border:1px solid #d8e5e5;border-radius:22px;box-shadow:var(--shadow);overflow:hidden}.notebook:before{content:"";position:absolute;top:0;bottom:0;left:31px;width:1px;background:#cde0e0;opacity:.85}.paper-head{padding:25px 26px 18px 54px;background:linear-gradient(110deg,#f4fafa,#fffdf8);border-bottom:1px dashed #cbdede;position:relative}.tape{position:absolute;top:-2px;left:48%;width:85px;height:22px;background:#ffe59a9c;transform:rotate(-3deg);border-left:1px dashed #e8c96a;border-right:1px dashed #e8c96a}.eyebrow{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--pink-deep);font-weight:700}.paper-head h1{font:600 clamp(1.8rem,5vw,2.8rem)/1.05 Fredoka,sans-serif;margin:8px 0 7px;letter-spacing:-.025em}.paper-head p{margin:0;color:var(--muted);line-height:1.55}.content{padding:23px 24px 26px 54px}.assignment{display:flex;align-items:center;gap:10px;background:#fff2c6;border:1px solid #f1dda0;border-radius:14px;padding:12px 14px;margin-bottom:18px;font-size:.86rem}.assignment b{display:block;font-size:.9rem}.assignment span{color:#776b53}.view{display:none;animation:rise .28s ease}.view.active{display:block}@media(prefers-reduced-motion:reduce){.view{animation:none}}
+.paragraph-order-item{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid #d7e5e5;border-radius:14px;padding:12px}
+.paragraph-order-item .order-copy{flex:1;line-height:1.55;font-size:.9rem}
+.order-controls{display:flex;flex-direction:column;gap:5px}
+.order-controls button{background:#eaf6f6;border:1px solid #c9e5e5;border-radius:8px;padding:6px 9px;color:#286b70;font-weight:700}
+.assessment-question{padding:13px 0;border-bottom:1px dashed #dbe8e8}
+.assessment-question h4{margin:0 0 9px;font-size:.96rem;line-height:1.5}
+.assessment-options{display:grid;gap:7px}
+.assessment-options label{display:flex;gap:9px;align-items:flex-start;padding:10px 11px;background:#fff;border:1px solid #d7e5e5;border-radius:11px;line-height:1.45;font-size:.9rem;cursor:pointer}
+.assessment-options input{margin-top:4px;accent-color:#317c80}
+.assessment-result-line{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #e4eeee}
+@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}.hero{display:grid;grid-template-columns:1fr 175px;gap:16px;align-items:center}.pill{display:inline-block;border:1px solid #b9dede;background:#eaf6f6;color:#286b70;font-size:.72rem;font-weight:700;padding:6px 10px;border-radius:99px}.hero h2,.view h2{font:600 clamp(1.45rem,4vw,2.1rem)/1.15 Fredoka,sans-serif;margin:13px 0 10px}.hero p,.view p{line-height:1.7;color:#655866}.buddy-art{position:relative;min-height:155px;display:grid;place-items:center}.buddy{width:136px;height:136px;border-radius:45% 55% 50% 50%;background:linear-gradient(145deg,#ffdce8,#ffc5da);display:grid;place-items:center;font-size:4.8rem;border:5px solid white;box-shadow:0 7px 0 #9dc8ca;transform:rotate(4deg);position:relative}.buddy:before{content:"✦";position:absolute;top:-13px;right:-9px;color:#e5b844;font-size:2rem}.sticker{position:absolute;background:var(--blue);padding:7px 10px;font-size:.73rem;font-weight:700;border:2px solid white;border-radius:9px;transform:rotate(8deg);bottom:4px;right:-2px}.chat{display:flex;align-items:flex-start;gap:10px;margin:17px 0}.avatar{flex:0 0 38px;height:38px;border-radius:13px;background:#d9eeee;border:2px solid white;display:grid;place-items:center;font-size:1.35rem}.bubble{background:white;border:1px solid #d7e5e5;border-radius:5px 17px 17px 17px;padding:13px 15px;line-height:1.65;box-shadow:0 4px 10px #b4839810;max-width:100%}.bubble.you{background:#e8f5f7;border-color:#c6e5e8;border-radius:17px 5px 17px 17px}.chat.you-row{justify-content:flex-end}.chat.you-row .avatar{order:2;background:#dceffc}.chat.you-row .bubble{order:1}.form-row{display:flex;gap:9px;margin-top:12px}.field{width:100%;min-width:0;border:1px solid #d4e4e4;background:white;border-radius:13px;padding:13px 14px;color:var(--ink)}.btn{border-radius:13px;padding:12px 17px;font-weight:700;transition:transform .16s,box-shadow .16s}.btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--pink-deep);color:white;box-shadow:0 4px 0 #974160}.btn-primary:active{transform:translateY(2px);box-shadow:0 2px 0 #974160}.btn-soft{background:white;border:1px solid #d7e5e5;color:var(--ink)}.btn-yellow{background:var(--yellow);color:#5f4c2a;box-shadow:0 3px 0 #e5cd7f}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.choices{display:grid;gap:10px;margin:14px 0}.choice{text-align:left;display:flex;gap:10px;align-items:flex-start;background:white;border:1px solid #d7e5e5;border-radius:14px;padding:13px 14px;line-height:1.45;color:var(--ink)}.choice:hover{border-color:#68a5a7;background:#f4fafa}.choice.selected{border:2px solid var(--pink-deep);background:#eaf6f6;padding:12px 13px}.choice .letter{flex:0 0 27px;width:27px;height:27px;border-radius:9px;display:grid;place-items:center;background:#e1eeee;font-weight:700;color:#286b70}.progress-line{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.77rem;margin-bottom:9px}.progress{height:7px;background:#e4eeee;border-radius:99px;overflow:hidden;margin-bottom:22px}.progress>span{display:block;width:12%;height:100%;background:linear-gradient(90deg,#76b8ba,#d8c6fa);border-radius:99px;transition:width .25s}.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--pink-deep);font-weight:700;margin-bottom:8px}.note{background:#fff3d0;border:1px solid #ead99e;padding:15px 16px;border-radius:5px 15px 15px 15px;line-height:1.65;position:relative;margin:17px 0}.note.blue{background:#e9f6f8;border-color:#c9e6e9}.note.pink{background:#eaf6f6;border-color:#c9e5e5}.note strong{color:#574251}.example{background:white;border:1px solid #e9dce1;border-radius:16px;padding:16px;margin:15px 0}.key-highlight{background:#fff0a8;color:#513f13;padding:1px 5px;border-radius:5px;box-decoration-break:clone;-webkit-box-decoration-break:clone;font-weight:800}.badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.badge-card{border:1px solid #dce8e5;background:#fff;border-radius:13px;padding:11px}.badge-card.earned{background:#fff4c9;border-color:#e9cf72}.badge-card .badge-name{font-weight:800;display:block}.badge-card .badge-desc{display:block;font-size:.78rem;color:var(--muted);margin-top:3px}.badge-card .badge-status{font-size:.72rem;font-weight:700;color:#8b7b5c;margin-top:6px}.badge-card.earned .badge-status{color:#26735c}@media(max-width:520px){.badge-grid{grid-template-columns:1fr}}.example blockquote{margin:12px 0 0;padding-left:14px;border-left:3px solid var(--pink);line-height:1.75;color:#655866}.bottom-actions{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:20px}.micro{font-size:.78rem;color:var(--muted)}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}.structure{padding:14px;border:1px solid #eadde2;border-radius:14px;background:white}.structure:nth-child(1){border-top:4px solid #e8a1be}.structure:nth-child(2){border-top:4px solid #edcf68}.structure:nth-child(3){border-top:4px solid #a9dce9}.structure h3{font:600 1.12rem Fredoka,sans-serif;margin:4px 0 6px}.structure p{font-size:.88rem;margin:0}.footer{text-align:center;color:#9b8a97;font-size:.75rem;padding:16px}.toast{padding:12px 14px;background:#e8f7ef;border:1px solid #c3e8d2;border-radius:13px;line-height:1.55;margin-top:12px}.game-status{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;margin:14px 0;background:#f4fafa;border:1px solid #d7e8e8;border-radius:15px}.game-status div{display:flex;flex-direction:column;gap:3px;min-width:80px}.game-status span{font-size:.72rem;color:var(--muted)}.game-status strong{font-size:1.05rem}.game-status button{margin-left:auto}.game-status #heartDisplay,.game-status #topHeartDisplay{color:#d94b55;letter-spacing:.08em}.top-game-status{padding:7px 10px;margin:0;gap:9px;border-radius:12px}.top-game-status div{min-width:54px}.top-game-status span{font-size:.64rem}.top-game-status strong{font-size:.9rem}.top-game-status .btn{padding:8px 10px;font-size:.75rem}.topbar{flex-wrap:wrap}@media(max-width:580px){.top-game-status{width:100%;justify-content:space-between}.top-game-status button{margin-left:0}}.hide{display:none!important}@media(max-width:580px){.app{padding:10px 9px 22px}.topbar{margin-bottom:10px;padding:0 3px}.top-note{font-size:.68rem;padding:7px 9px}.brand{font-size:1.02rem}.brand-icon{width:36px;height:36px}.notebook{border-radius:17px}.notebook:before{left:20px}.paper-head{padding:22px 16px 16px 37px}.content{padding:18px 15px 22px 37px}.hero{grid-template-columns:1fr 93px;gap:8px}.buddy-art{min-height:100px}.buddy{width:88px;height:88px;font-size:3.2rem;border-width:4px;box-shadow:0 5px 0 #9dc8ca}.sticker{font-size:.61rem;padding:5px 7px;right:-4px;bottom:0}.hero h2,.view h2{font-size:1.65rem}.hero p,.view p{font-size:.93rem}.form-row{flex-direction:column}.form-row .btn{width:100%}.two-col{grid-template-columns:1fr}.bottom-actions .btn{padding:11px 12px}.assignment{align-items:flex-start}.tape{left:44%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Maruko's playful focus overlay */
+.heart-shop-overlay{position:fixed;inset:0;z-index:9998;display:grid;place-items:center;padding:18px;background:rgba(29,43,48,.38);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}.heart-shop-card{width:min(100%,430px);background:#fffefa;border:2px solid #dbe8e8;border-radius:22px;padding:22px;box-shadow:0 22px 70px rgba(25,49,55,.24)}.heart-shop-card h3{font:600 1.35rem Fredoka,sans-serif;margin:5px 0 8px}.heart-shop-card p{line-height:1.6;color:#687c82}.heart-shop-card .bottom-actions{flex-wrap:wrap}.heart-shop-close{float:right;border:1px solid #d7e5e5;background:white;border-radius:10px;padding:7px 10px;color:#263d45}.focus-overlay{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:20px;background:rgba(29,43,48,.35);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s ease}
+.focus-overlay.show{opacity:1;visibility:visible}
+.focus-card{width:min(100%,420px);background:#fffefa;border:2px solid #dbe8e8;border-radius:24px;padding:25px;box-shadow:0 22px 70px rgba(25,49,55,.24);text-align:center;transform:translateY(10px) scale(.98);transition:transform .22s ease}
+.focus-overlay.show .focus-card{transform:translateY(0) scale(1)}
+.focus-fox{width:112px;height:112px;object-fit:contain;display:block;margin:0 auto 8px;border-radius:18px}
+.maruko-avatar{width:100%;height:100%;object-fit:contain;border-radius:50%}.avatar:has(.maruko-avatar){overflow:hidden;padding:2px;background:#fff}.focus-card h2{font:600 1.55rem/1.15 Fredoka,sans-serif;margin:8px 0 10px;color:#263d45}
+.focus-card p{line-height:1.6;color:#687c82;margin:8px 0 16px}
+.focus-card .focus-meta{font-size:.82rem;color:#687c82;margin-top:12px}
+@media(prefers-reduced-motion:reduce){.focus-overlay,.focus-card{transition:none}}
+
+/* ===== Writing Studio (Pertemuan 2) additions ===== */
+.emoji-fallback{display:grid;place-items:center}
+.maruko-avatar.emoji-fallback{font-size:1.3rem;width:auto;height:auto}
+.focus-fox.emoji-fallback{font-size:4rem}
+textarea{font:inherit}
+textarea.field{display:block;min-height:62px;resize:vertical;line-height:1.55}
+.field-label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700;font-size:.92rem;margin:16px 0 4px}
+.field-label small{font-weight:500;color:var(--muted);font-size:.78rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 7px}
+.chips-label{font-size:.72rem;color:var(--muted);font-weight:700;align-self:center;margin-right:2px}
+.chip{background:#fff;border:1px dashed #94c6c8;color:#286b70;border-radius:99px;padding:6px 11px;font-size:.8rem;font-weight:700;line-height:1.3;text-align:left}
+.chip:hover{background:#eaf6f6}
+.chip.frame{border-style:solid;border-radius:12px;background:#f4fafa;font-weight:600;color:#263d45}
+.chip.frame:before{content:"✎ ";color:#317c80}
+.chip.eval{border-color:#e5cd7f;color:#6b5520;background:#fffaf0}
+.preview{background:#fff;border:1px solid #d7e5e5;border-left:4px solid var(--pink-deep);border-radius:12px;padding:12px 14px;line-height:1.75;min-height:52px}
+.preview.empty{color:#9aabb0;font-style:italic}
+.wc{display:inline-block;font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:99px;background:#eef4f4;color:#687c82;letter-spacing:0;text-transform:none;margin-left:6px;vertical-align:middle}
+.wc.ok{background:#e8f7ef;color:#26735c}.wc.low{background:#fff3d0;color:#7a6020}
+.inline-warn{font-size:.8rem;color:#8a5a12;margin-top:6px;line-height:1.5}
+.mini-legend{font-size:.72rem;color:var(--muted);margin:6px 0 0;line-height:1.9}
+.mini-legend mark{font-size:.7rem}
+.idea-recap{background:#f4fafa;border:1px dashed #b9dede;border-radius:13px;padding:11px 13px;font-size:.88rem;line-height:1.6;margin:12px 0}
+.idea-recap b{color:#286b70}
+details.maruko-example{margin:16px 0;background:#fffaf0;border:1px solid #f1dda0;border-radius:14px}
+details.maruko-example summary{cursor:pointer;padding:12px 14px;font-weight:700;list-style:none;line-height:1.4}
+details.maruko-example summary::-webkit-details-marker{display:none}
+details.maruko-example summary span{font-weight:500;color:#776b53;font-size:.8rem}
+details.maruko-example[open] summary{border-bottom:1px dashed #f1dda0}
+.ex-body{padding:12px 14px;line-height:1.7;font-size:.92rem}
+.ex-body p{margin:0 0 8px;color:var(--ink)}
+.ex-tag{display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#317c80;background:#eaf6f6;border-radius:6px;padding:2px 6px;margin-right:6px;vertical-align:1px}
+.vocab{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.vocab div{background:#fff;border:1px solid #dce8e5;border-radius:10px;padding:8px 10px;font-size:.86rem}
+.vocab b{display:block;color:#263d45}.vocab span{color:var(--muted);font-size:.78rem}
+.topic-statement{font:600 1.3rem/1.3 Fredoka,sans-serif;margin:4px 0 6px}
+.topic-statement.spinning{color:#8fa4a9}
+.idea-card{background:#fff;border:1px solid #d7e5e5;border-radius:16px;padding:6px 14px 14px;margin:12px 0}
+.spark{background:#fff8dc;border:1px solid #f1dda0;border-radius:11px;padding:9px 11px;margin:7px 0;font-size:.88rem;line-height:1.5}
+mark.hl-conn,mark.hl-mental,mark.hl-eval,mark.hl-tech,mark.hl-passive{color:inherit;border-radius:4px;padding:0 2px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+mark.hl-conn{background:#cfe6ff}mark.hl-mental{background:#e3dcfb}mark.hl-eval{background:#fff0a8}mark.hl-tech{background:#cdeedc}mark.hl-passive{background:#ffdbe6;text-decoration:underline dotted #b04a63}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}
+.legend button{border-radius:99px;padding:6px 10px;font-size:.78rem;font-weight:700;color:var(--ink)}
+.legend button.off{opacity:.4;text-decoration:line-through}
+.lg-conn{background:#cfe6ff}.lg-mental{background:#e3dcfb}.lg-eval{background:#fff0a8}.lg-tech{background:#cdeedc}.lg-passive{background:#ffdbe6}
+.final-text{background:#fff;border:1px solid #d7e5e5;border-radius:14px;padding:16px;line-height:1.8}
+.final-title{font:600 1.25rem/1.3 Fredoka,sans-serif;margin:0 0 12px;text-align:center}
+.final-para{margin:0 0 12px}.final-para p{margin:0;color:var(--ink)}
+.para-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.para-tag{font-size:.64rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#317c80}
+.edit-link{background:none;color:#317c80;font-weight:700;font-size:.78rem;padding:2px 4px}
+.checks{list-style:none;padding:0;margin:6px 0}
+.checks li{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed #dbe8e8;line-height:1.5;font-size:.9rem}
+.checks li .ic{flex:0 0 22px}
+.manual label{display:flex;gap:10px;align-items:flex-start;padding:10px 11px;background:#fff;border:1px solid #d7e5e5;border-radius:11px;line-height:1.45;font-size:.9rem;margin:7px 0;cursor:pointer}
+.manual input{margin-top:2px;accent-color:#317c80;width:18px;height:18px;flex:0 0 18px}
+.manual small{display:block;color:var(--muted)}
+.float-toast{position:fixed;left:50%;bottom:18px;transform:translate(-50%,20px);background:#263d45;color:#fff;padding:11px 16px;border-radius:13px;font-size:.88rem;line-height:1.45;box-shadow:0 10px 30px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:10000;width:max-content;max-width:min(92vw,440px);text-align:center}
+.float-toast.show{opacity:1;transform:translate(-50%,0)}
+.float-toast.warn{background:#9a3b45}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
+.stat{background:#fff;border:1px solid #dce8e5;border-radius:13px;padding:10px 6px;text-align:center}
+.stat strong{display:block;font:600 1.35rem Fredoka,sans-serif;color:#317c80}
+.stat span{font-size:.72rem;color:var(--muted)}
+.nav-right{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.sim{font-size:.82rem;font-weight:700;margin-top:8px}
+.sim.ok{color:#26735c}.sim.warn{color:#8a5a12}
+.thesis-ref{background:#fff;border:1px solid #e6dcc0;border-radius:12px;padding:10px 12px;font-size:.9rem;line-height:1.6;color:#655866}
+a.btn{display:inline-block;text-decoration:none}
+.jpg-wrap{background:#eef4f4;border:1px solid #d7e5e5;border-radius:14px;padding:10px;text-align:center}
+.jpg-wrap img{display:block;width:100%;height:auto;border-radius:8px;box-shadow:0 6px 18px rgba(45,87,91,.15)}
+ol.steps{margin:6px 0 14px;padding-left:22px;line-height:1.65}
+ol.steps li{margin:0 0 8px}
+.fname{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;background:#eaf6f6;border-radius:6px;padding:1px 5px;word-break:break-all}
+.login-row .field{flex:1}.login-row #studentClass{flex:0 0 150px}
+@media(max-width:580px){.vocab{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.login-row #studentClass{flex:1 1 auto}.bottom-actions{flex-wrap:wrap}.nav-right{width:100%}.nav-right .btn{flex:1}}
+</style>
+</head>
+<body>
+<div class="app">
+ <header class="topbar">
+  <div class="brand"><div class="brand-icon">✿</div><span>Opinion Pop!</span></div>
+  <div class="top-note">✎ Writing with Mrs. Anja</div>
+  <div class="game-status top-game-status hide" id="topStatus"><div><span>⭐ Pop Points</span><strong id="topPoints">0</strong></div><div><span>✍️ Words</span><strong id="topWords">0</strong></div></div>
+ </header>
+ <main class="notebook">
+  <div class="paper-head"><div class="tape"></div><div class="eyebrow">Part 2 · Writing Studio</div><h1>Your Opinion,<br><span style="color:#317c80">Your Words!</span></h1><p>Time to write your own Analytical Exposition, one paragraph at a time.</p></div>
+  <div class="content">
+   <div class="assignment"><span style="font-size:1.4rem">📌</span><div><b>Your Assignment</b><span>Analytical Exposition · Grade XI · Pertemuan 2: write your own text (4 paragraphs, ±150–200 words)</span></div></div>
+   <div class="progress-line"><span id="stepLabel">YOUR NOTEBOOK · START HERE</span><span id="progressText">Welcome</span></div><div class="progress"><span id="progressBar" style="width:4%"></span></div>
+
+   <!-- ============ WELCOME ============ -->
+   <section class="view active" id="welcome">
+    <div id="teacherTest" class="note blue hide"><strong>🔧 Teacher test mode</strong><br><span id="teacherTestInfo"></span><div class="bottom-actions" style="margin-top:10px"><span class="micro">Mode ini hanya muncul dengan ?test=1 di URL.</span><button class="btn btn-primary" id="sendTestRow" type="button">Kirim baris uji ke Sheets</button></div><div id="teacherTestStatus" class="micro" style="margin-top:8px"></div></div>
+    <div class="hero"><div><span class="pill">✦ PERTEMUAN 2 · WRITING STUDIO</span><h2>Ready to write your own opinion?</h2><p>Last meeting, you explored how Analytical Exposition works. Today, it’s your turn! Foxy will guide you step by step until your text is ready to send to Mrs. Anja.</p></div><div class="buddy-art"><img class="buddy" src="assets/foxy/foxy.png" alt="Foxy cheering" onerror="imgFallback(this)"><div class="sticker">let’s write! ✎</div></div></div>
+    <div class="chat"><div class="avatar"><img src="assets/maruko/maruko-bow.jpg" alt="Maruko" class="maruko-avatar" onerror="imgFallback(this,null,'😴')"></div><div class="bubble"><strong>Maruko · taking a nap today 😴</strong><br>Hi everyone… it’s Maruko. After our big lesson last meeting, I’m sooo tired! I need a long nap today, so my best friend <b>Foxy</b> will be your writing buddy. Please be nice to Foxy and write your best, okay? Zzz…</div></div>
+    <div class="chat"><div class="avatar"><img src="assets/foxy/foxy.png" alt="Foxy" class="maruko-avatar" onerror="imgFallback(this)"></div><div class="bubble"><strong>Foxy · Mrs. Anja’s writing assistant</strong><br>Hi, study buddy! I’m Foxy 🦊 Don’t worry, Maruko told me everything about last meeting. Hari ini kamu akan menulis Analytical Exposition milikmu sendiri: <b>4 paragraf, sekitar 150–200 kata</b>. Tenang, kita kerjakan sedikit demi sedikit: pilih topik, kumpulkan ide, lalu tulis paragraf satu per satu. Progresmu otomatis tersimpan di perangkat ini.</div></div>
+    <div class="note"><strong>✍️ Writing rules · Aturan menulis</strong><br>1. Tulis dengan kata-katamu sendiri. <b>Copy-paste dari luar diblokir</b> dan dicatat untuk Mrs. Anja.<br>2. Di <b>Idea Bank</b> kamu boleh menulis dalam bahasa Indonesia. Paragraf akhir ditulis dalam <b>bahasa Inggris</b>.<br>3. Tetap di halaman ini. Foxy mencatat setiap kali kamu keluar halaman. 👀</div>
+    <div class="section-label">Your name & class / Nama & kelas</div>
+    <div id="loginForm"><div class="form-row login-row"><input class="field" id="studentName" maxlength="70" placeholder="Your name…" autocomplete="name" enterkeyhint="next"><input class="field" id="studentClass" maxlength="30" placeholder="Class, e.g. XI-8" enterkeyhint="go"><button class="btn btn-primary" id="loginBtn" type="button">Let’s write! →</button></div></div>
+    <div id="loginError" class="note hide" aria-live="polite" style="margin-top:10px"></div>
+    <p class="micro">Pakai nama & kelas yang sama persis jika ingin melanjutkan tulisan yang tersimpan.</p>
+   </section>
+
+   <!-- ============ RECALL ============ -->
+   <section class="view" id="recall">
+    <div class="chat"><div class="avatar"><img src="assets/foxy/foxy.png" alt="Foxy" class="maruko-avatar" onerror="imgFallback(this)"></div><div class="bubble" id="recallGreeting"></div></div>
+    <div class="section-label">Warm-up · Remember me?</div><h2>Quick recall 🧠</h2>
+    <p>Tiga soal kilat dari pertemuan kemarin. Setiap jawaban benar = <b>+1 ⭐</b>. Hari ini tidak ada hearts, jadi santai saja!</p>
+    <div id="recallArea"></div>
+    <div id="recallFeedback" class="note blue hide" aria-live="polite"></div>
+    <div class="bottom-actions"><span class="micro" id="recallCount">Question 1 of 3</span><button class="btn btn-primary" id="recallBtn" type="button" disabled>Check answer →</button></div>
+   </section>
+
+   <!-- ============ TOPIC & POSITION ============ -->
+   <section class="view" id="topic">
+    <div class="chat"><div class="avatar"><img src="assets/foxy/foxy.png" alt="Foxy" class="maruko-avatar" onerror="imgFallback(this)"></div><div class="bubble" id="topicGreeting"></div></div>
+    <div class="section-label">Step 1 · Your topic</div><h2>Your writing topic 🎲</h2>
+    <p>Seperti kemarin, Foxy akan memilihkan topikmu secara acak dari <b id="topicCount">11</b> topik. Topik yang sudah terpilih <b>tidak bisa diganti</b>, jadi bersiaplah!</p>
+    <div class="example"><div class="section-label">Your topic · Topikmu</div><h3 id="topicStatement" class="topic-statement">???</h3><p id="topicContext" class="micro" style="margin:0"></p><p id="topicContextId" class="micro" style="margin:6px 0 0"></p><button class="btn btn-yellow" id="spinTopic" type="button" style="margin-top:12px">🎲 Let Foxy pick my topic!</button></div>
+    <div id="topicAfter" class="hide">
+     <div class="example"><div class="section-label">Vocabulary bank · Kosakata topik</div><p class="micro" style="margin-top:0">Istilah-istilah ini bisa kamu pakai di tulisanmu. Nanti Foxy akan menandainya sebagai <b>technical terms</b>.</p><div id="vocabBank" class="vocab"></div></div>
+     <div class="section-label">Step 2 · Take a position</div><h3 style="font:600 1.2rem Fredoka,sans-serif;margin:4px 0">What’s your position? / Apa posisimu?</h3>
+     <div class="choices" id="positionChoices">
+      <button class="choice" type="button" data-pos="agree"><span class="letter">A</span><span><strong>I agree · Aku setuju</strong><br>I support this statement.</span></button>
+      <button class="choice" type="button" data-pos="disagree"><span class="letter">B</span><span><strong>I disagree · Aku tidak setuju</strong><br>I think this statement is not right.</span></button>
+      <button class="choice" type="button" data-pos="conditional"><span class="letter">C</span><span><strong>I agree, but with conditions · Setuju, dengan syarat</strong><br>It can work, but only if certain things are in place.</span></button>
+     </div>
+     <div id="positionFeedback" class="note blue hide" aria-live="polite"></div>
+    </div>
+    <div class="bottom-actions"><button class="btn btn-soft" type="button" data-go="recall">← Back</button><button class="btn btn-primary" id="topicNext" type="button" disabled>Next: Idea Bank →</button></div>
+   </section>
+
+   <!-- ============ IDEA BANK ============ -->
+   <section class="view" id="ideas">
+    <div class="chat"><div class="avatar"><img src="assets/foxy/foxy.png" alt="Foxy" class="maruko-avatar" onerror="imgFallback(this)"></div><div class="bubble" id="ideasGreeting"></div></div>
+    <div class="section-label">Step 3 · Idea Bank</div><h2>Collect your ideas 💡</h2>
+    <div class="idea-recap" id="ideasRecap"></div>
+    <div class="note blue"><strong>🤔 Think about… · Coba pikirkan</strong><br>Siapa yang terdampak? Apa manfaat atau risikonya? Contoh nyata apa yang pernah kamu lihat atau alami di sekolahmu?</div>
+    <div class="idea-card">
+     <div class="field-label"><span>Reason 1 · Alasan 1</span><small>boleh bahasa Indonesia</small></div>
+     <textarea class="field write" lang="id" id="f_r1" data-key="r1" rows="2" placeholder="Contoh: Siswa jadi lebih bertanggung jawab…"></textarea>
+     <div class="field-label"><span>Example / evidence 1 · Contoh atau bukti 1</span></div>
+     <textarea class="field write" lang="id" id="f_e1" data-key="e1" rows="2" placeholder="Contoh nyata, pengalaman, atau fakta yang mendukung alasan 1…"></textarea>
+    </div>
+    <div class="idea-card">
+     <div class="field-label"><span>Reason 2 · Alasan 2</span><small>boleh bahasa Indonesia</small></div>
+     <textarea class="field write" lang="id" id="f_r2" data-key="r2" rows="2" placeholder="Alasan kedua yang berbeda dari alasan 1…"></textarea>
+     <div class="field-label"><span>Example / evidence 2 · Contoh atau bukti 2</span></div>
+     <textarea class="field write" lang="id" id="f_e2" data-key="e2" rows="2" placeholder="Contoh nyata untuk alasan 2…"></textarea>
+    </div>
+    <div class="example"><div class="section-label">💡 Idea Spark shop</div><p style="margin:4px 0 8px">Stuck? Tukar <b>3 Pop Points</b> untuk satu pancingan ide dari Foxy. Spark hanya pancingan, jadi tulis alasannya dengan kata-katamu sendiri.</p><div id="sparkList"></div><div class="bottom-actions" style="margin-top:10px"><span class="micro" id="sparkBalance"></span><button class="btn btn-yellow" id="buySpark" type="button">Buy an Idea Spark · 3 ⭐</button></div></div>
+    <details class="maruko-example"><summary>👀 Lihat contoh Idea Bank Foxy <span>(topik lain: longer break time)</span></summary><div class="ex-body">
+     <p><span class="ex-tag">Topic</span>“School break time should be longer.” · <b>Position:</b> Agree</p>
+     <p><span class="ex-tag">Reason 1</span>Siswa butuh waktu istirahat supaya bisa fokus lagi.</p>
+     <p><span class="ex-tag">Example 1</span>Setelah 3 jam pelajaran berturut-turut, banyak teman di kelasku mengantuk.</p>
+     <p><span class="ex-tag">Reason 2</span>Waktu makan terlalu singkat.</p>
+     <p><span class="ex-tag">Example 2</span>Antrean kantin panjang; ada teman yang cuma punya 5 menit untuk makan.</p>
+     <p class="micro" style="margin:0">Lihat? Brainstorming boleh pakai bahasa Indonesia. Yang penting idenya jelas dulu. 😉</p>
+    </div></details>
+    <div id="ideasError" class="note hide" aria-live="polite"></div>
+    <div class="bottom-actions"><button class="btn btn-soft" type="button" data-go="topic">← Back</button><span class="nav-right"><button class="btn btn-soft to-review hide" type="button" data-review="ideas">Back to review ✓</button><button class="btn btn-primary" type="button" data-next="ideas" data-dest="thesis">Next: Thesis →</button></span></div>
+   </section>
+
+   <!-- ============ THESIS ============ -->
+   <section class="view" id="thesis">
+    <div class="chat"><div class="avatar"><img src="assets/foxy/foxy.png" alt="Foxy" class="maruko-avatar" onerror="imgFallback(this)"></div><div class="bubble" id="thesisGreeting"></div></div>
+    <div class="section-label">Step 4 · Paragraph 1</div><h2>Build your thesis 🏷️</h2>
+    <p>Paragraf pertama punya dua bagian: <b>background</b> (kenalkan isunya) dan <b>position</b> (posisimu + alasan singkat). Klik kerangka kalimat, lalu ganti <b>___</b> dengan idemu.</p>
+    <div class="idea-recap" id="thesisRecap"></div>
+    <div class="field-label"><span>① Background · Kenalkan isunya</span><small>1 kalimat</small></div>
+    <div class="chips" id="bgFrames"></div>
+    <textarea class="field write" id="f_bg" data-key="bg" rows="2" placeholder="At our school, …"></textarea>
+    <div class="field-label"><span>② Position · Nyatakan posisimu</span><small>1–2 kalimat</small></div>
+    <div class="chips" id="posFrames"></div>
+    <textarea class="field write" id="f_pos" data-key="pos" rows="3" placeholder="I believe that …"></textarea>
+    <div class="chips" id="posEval"></div>
+    <div class="section-label" style="margin-top:16px">Paragraph 1 · Live preview <span class="wc" id="wc1"></span></div>
+    <div class="preview" id="prev1"></div><div class="inline-warn" id="warn1"></div><div class="mini-legend legend-slot"></div>
+    <details class="maruko-example"><summary>👀 Lihat contoh thesis Foxy <span>(topik: longer break time)</span></summary><div class="ex-body">
+     <p><span class="ex-tag">Background</span>At our school, students only have a 15-minute break after three lessons in a row.</p>
+     <p><span class="ex-tag">Position</span>I believe that break time should be extended to 30 minutes because students need enough time to rest and to eat properly.</p>
+     <p class="micro" style="margin:0">Perhatikan: posisinya jelas (<i>I believe… should…</i>), lalu ada dua alasan singkat yang nanti dikembangkan di Argument 1 dan 2.</p>
+    </div></details>
+    <div id="thesisError" class="note hide" aria-live="polite"></div>
+    <div class="bottom-actions"><button class="btn btn-soft" type="button" data-go="ideas">← Back</button><span class="nav-right"><button class="btn btn-soft to-review hide" type="button" data-review="thesis">Back to review ✓</button><button class="btn btn-primary" type="button" data-next="thesis" data-dest="arg1">Next: Argument 1 →</button></span></div>
+   </section>
+
+   <!-- ============ ARGUMENTS (built by script) ============ -->
+   <section class="view" id="arg1"></section>
+   <section class="view" id="arg2"></section>
+
+   <!-- ============ REITERATION ============ -->
+   <section class="view" id="reiteration">
+    <div class="chat"><div class="avatar"><img src="assets/foxy/foxy.png" alt="Foxy" class="maruko-avatar" onerror="imgFallback(this)"></div><div class="bubble" id="reitGreeting"></div></div>
+    <div class="section-label">Step 7 · Paragraph 4</div><h2>Reiteration 🌸</h2>
+    <p>Tutup tulisanmu dengan <b>menegaskan kembali posisimu</b> dalam 2–3 kalimat. Jangan menyalin thesis. Pakai kata-kata baru dan rangkum alasanmu.</p>
+    <div class="section-label">Your thesis · Sebagai pengingat</div>
+    <div class="thesis-ref" id="thesisRef"></div>
+    <div class="field-label"><span>Reiteration · Penegasan ulang</span><small>2–3 kalimat</small></div>
+    <div class="chips" id="reitFrames"></div>
+    <div class="chips" id="reitConn"></div>
+    <textarea class="field write" id="f_reit" data-key="reit" rows="4" placeholder="Therefore, …"></textarea>
+    <div class="chips" id="reitEval"></div>
+    <div class="sim" id="simMeter"></div>
+    <div class="section-label" style="margin-top:16px">Paragraph 4 · Live preview <span class="wc" id="wc4"></span></div>
+    <div class="preview" id="prev4"></div><div class="inline-warn" id="warn4"></div><div class="mini-legend legend-slot"></div>
+    <details class="maruko-example"><summary>👀 Lihat contoh reiteration Foxy <span>(topik: longer break time)</span></summary><div class="ex-body">
+     <p><span class="ex-tag">Reiteration</span>Therefore, a 30-minute break is a beneficial change for our school. It gives students time to rest and to eat well, so they can return to class ready to learn.</p>
+     <p class="micro" style="margin:0">Perhatikan: Foxy tidak menyalin thesis. Posisinya tetap sama, tapi kata-katanya baru (<i>a beneficial change</i>), dan kedua alasan dirangkum dalam satu kalimat.</p>
+    </div></details>
+    <div id="reiterationError" class="note hide" aria-live="polite"></div>
+    <div class="bottom-actions"><button class="btn btn-soft" type="button" data-go="arg2">← Back</button><span class="nav-right"><button class="btn btn-primary" type="button" data-next="reiteration" data-dest="review">Next: Review my text →</button></span></div>
+   </section>
+
+   <!-- ============ REVIEW ============ -->
+   <section class="view" id="review">
+    <div class="chat"><div class="avatar"><img src="assets/foxy/foxy.png" alt="Foxy" class="maruko-avatar" onerror="imgFallback(this)"></div><div class="bubble" id="reviewGreeting"></div></div>
+    <div class="section-label">Step 8 · Review & self-check</div><h2>Check your text 🔎</h2>
+    <div class="field-label"><span>Title · Judul</span><small>buat pembaca penasaran</small></div>
+    <div class="chips" id="titleFrames"></div>
+    <input class="field write" id="f_title" data-key="title" maxlength="120" placeholder="Should …?">
+    <div class="example">
+     <div class="section-label">🖍️ Language highlighter</div>
+     <p class="micro" style="margin:0">Foxy mewarnai fitur bahasa yang kamu pakai. Ketuk label untuk menyalakan atau mematikan warnanya. Penanda otomatis bisa saja keliru, jadi tetap baca ulang tulisanmu sendiri.</p>
+     <div class="legend" id="legend"></div>
+     <div class="final-text" id="finalPreview"></div>
+    </div>
+    <div class="example"><div class="section-label">🤖 Foxy’s auto-check</div><ul class="checks" id="autoChecks"></ul></div>
+    <div class="example manual"><div class="section-label">✅ Your self-check · Cek mandiri</div><p class="micro" style="margin:0">Baca ulang tulisanmu, lalu centang jika sudah benar-benar sesuai.</p><div id="manualChecks"></div></div>
+    <div id="reviewError" class="note hide" aria-live="polite"></div>
+    <div class="bottom-actions"><button class="btn btn-soft" type="button" data-go="reiteration">← Back</button><button class="btn btn-primary" id="submitBtn" type="button">Send to Mrs. Anja 📮</button></div>
+   </section>
+
+   <!-- ============ DONE ============ -->
+   <section class="view" id="done">
+    <div class="hero"><div><span class="pill">✦ WRITING COMPLETE</span><h2 id="doneTitle">You did it!</h2><p id="doneIntro">Your own Analytical Exposition is finished.</p></div><div class="buddy-art"><img class="buddy" src="assets/foxy/foxy.png" alt="Foxy cheering" onerror="imgFallback(this)"><div class="sticker">proud of you!</div></div></div>
+    <div id="sendStatus" class="note blue" aria-live="polite"></div>
+    <div class="stats" id="doneStats"></div>
+    <div class="example"><div class="section-label">Your badges · Pencapaianmu</div><div id="badgeCollection" class="badge-grid"></div></div>
+    <div class="example"><div class="section-label">Your final work · Hasil akhirmu (JPG)</div>
+     <p class="micro" style="margin-top:0">Ini gambar yang akan kamu upload ke Google Classroom. Nama dan kelasmu sudah tercantum di bagian atas.</p>
+     <div id="jpgPreviewWrap" class="jpg-wrap"><p class="micro">Menyiapkan gambar…</p></div>
+     <div class="bottom-actions"><button class="btn btn-soft" id="copyText" type="button">📋 Copy text</button><button class="btn btn-primary" id="downloadJpg" type="button">🖼️ Download JPG</button></div>
+     <p class="micro" style="margin-bottom:0">Kalau tombol download tidak berfungsi, <b>tekan lama gambar di atas</b> lalu pilih <b>Simpan gambar / Download image</b>.</p>
+    </div>
+    <div class="example"><div class="section-label">📤 Upload ke Google Classroom</div>
+     <ol class="steps">
+      <li><b>Download JPG</b> dengan tombol di atas. File <span class="fname" id="jpgName"></span> akan tersimpan di folder <b>Download</b> atau <b>Galeri</b>.</li>
+      <li>Buka <b>Google Classroom</b>, masuk ke kelas Bahasa Inggris, pilih <b>Tugas kelas</b>, lalu buka tugas <b id="taskName"></b>.</li>
+      <li>Di bagian <b>Tugas Anda</b>, tekan <b>Tambahkan atau buat</b> (di aplikasi HP: <b>Tambahkan lampiran</b>), pilih <b>File</b>, lalu pilih file JPG-mu.</li>
+      <li>Tekan <b>Serahkan</b>, lalu konfirmasi. Pastikan statusnya berubah menjadi <b>Diserahkan</b>. ✅</li>
+     </ol>
+     <a class="btn btn-yellow" id="classroomLink" href="https://classroom.google.com" target="_blank" rel="noopener">Buka Google Classroom ↗</a>
+    </div>
+    <div class="note pink"><strong>🦊 Foxy:</strong> Jangan lupa, tugasmu baru dianggap terkumpul setelah JPG-nya kamu <b>serahkan di Google Classroom</b>. Mrs. Anja akan membaca tulisanmu dan memberi masukan, lalu kamu bisa merevisinya supaya makin meyakinkan. Proud of you, study buddy! 💗 I’ll tell Maruko all about your writing after the nap. 😴</div>
+   </section>
+  </div>
+ </main>
+
+ <!-- Submit confirmation -->
+ <div id="confirmOverlay" class="heart-shop-overlay hide" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="heart-shop-card"><div class="section-label">FINAL CHECK</div><h3 id="confirmTitle">Ready to send? 📮</h3><p>Setelah dikirim, tulisanmu <b>terkunci</b> dan tidak bisa diubah lagi di app ini. Sudah dibaca ulang?</p><div class="bottom-actions"><button class="btn btn-soft" id="confirmNo" type="button">Not yet, let me check</button><button class="btn btn-primary" id="confirmYes" type="button">Yes, send it!</button></div></div></div>
+
+ <!-- Focus nudge -->
+ <div class="focus-overlay" id="focusOverlay" role="dialog" aria-modal="true" aria-labelledby="focusTitle" aria-describedby="focusMessage">
+  <div class="focus-card">
+   <img class="focus-fox" src="assets/foxy/foxy.png" alt="Foxy giving a suspicious look" onerror="imgFallback(this)">
+   <div class="section-label">FOXY · MRS. ANJA'S STUDY BUDDY</div>
+   <h2 id="focusTitle">Foxy is watching you! 👀</h2>
+   <p id="focusMessage">Ehhh, mau ke mana? Balik fokus, yuk! Tulisanmu menunggu, lho! ✍️</p>
+   <button class="btn btn-primary" id="focusReturnButton" type="button">I'm back! Let's write →</button>
+   <div class="focus-meta">Your writing is still here. Tulisanmu tetap aman di halaman ini.</div>
+  </div>
+ </div>
+
+ <div id="floatToast" class="float-toast" role="status" aria-live="polite"></div>
+ <div class="footer">Made for curious minds · Opinion Pop! Part 2 · Writing English with Mrs. Anja is fun and easy!</div>
+</div>
+
+<script>
+"use strict";
+/* =====================================================================
+   TEACHER SETTINGS · PENGATURAN GURU
+   1) Tempel URL Web App dari Google Apps Script (file apps-script-writing.gs)
+      di antara tanda kutip di bawah ini.
+   2) Untuk mengetes dan menghapus semua progres di satu perangkat, buka
+      halaman dengan tambahan ?reset=1 di akhir URL.
+   ===================================================================== */
+const WRITING_SHEETS_ENDPOINT='https://script.google.com/macros/s/AKfycbxyjtclcpVWO7KTmyTVUeBNWXhPB29Yzs6oepO91K7FwIzs2L0J0CGVS--GMYUruSnD/exec';
+// Nama tugas di Google Classroom (muncul di panduan upload untuk siswa):
+const CLASSROOM_TASK_NAME='Analytical Exposition – Pertemuan 2';
+// Link kelas Google Classroom. Boleh diganti dengan link kelasmu sendiri:
+const CLASSROOM_URL='https://classroom.google.com';
+const WORD_MIN=120, WORD_TARGET_MIN=150, WORD_TARGET_MAX=200, SPARK_PRICE=3;
+/* ===================================================================== */
+
+const $=id=>document.getElementById(id);
+const ENDPOINT_READY=/^https:\/\/script\.google(usercontent)?\.com\//.test(WRITING_SHEETS_ENDPOINT);
+const STORAGE_PREFIX='opinionPopWriting::';
+try{if(new URLSearchParams(location.search).get('reset')==='1'){Object.keys(localStorage).filter(k=>k.indexOf(STORAGE_PREFIX)===0).forEach(k=>localStorage.removeItem(k));}}catch(e){}
+
+/* ---------------- Content ---------------- */
+const TOPICS=[
+ {statement:'“Students should be allowed to wear make-up on Thursdays.”',claim:'students should be allowed to wear make-up on Thursdays',
+  context:'Consider self-expression, school identity, fairness, and the purpose of the rule.',contextId:'Siswa diperbolehkan memakai make-up setiap hari Kamis.',
+  vocab:[['self-expression','ekspresi diri'],['appearance','penampilan'],['dress code','aturan berpakaian'],['confidence','rasa percaya diri'],['school identity','identitas sekolah'],['peer pressure','tekanan teman sebaya'],['skin health','kesehatan kulit'],['distraction','gangguan'],['boundaries','batasan'],['consistent rules','aturan yang konsisten']],
+  sparks:{pro:['Make-up bisa menjadi cara siswa mengekspresikan diri dan menambah rasa percaya diri.','Satu hari khusus membuat aturan lebih jelas daripada larangan yang ditafsirkan berbeda-beda.','Siswa belajar bertanggung jawab memilih penampilan yang pantas untuk sekolah.'],
+          con:['Fokus siswa bisa bergeser dari belajar ke penampilan.','Bisa muncul tekanan teman sebaya atau persaingan penampilan.','Tidak semua siswa mampu membeli make-up, sehingga bisa memicu kesenjangan.'],
+          cond:['Boleh, asalkan ada batasan yang jelas, misalnya hanya make-up natural.','Aturan harus berlaku sama untuk semua siswa dan ditegakkan secara konsisten.']}},
+ {statement:'“GERIMIS is an effective way to reduce waste at school.”',claim:'GERIMIS is an effective way to reduce waste at school',
+  context:'Every Friday, classroom bins are put away and students take their rubbish home. Consider responsibility, cleanliness, and practicality.',contextId:'GERIMIS: setiap Jumat tempat sampah kelas disimpan dan siswa membawa pulang sampahnya sendiri.',
+  vocab:[['waste reduction','pengurangan sampah'],['rubbish','sampah'],['single-use packaging','kemasan sekali pakai'],['recycling','daur ulang'],['litter','sampah berserakan'],['personal responsibility','tanggung jawab pribadi'],['cleaning staff','petugas kebersihan'],['environmental awareness','kesadaran lingkungan'],['organic waste','sampah organik'],['reusable','dapat dipakai ulang']],
+  sparks:{pro:['Siswa jadi sadar seberapa banyak sampah yang mereka hasilkan setiap hari.','Mendorong siswa membawa bekal dan botol minum sendiri, sehingga kemasan sekali pakai berkurang.','Melatih tanggung jawab pribadi, tidak hanya mengandalkan petugas kebersihan.'],
+          con:['Sampahnya hanya berpindah ke jalan atau rumah, belum tentu berkurang.','Sampah basah atau berbau sulit dibawa pulang.','Tanpa tempat sampah, sebagian siswa malah membuang sampah sembarangan.'],
+          cond:['Efektif jika tujuan program dijelaskan dan ada panduan jenis sampah yang dibawa pulang.','Perlu pengecualian untuk sampah tertentu, misalnya sisa makanan basah.']}},
+ {statement:'“The MBG (Free Nutritious Meals) program is effective for students.”',claim:'the MBG (Free Nutritious Meals) program is effective for students',
+  context:'Consider nutrition, concentration, food quality, implementation, and how effectiveness could be measured.',contextId:'Program Makan Bergizi Gratis (MBG) untuk siswa di sekolah.',
+  vocab:[['nutrition','gizi'],['balanced meal','makanan bergizi seimbang'],['concentration','konsentrasi'],['food safety','keamanan pangan'],['food poisoning','keracunan makanan'],['food waste','makanan terbuang'],['distribution','penyaluran'],['portion','porsi'],['well-being','kesejahteraan'],['evaluation','evaluasi']],
+  sparks:{pro:['Siswa yang tidak sempat sarapan tetap mendapat asupan gizi.','Perut kenyang membantu siswa lebih berkonsentrasi di kelas.','Meringankan pengeluaran keluarga untuk makan siang anak.'],
+          con:['Kualitas dan keamanan makanan tidak selalu terjamin.','Menu belum tentu cocok untuk semua siswa, sehingga makanan bisa terbuang.','Distribusi yang terlambat bisa mengganggu jadwal belajar.'],
+          cond:['Efektif jika keamanan pangan diawasi dengan ketat.','Perlu evaluasi rutin dan masukan langsung dari siswa.']}},
+ {statement:'“Students should not bring gadgets to school on Fridays.”',claim:'students should not bring gadgets to school on Fridays',
+  context:'Consider focus, learning needs, communication, and whether a one-day restriction is fair.',contextId:'Siswa tidak membawa gadget ke sekolah setiap hari Jumat.',
+  vocab:[['screen time','waktu layar'],['notifications','notifikasi'],['social media','media sosial'],['face-to-face interaction','interaksi tatap muka'],['digital learning','pembelajaran digital'],['addiction','kecanduan'],['emergency','keadaan darurat'],['self-control','pengendalian diri'],['gadget','gawai'],['concentration','konsentrasi']],
+  sparks:{pro:['Siswa lebih fokus karena tidak terganggu notifikasi dan media sosial.','Mendorong interaksi tatap muka saat istirahat.','Mengurangi screen time, setidaknya satu hari dalam seminggu.'],
+          con:['Banyak tugas dan materi pelajaran yang membutuhkan gadget.','Siswa perlu menghubungi keluarga saat keadaan darurat.','Gadget bisa dipakai untuk belajar mandiri, misalnya kamus atau riset.'],
+          cond:['Boleh, asalkan ada pengecualian untuk pelajaran yang membutuhkan gadget.','Sekolah perlu menyediakan cara komunikasi darurat, misalnya telepon sekolah.']}},
+ {statement:'“Morning worship from 06:30 to 06:45 should be part of the school routine.”',claim:'morning worship from 06:30 to 06:45 should be part of the school routine',
+  context:'Consider reflection, punctuality, student well-being, and how the activity is organized.',contextId:'Ibadah pagi pukul 06.30–06.45 sebagai bagian dari rutinitas sekolah.',
+  vocab:[['worship','ibadah'],['reflection','refleksi'],['punctuality','ketepatan waktu'],['routine','rutinitas'],['discipline','disiplin'],['character building','pembentukan karakter'],['religious diversity','keberagaman agama'],['tolerance','toleransi'],['well-being','kesejahteraan'],['spiritual','spiritual']],
+  sparks:{pro:['Memberi waktu tenang untuk refleksi sebelum belajar.','Membiasakan siswa datang tepat waktu.','Membangun karakter dan rasa kebersamaan.'],
+          con:['Siswa yang rumahnya jauh harus berangkat sangat pagi.','Bisa terasa memaksa jika tidak disesuaikan dengan keyakinan masing-masing siswa.','Mengurangi waktu sarapan atau persiapan siswa di pagi hari.'],
+          cond:['Dilaksanakan sesuai agama atau keyakinan masing-masing siswa.','Ada kelonggaran bagi siswa dengan kendala jarak atau kesehatan.']}},
+ /* ---- Topik tambahan (6) ---- */
+ {statement:'“Minors should be banned from having social media accounts.”',claim:'minors should be banned from having social media accounts',
+  context:'Consider online safety, mental health, privacy, freedom of expression, and whether an age limit can really be enforced.',contextId:'Haruskah anak di bawah umur dilarang mempunyai akun media sosial?',
+  vocab:[['age limit','batas usia'],['online safety','keamanan daring'],['cyberbullying','perundungan siber'],['mental health','kesehatan mental'],['harmful content','konten berbahaya'],['privacy','privasi'],['screen time','waktu layar'],['parental control','pengawasan orang tua'],['digital literacy','literasi digital'],['freedom of expression','kebebasan berekspresi']],
+  sparks:{pro:['Anak lebih terlindungi dari cyberbullying, konten berbahaya, dan orang asing yang berniat jahat.','Waktu layar berkurang, sehingga waktu tidur, belajar, dan bermain di dunia nyata lebih banyak.','Kesehatan mental lebih terjaga karena anak tidak terus-menerus membandingkan diri dengan orang lain.'],
+          con:['Media sosial juga dipakai untuk belajar, berkreasi, dan berkomunikasi dengan keluarga.','Larangan mudah diakali, misalnya dengan memalsukan umur saat mendaftar.','Lebih baik anak diajari literasi digital daripada dilarang sama sekali.'],
+          cond:['Boleh punya akun, asalkan diawasi orang tua dan memakai fitur keamanan khusus anak.','Batas usia diterapkan bertahap: makin muda usianya, makin terbatas fiturnya.']}},
+ {statement:'“Students should be allowed to take part in demonstrations.”',claim:'students should be allowed to take part in demonstrations',
+  context:'Consider freedom of expression, civic participation, students’ safety, school attendance, and the risk of being provoked or misled.',contextId:'Apakah pelajar seharusnya diperbolehkan ikut demo (unjuk rasa)?',
+  vocab:[['demonstration','demonstrasi / unjuk rasa'],['peaceful protest','aksi damai'],['freedom of expression','kebebasan berpendapat'],['civic participation','partisipasi warga'],['democracy','demokrasi'],['aspiration','aspirasi'],['public safety','keamanan publik'],['provocation','provokasi'],['parental consent','izin orang tua'],['riot','kericuhan']],
+  sparks:{pro:['Menyampaikan pendapat di muka umum adalah hak setiap warga negara, termasuk pelajar.','Pelajar bisa belajar langsung tentang demokrasi dan kepedulian terhadap isu publik.','Suara pelajar penting untuk isu yang menyangkut mereka, misalnya pendidikan.'],
+          con:['Demo bisa berujung ricuh dan membahayakan keselamatan pelajar.','Pelajar mudah terprovokasi atau diajak ikut tanpa benar-benar memahami isunya.','Aspirasi bisa disampaikan dengan cara lain yang lebih aman, misalnya tulisan, petisi, atau audiensi.'],
+          cond:['Boleh, asalkan aksinya damai, ada izin orang tua, dan di luar jam sekolah.','Pelajar harus memahami isu yang diperjuangkan sebelum ikut turun ke jalan.']}},
+ {statement:'“Students should report cyberbullying, even when they are only bystanders.”',claim:'students should report cyberbullying, even when they are only bystanders',
+  context:'Think about cyberbullying in group chats and on social media. Consider the bystander’s role, the victim’s safety, the fear of becoming the next target, and whether reporting to teachers or platforms really helps.',contextId:'Haruskah siswa melaporkan cyberbullying yang mereka lihat, meskipun hanya sebagai penonton (bystander)?',
+  vocab:[['cyberbullying','perundungan siber'],['group chat','grup chat'],['bystander','penonton / saksi'],['victim','korban'],['perpetrator','pelaku'],['anonymous report','laporan anonim'],['online harassment','pelecehan daring'],['empathy','empati'],['digital footprint','jejak digital'],['netiquette','etika berinternet']],
+  sparks:{pro:['Kalau semua penonton diam, pelaku merasa didukung dan perundungan terus berlanjut.','Melapor menunjukkan kepedulian dan empati kepada korban.','Korban sering tidak berani melapor sendiri, jadi butuh bantuan orang lain.'],
+          con:['Pelapor bisa ikut menjadi sasaran perundungan atau dijauhi teman.','Tidak semua candaan di grup adalah perundungan; melapor terburu-buru bisa menimbulkan salah paham.','Laporan di sekolah atau media sosial belum tentu ditindaklanjuti.'],
+          cond:['Wajib melapor, asalkan identitas pelapor dirahasiakan (laporan anonim).','Dukung korban dan simpan bukti (screenshot) dulu, lalu laporkan ke guru BK atau orang tua.']}},
+ {statement:'“Students should start choosing their university major in Grade X.”',claim:'students should start choosing their university major in Grade X',
+  context:'Consider elective subjects in Grade XI, students’ interests and talents, career information, pressure from others, and the chance to change one’s mind.',contextId:'Kapan sebaiknya siswa mulai memilih jurusan kuliah: sejak kelas X atau nanti saja?',
+  vocab:[['university major','jurusan kuliah'],['elective subjects','mata pelajaran pilihan'],['career planning','perencanaan karier'],['interests and talents','minat dan bakat'],['school counselor','guru BK'],['career guidance','bimbingan karier'],['entrance exam','ujian masuk'],['job market','dunia kerja'],['aptitude test','tes minat bakat'],['peer pressure','tekanan teman sebaya']],
+  sparks:{pro:['Pilihan mata pelajaran di kelas XI berkaitan dengan jurusan kuliah, jadi perlu direncanakan sejak awal.','Ada lebih banyak waktu untuk mencari informasi, ikut try out, dan menyiapkan nilai.','Siswa jadi punya tujuan, sehingga lebih termotivasi untuk belajar.'],
+          con:['Siswa kelas X masih mengenali minat dan bakatnya, jadi pilihan yang terlalu awal bisa keliru.','Bisa menambah tekanan, apalagi jika dipaksa orang tua atau hanya ikut-ikutan teman.','Minat bisa berubah seiring pengalaman, jadi pilihan awal belum tentu tepat.'],
+          cond:['Boleh mulai sejak kelas X, asalkan sifatnya eksplorasi dan pilihannya masih boleh berubah.','Perlu didampingi guru BK dan tes minat bakat, bukan sekadar ikut tren.']}},
+ {statement:'“Being active in a school organization should be compulsory for every student.”',claim:'being active in a school organization should be compulsory for every student',
+  context:'Think about OSIS, MPK, and extracurricular clubs. Consider leadership, soft skills, time management, academic workload, and students’ freedom to choose.',contextId:'Apakah aktif di organisasi sekolah (OSIS, MPK, ekskul) harus diwajibkan untuk semua siswa?',
+  vocab:[['school organization','organisasi sekolah','school organi[sz]ations?'],['student council','OSIS / MPK'],['extracurricular','ekstrakurikuler'],['leadership','kepemimpinan'],['soft skills','keterampilan non-akademik'],['teamwork','kerja sama tim'],['time management','manajemen waktu'],['workload','beban tugas'],['responsibility','tanggung jawab'],['compulsory','wajib']],
+  sparks:{pro:['Melatih kepemimpinan, kerja sama, dan kemampuan berbicara di depan umum.','Siswa belajar mengatur waktu dan bertanggung jawab atas tugasnya.','Pengalaman berorganisasi berguna untuk kuliah dan dunia kerja.'],
+          con:['Setiap siswa punya minat berbeda; tidak semua cocok berorganisasi.','Bisa mengganggu waktu belajar dan istirahat, apalagi jika tugas sekolah sudah banyak.','Kalau dipaksa, siswa hanya ikut sebagai formalitas tanpa benar-benar aktif.'],
+          cond:['Wajib, tapi siswa bebas memilih organisasi atau ekskul yang sesuai minatnya.','Jadwal kegiatan diatur supaya tidak mengganggu pelajaran dan waktu istirahat.']}},
+ {statement:'“Schools should be allowed to make students repeat a grade.”',claim:'schools should be allowed to make students repeat a grade',
+  context:'Consider learning mastery, motivation, self-esteem, fairness, and other ways to support students who fall behind.',contextId:'Apakah siswa seharusnya boleh tidak naik kelas?',
+  vocab:[['grade retention','tinggal kelas'],['learning mastery','ketuntasan belajar'],['academic performance','prestasi akademik'],['self-esteem','harga diri'],['motivation','motivasi'],['remedial program','program remedial'],['learning gap','kesenjangan belajar'],['stigma','cap negatif'],['assessment','penilaian'],['individual support','pendampingan individual']],
+  sparks:{pro:['Siswa yang belum menguasai materi butuh waktu tambahan sebelum lanjut ke materi yang lebih sulit.','Aturan tidak naik kelas mendorong siswa lebih serius belajar.','Kenaikan kelas dengan standar yang jelas lebih adil bagi siswa yang sudah berusaha keras.'],
+          con:['Tinggal kelas bisa menurunkan rasa percaya diri dan motivasi siswa.','Siswa bisa mendapat cap negatif atau dijauhi teman-temannya.','Remedial dan pendampingan lebih efektif daripada mengulang satu tahun penuh.'],
+          cond:['Boleh, tapi hanya sebagai pilihan terakhir setelah remedial dan pendampingan dilakukan.','Keputusannya harus berdasarkan penilaian yang adil dan dibicarakan dengan orang tua.']}}
+];
+const POSITION_LABEL={agree:'Agree',disagree:'Disagree',conditional:'Agree with conditions'};
+const POSITION_FEEDBACK={
+ agree:'<strong>Foxy:</strong> Great! Kamu <b>mendukung</b> pernyataan ini. Sekarang cari alasan yang kuat: kenapa ini baik untuk siswa atau sekolah? 💪',
+ disagree:'<strong>Foxy:</strong> Berani berbeda pendapat itu keren! Kamu <b>tidak setuju</b>, jadi cari alasan logis kenapa pernyataan ini kurang tepat. 🧐',
+ conditional:'<strong>Foxy:</strong> Smart choice! Kamu <b>setuju dengan syarat</b>. Nanti jelaskan syaratnya dengan jelas, ya. Posisi seperti ini sering sangat meyakinkan. 🌿'};
+const RECALL_BANK=[
+ {q:'Which part of an Analytical Exposition states the writer’s position?',o:['Reiteration','Thesis','Arguments'],a:1,why:'Thesis = posisi penulis. Biasanya ada di paragraf pertama.'},
+ {q:'What is the function of the reiteration?',o:['To restate and reinforce the writer’s position','To tell a story in chronological order','To introduce a brand-new reason'],a:0,why:'Reiteration menegaskan kembali posisi penulis di akhir teks.'},
+ {q:'Which connector adds another reason?',o:['However','For example','Furthermore'],a:2,why:'“Furthermore” menambahkan alasan atau poin baru.'},
+ {q:'Which connector introduces an example?',o:['For instance','Therefore','Although'],a:0,why:'“For instance” sama dengan “for example”, untuk memberi contoh.'},
+ {q:'Complete: “A longer break ___ students rest.”',o:['help','helps','helping'],a:1,why:'“A longer break” adalah singular subject, jadi verb-nya + s: helps.'},
+ {q:'Which argument is the most convincing?',o:['Gadgets are bad. I just don’t like them.','Gadgets can distract students because notifications interrupt their focus during lessons.','Everybody knows gadgets are bad.'],a:1,why:'Argumen yang kuat = klaim + alasan logis (dan idealnya contoh).'},
+ {q:'Which word is a mental verb?',o:['beneficial','believe','furthermore'],a:1,why:'“Believe” menunjukkan proses berpikir atau keyakinan penulis.'},
+ {q:'What is the main purpose of an Analytical Exposition?',o:['To entertain readers with a funny story','To persuade readers with logical arguments','To describe a person in detail'],a:1,why:'Tujuannya meyakinkan pembaca dengan argumen yang logis.'}
+];
+const POINT1=['First,','Firstly,','To begin with,','The first reason is that'];
+const POINT2=['Second,','Furthermore,','Moreover,','In addition,','Another reason is that'];
+const EXPLAIN=['This is because','This means that','As a result,','Therefore,','In other words,'];
+const EXAMPLE=['For example,','For instance,','In my experience,','At my school,','According to'];
+const EVAL_CHIPS=['beneficial','effective','essential','fair','practical','harmful','unfair','ineffective'];
+const CONCL_CHIPS=['Therefore,','In conclusion,','To sum up,','Overall,','In short,'];
+const REIT_FRAMES=['Therefore, I still believe that ___ because ___.','In conclusion, ___ is ___ for students because it ___.','To sum up, ___ so that ___.'];
+const TITLE_FRAMES=['Should ___?','Why ___','Is ___ Really Effective?'];
+const ARG_EXAMPLES={
+ 1:{p:'First, a longer break helps students rest and refocus.',e:'After three lessons, many students feel tired, so it is difficult for them to concentrate.',x:'For example, several students in my class often look sleepy in the lesson right before the break.',note:'Point dibuka dengan connector <i>First,</i>. Explanation menjelaskan <i>kenapa</i>, lalu example memberi bukti nyata.'},
+ 2:{p:'Furthermore, students need enough time to eat properly.',e:'The canteen is usually crowded, so many students spend most of their break waiting in line. As a result, they eat too quickly or skip their meal.',x:'For instance, last week my friends had only five minutes to eat after they finally got their food.',note:'Argument 2 dibuka dengan connector penambah <i>Furthermore,</i> dan memakai alasan yang <b>berbeda</b> dari argument 1.'}
+};
+const CHECKLIST=[
+ ['My thesis clearly states my position.','Thesis-ku menyatakan posisi dengan jelas.'],
+ ['Each argument has a reason, an explanation, and an example.','Setiap argumen punya alasan, penjelasan, dan contoh.'],
+ ['I used connectors to link my ideas.','Aku memakai connectors untuk menghubungkan ide.'],
+ ['I used the simple present for general claims (e.g., “students need”, “the rule helps”).','Aku memakai simple present untuk klaim umum.'],
+ ['My reiteration restates my position in different words.','Reiteration-ku menegaskan posisi dengan kata-kata berbeda.'],
+ ['My text is in English, and I checked spelling, capital letters, and full stops.','Tulisanku berbahasa Inggris dan sudah kucek ejaan, huruf kapital, dan tanda titiknya.']
+];
+const AV='<div class="avatar"><img src="assets/foxy/foxy.png" alt="Foxy" class="maruko-avatar" onerror="imgFallback(this)"></div>';
+
+/* ---------------- Utilities ---------------- */
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const squash=s=>String(s||'').trim().replace(/\s+/g,' ');
+const wordsOf=s=>String(s||'').trim().split(/\s+/).filter(w=>/[A-Za-z0-9À-ɏ]/.test(w));
+function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function chipsHTML(target,items,mode,extraCls,label){return (label?'<span class="chips-label">'+label+'</span>':'')+items.map(t=>'<button type="button" class="chip'+(mode==='frame'?' frame':'')+(extraCls?' '+extraCls:'')+'" data-target="'+target+'" data-mode="'+mode+'" data-insert="'+esc(t)+'">'+esc(t)+'</button>').join('');}
+let toastTimer;
+function showToast(msg,kind){const t=$('floatToast');t.textContent=msg;t.className='float-toast'+(kind==='warn'?' warn':'');void t.offsetWidth;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);}
+
+/* ---------------- State ---------------- */
+function freshState(){return {version:1,name:'',klass:'',current:'welcome',topicIndex:null,position:'',recall:{ids:[],idx:0,picks:[],checked:false,done:false},fields:{},sparksBy:{},sparksBought:0,points:0,rewards:{},pasteAttempts:0,tabLeaves:0,firstActivityAt:0,reviewReached:false,checklist:[],submitted:false,submittedAt:0,sent:false,sendNote:'',finalText:'',finalTitle:'',finalParagraphs:null};}
+let S=freshState(),storageKey='',saveTimer;
+function save(){if(!storageKey)return;try{localStorage.setItem(storageKey,JSON.stringify(S));}catch(e){/* storage unavailable: progress stays for this session */}}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(save,300);}
+function award(n,why){S.points+=n;updateStatus();showToast('+'+n+' ⭐ '+(why||'Pop Points'));save();}
+const topic=()=>S.topicIndex==null?null:TOPICS[S.topicIndex];
+const F=k=>S.fields[k]||'';
+
+/* ---------------- Paragraph assembly ---------------- */
+const joinParts=(...p)=>p.map(squash).filter(Boolean).join(' ');
+function paragraphs(){return [joinParts(F('bg'),F('pos')),joinParts(F('a1p'),F('a1e'),F('a1x')),joinParts(F('a2p'),F('a2e'),F('a2x')),joinParts(F('reit'))];}
+function totalWords(){return paragraphs().reduce((s,p)=>s+wordsOf(p).length,0);}
+function buildFinalText(){const P=paragraphs();return [squash(F('title')),'',P[0],'',P[1],'',P[2],'',P[3]].join('\n');}
+
+/* ---------------- Language analysis ---------------- */
+const CAT={conn:{label:'Connectors',cls:'hl-conn'},mental:{label:'Mental verbs',cls:'hl-mental'},eval:{label:'Evaluative words',cls:'hl-eval'},tech:{label:'Technical terms',cls:'hl-tech'},passive:{label:'Passive voice',cls:'hl-passive'}};
+const ALL_ON={conn:true,mental:true,eval:true,tech:true,passive:true};
+let hlOn={...ALL_ON};
+const CONN=['on the other hand','in other words','to begin with','another reason','as a result','for example','for instance','in addition','in conclusion','in contrast','in summary','to conclude','even though','because of','to sum up','in short','so that','such as','due to','furthermore','consequently','nevertheless','additionally','moreover','therefore','although','however','whereas','besides','because','overall','finally','though','while','since','hence','thus','also','but','first(?:ly)?(?=\\s*,)','second(?:ly)?(?=\\s*,)','third(?:ly)?(?=\\s*,)','last(?:ly)?(?=\\s*,)'];
+const MENTAL=['in my opinion','in my view','believes?','believed','believing','thinks?','thought','thinking','argues?','argued','arguing','considers?','considered','considering','feels?','agrees?','agreed','disagrees?','disagreed','suggests?','suggested','knows?','understands?','reali[sz]e[sd]?','hopes?','hoped','expects?','expected','assumes?','assumed','doubts?'];
+const EVAL=['unacceptable','irresponsible','inappropriate','inconvenient','uncomfortable','unproductive','unreasonable','meaningful','problematic','significant','unnecessary','beneficial','acceptable','appropriate','comfortable','convenient','disruptive','distracting','ineffective','inefficient','impractical','nutritious','productive','reasonable','responsible','dangerous','efficient','essential','excellent','important','necessary','practical','unhealthy','valuable','effective','negative','positive','terrible','harmful','helpful','unhelpful','crucial','healthy','serious','useless','unwise','useful','unfair','unsafe','better','great','risky','vital','worse','worst','fair','safe','wise','good','best','bad'];
+const PASSIVE='\\b(?:am|is|are|was|were|be|been|being)\\s+(?:not\\s+)?(?:[a-z]+ly\\s+)?(?!(?:indeed|need|red|bed|seed|feed|speed|shed|hundred|proceed|succeed|exceed)\\b)(?:[a-z]+ed|known|given|taken|made|done|seen|written|shown|built|brought|taught|kept|held|found|told|paid|sold|spent|chosen|eaten|worn|driven|forgotten|broken|spoken|thrown|grown|drawn|understood|bought|caught|sent|hidden)\\b';
+const rxEscape=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+let matcherCache={key:null,rx:null};
+function getMatcher(){
+ const key=String(S.topicIndex);if(matcherCache.key===key)return matcherCache.rx;
+ const t=topic();const tech=t?t.vocab.map(v=>v[2]||(rxEscape(v[0])+(/[a-z]$/i.test(v[0])?'(?:s|es)?':''))).sort((a,b)=>b.length-a.length):[];
+ const groups=['(?<passive>'+PASSIVE+')'];
+ if(tech.length)groups.push('(?<tech>\\b(?:'+tech.join('|')+')\\b)');
+ groups.push('(?<conn>\\b(?:'+CONN.join('|')+')\\b)','(?<mental>\\b(?:'+MENTAL.join('|')+')\\b)','(?<eval>\\b(?:'+EVAL.join('|')+')\\b)');
+ matcherCache={key,rx:new RegExp(groups.join('|'),'gi')};return matcherCache.rx;
+}
+function analyze(text){
+ const rx=getMatcher();const segs=[],counts={conn:[],mental:[],eval:[],tech:[],passive:[]};let last=0,m;rx.lastIndex=0;
+ while((m=rx.exec(text))!==null){if(!m[0]){rx.lastIndex++;continue;}const g=Object.keys(m.groups).find(k=>m.groups[k]!==undefined);if(m.index>last)segs.push({t:text.slice(last,m.index)});segs.push({t:m[0],c:g});counts[g].push(m[0].toLowerCase());last=m.index+m[0].length;}
+ if(last<text.length)segs.push({t:text.slice(last)});return {segs,counts};
+}
+function highlightHTML(text,on){return analyze(text).segs.map(s=>s.c&&on[s.c]?'<mark class="'+CAT[s.c].cls+'" title="'+CAT[s.c].label+'">'+esc(s.t)+'</mark>':esc(s.t)).join('');}
+const LEGEND_MINI='Warna: '+Object.keys(CAT).map(k=>'<mark class="'+CAT[k].cls+'">'+CAT[k].label+'</mark>').join(' ');
+const ID_WORDS=/\b(yang|dan|karena|tidak|untuk|dengan|adalah|ini|itu|saya|aku|kami|kita|mereka|siswa|sekolah|bisa|sudah|akan|juga|atau|dari|pada|jadi|tapi|tetapi|lebih|banyak|harus|dapat|sangat|supaya|seperti|ketika|kalau|jika|makanan|sampah|teman|belajar|tempat|waktu|setiap|membuat|menjadi|bahwa|karna|gak|nggak|enggak)\b/gi;
+function indoWords(text){return [...new Set((String(text||'').match(ID_WORDS)||[]).map(w=>w.toLowerCase()))];}
+const STOP=new Set(['the','and','that','this','for','are','with','because','they','their','them','have','has','will','can','not','but','from','our','its','than','then','also','very','more','students','student','school','should','believe','think','therefore','conclusion','sum','still','which','when','who','what','into','about']);
+function tokenSet(s){return new Set(wordsOf(String(s||'').toLowerCase().replace(/[^a-z0-9\s'-]/g,' ')).filter(w=>w.length>=3&&!STOP.has(w)));}
+function similarity(a,b){const A=tokenSet(a),B=tokenSet(b);if(!A.size||!B.size)return 0;let inter=0;A.forEach(w=>{if(B.has(w))inter++;});return inter/(A.size+B.size-inter);}
+const STANCE_RX=/\b(believe|think|agree|disagree|opinion|view|should|must|need to|ought|effective|ineffective|beneficial|harmful|important|necessary|fair|unfair|good idea)\b/i;
+const START_CONN_RX=/^\s*(first(ly)?|second(ly)?|third(ly)?|to begin with|furthermore|moreover|in addition|additionally|besides|another|also|finally|lastly|on the other hand|however|the (first|second|main|other) reason)\b/i;
+const EXAMPLE_RX=/\b(for example|for instance|such as|in my experience|according to|at my school|at our school|in my class|e\.g\.|last (week|month|year|semester)|data|survey|research)\b/i;
+const CONCL_RX=/^\s*(therefore|in conclusion|to sum up|in short|overall|to conclude|in summary|thus|all in all|for these reasons|to conclude)\b/i;
+function mechanics(P){const out=[];if(P.some(p=>/(^|[\s"“(])i(?=[\s'’,.!?]|$)/.test(p)))out.push('Tulis “I” dengan huruf kapital.');if(P.some(p=>p&&!/[.!?"”')]\s*$/.test(p)))out.push('Ada paragraf yang belum diakhiri tanda titik.');if(P.some(p=>/^[a-z]/.test(p)||/[.!?]\s+[a-z]/.test(p)))out.push('Ada kalimat yang diawali huruf kecil.');return out;}
+
+/* ---------------- Navigation ---------------- */
+const VIEWS=['welcome','recall','topic','ideas','thesis','arg1','arg2','reiteration','review','done'];
+const VIEW_META={welcome:[4,'Welcome'],recall:[12,'Warm-up recall'],topic:[22,'Topic & position'],ideas:[34,'Idea Bank'],thesis:[46,'Paragraph 1 · Thesis'],arg1:[58,'Paragraph 2 · Argument 1'],arg2:[70,'Paragraph 3 · Argument 2'],reiteration:[82,'Paragraph 4 · Reiteration'],review:[93,'Review & self-check'],done:[100,'Sent!']};
+function go(id){
+ VIEWS.forEach(v=>$(v).classList.toggle('active',v===id));S.current=id;
+ const m=VIEW_META[id];$('progressBar').style.width=m[0]+'%';$('progressText').textContent=m[1];
+ $('stepLabel').textContent=id==='done'?'YOUR NOTEBOOK · COMPLETE':'YOUR NOTEBOOK · STEP '+(VIEWS.indexOf(id)+1)+' OF '+VIEWS.length;
+ if(id==='review')S.reviewReached=true;
+ document.querySelectorAll('.to-review').forEach(b=>b.classList.toggle('hide',!S.reviewReached));
+ document.querySelectorAll('.view .note[id$="Error"]').forEach(b=>b.classList.add('hide'));
+ onEnter(id);updateStatus();save();window.scrollTo({top:0,behavior:'smooth'});
+}
+function onEnter(id){({recall:renderRecall,topic:renderTopic,ideas:renderIdeas,thesis:renderThesis,arg1:()=>renderArg(1),arg2:()=>renderArg(2),reiteration:renderReit,review:renderReview,done:renderDone}[id]||(()=>{}))();}
+function refreshLive(){const c=S.current;if(c==='thesis')renderPreview(1);else if(c==='arg1')renderPreview(2);else if(c==='arg2')renderPreview(3);else if(c==='reiteration'){renderPreview(4);renderSimilarity();}else if(c==='review')renderReviewDynamic();updateStatus();}
+function updateStatus(){$('topPoints').textContent=S.points;$('topWords').textContent=totalWords();}
+
+const STEP_RULES={
+ ideas:[['r1',3,'Reason 1'],['e1',3,'Example 1'],['r2',3,'Reason 2'],['e2',3,'Example 2']],
+ thesis:[['bg',6,'Background'],['pos',10,'Position']],
+ arg1:[['a1p',5,'Argument 1 · Point'],['a1e',8,'Argument 1 · Explanation'],['a1x',8,'Argument 1 · Example']],
+ arg2:[['a2p',5,'Argument 2 · Point'],['a2e',8,'Argument 2 · Explanation'],['a2x',8,'Argument 2 · Example']],
+ reiteration:[['reit',15,'Reiteration']]
+};
+function validate(step){return (STEP_RULES[step]||[]).map(([k,min,label])=>{const v=F(k);if(/_{2,}/.test(v))return label+': masih ada ___ yang belum diganti.';const n=wordsOf(v).length;return n<min?label+': masih terlalu pendek ('+n+' kata, minimal '+min+').':'';}).filter(Boolean);}
+function nextFrom(step,dest){
+ const errs=validate(step),box=$(step+'Error');
+ if(errs.length){box.innerHTML='<strong>Almost there! 🌸</strong><br>'+errs.map(esc).join('<br>');box.classList.remove('hide');box.scrollIntoView({behavior:'smooth',block:'center'});return;}
+ if(!S.rewards[step]){S.rewards[step]=true;award(5,'Step complete!');}
+ go(dest);
+}
+
+/* ---------------- Login & greetings ---------------- */
+function personalize(){
+ const n='<strong>'+esc(S.name)+'</strong>';
+ $('recallGreeting').innerHTML='<strong>Foxy</strong><br>Welcome back, '+n+' from <strong>'+esc(S.klass)+'</strong>! Before we write, let’s warm up our brains. Masih ingat pelajaran kemarin? 🧠';
+ $('topicGreeting').innerHTML='<strong>Foxy</strong><br>Okay '+n+', time for the big moment! Aku akan memilihkan topik untukmu. Setelah itu, tentukan posisimu: setuju, tidak setuju, atau setuju dengan syarat.';
+ $('ideasGreeting').innerHTML='<strong>Foxy</strong><br>Let’s collect ideas, '+n+'! 💡 Tulis dua alasan beserta contoh atau buktinya. Di tahap ini kamu <b>boleh menulis dalam bahasa Indonesia</b>, yang penting idenya jelas dulu.';
+ $('thesisGreeting').innerHTML='<strong>Foxy</strong><br>Now let’s turn your ideas into English, '+n+'! Klik salah satu <b>sentence frame</b>, lalu ganti setiap <b>___</b> dengan idemu sendiri. Kata yang sudah kamu pakai akan diwarnai di preview.';
+ $('reitGreeting').innerHTML='<strong>Foxy</strong><br>Last paragraph, '+n+'! Tegaskan lagi posisimu, tapi jangan copy-paste thesis. Foxy bisa tahu, lho 😏. Pakai kata-kata baru.';
+ $('reviewGreeting').innerHTML='<strong>Foxy</strong><br>Wow, '+n+', your text is complete! 🎉 Beri judul, lihat fitur bahasa yang kamu pakai, lalu cek ulang sebelum dikirim ke Mrs. Anja.';
+ [1,2].forEach(i=>{const el=$('a'+i+'Greeting');if(el)el.innerHTML='<strong>Foxy</strong><br>'+(i===1?'Argument 1 time, '+n+'! Ambil <b>Reason 1</b> dari Idea Bank-mu, lalu kembangkan menjadi satu paragraf.':'One more argument, '+n+'! Kali ini pakai <b>Reason 2</b>. Mulai dengan connector penambah seperti <i>Furthermore</i> atau <i>Moreover</i>.')+' Polanya: <b>Point → Explanation → Example</b>.';});
+}
+const lastValues=new WeakMap();
+function fillFields(){document.querySelectorAll('.write').forEach(el=>{el.value=F(el.dataset.key);lastValues.set(el,el.value);el.readOnly=!!S.submitted;});}
+function doLogin(){
+ const name=squash($('studentName').value),klass=squash($('studentClass').value),err=$('loginError');
+ if(!name||!klass){err.innerHTML='<strong>Oops! 🌸</strong> Isi '+(!name&&!klass?'nama dan kelas':!name?'nama':'kelas')+' kamu dulu, ya.';err.classList.remove('hide');(name?$('studentClass'):$('studentName')).focus();return;}
+ err.classList.add('hide');
+ storageKey=STORAGE_PREFIX+name.toLocaleLowerCase()+'::'+klass.toLocaleLowerCase();
+ let saved=null;try{saved=JSON.parse(localStorage.getItem(storageKey)||'null');}catch(_){saved=null;}
+ if(saved&&saved.version===1){S=Object.assign(freshState(),saved);showToast('Welcome back! Progresmu dipulihkan 🌸');}
+ else{S=freshState();S.name=name;S.klass=klass;S.firstActivityAt=Date.now();}
+ matcherCache={key:null,rx:null};fillFields();$('topStatus').classList.remove('hide');personalize();
+ if(S.submitted){go('done');return;}
+ go(S.current&&S.current!=='welcome'&&S.current!=='done'?S.current:'recall');
+}
+$('loginBtn').addEventListener('click',doLogin);
+['studentName','studentClass'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key!=='Enter')return;e.preventDefault();if(id==='studentName'&&!squash($('studentClass').value))$('studentClass').focus();else doLogin();}));
+
+/* ---------------- Recall ---------------- */
+function recallScore(){const R=S.recall;return R.picks.filter((p,i)=>R.ids[i]!=null&&p===RECALL_BANK[R.ids[i]].a).length;}
+function renderRecall(){
+ const R=S.recall;if(!R.ids.length){R.ids=shuffle([...RECALL_BANK.keys()]).slice(0,3);R.idx=0;R.picks=[];R.checked=false;R.done=false;}
+ const btn=$('recallBtn'),fb=$('recallFeedback');
+ if(R.done){$('recallArea').innerHTML='<div class="toast"><strong>✅ Warm-up complete!</strong><br>Score: '+recallScore()+'/3. Sekarang saatnya menulis!</div>';fb.classList.add('hide');$('recallCount').textContent='Warm-up done';btn.disabled=false;btn.textContent='Continue to my topic →';return;}
+ const item=RECALL_BANK[R.ids[R.idx]],pick=R.picks[R.idx];
+ $('recallArea').innerHTML='<div class="example"><strong>'+(R.idx+1)+'. '+esc(item.q)+'</strong><div class="choices">'+item.o.map((o,i)=>'<button type="button" class="choice'+(pick===i?' selected':'')+'" data-rc="'+i+'" '+(R.checked?'disabled':'')+(R.checked&&i===item.a?' style="border-color:#65ae85"':'')+'><span class="letter">'+String.fromCharCode(65+i)+'</span><span>'+esc(o)+'</span></button>').join('')+'</div></div>';
+ $('recallCount').textContent='Question '+(R.idx+1)+' of 3 · Score '+recallScore()+'/3';
+ if(R.checked){const ok=pick===item.a;fb.classList.remove('hide');fb.style.background=ok?'#e8f7ef':'#fff3d0';fb.style.borderColor=ok?'#c3e8d2':'#ead99e';fb.innerHTML='<strong>'+(ok?'Correct! +1 ⭐':'Not quite, and that’s okay! 🌸')+'</strong><br>'+esc(item.why);btn.disabled=false;btn.textContent=R.idx<2?'Next question →':'See my score →';}
+ else{fb.classList.add('hide');btn.disabled=pick==null;btn.textContent='Check answer →';}
+}
+$('recallArea').addEventListener('click',e=>{const b=e.target.closest('[data-rc]');if(!b||b.disabled||S.recall.checked)return;S.recall.picks[S.recall.idx]=Number(b.dataset.rc);renderRecall();save();});
+$('recallBtn').addEventListener('click',()=>{
+ const R=S.recall;if(R.done){go('topic');return;}
+ if(!R.checked){if(R.picks[R.idx]==null)return;R.checked=true;if(R.picks[R.idx]===RECALL_BANK[R.ids[R.idx]].a)award(1,'Correct!');renderRecall();save();return;}
+ if(R.idx<2){R.idx++;R.checked=false;}else{R.done=true;}renderRecall();save();
+});
+
+/* ---------------- Topic & position ---------------- */
+function renderTopic(){
+ const t=topic();
+ $('topicStatement').textContent=t?t.statement:'??? Your topic is still a secret ???';
+ $('topicContext').textContent=t?t.context:'Tekan tombol di bawah. Foxy akan memilih satu dari '+TOPICS.length+' topik untukmu.';
+ $('topicCount').textContent=TOPICS.length;
+ $('topicContextId').textContent=t?'🇮🇩 '+t.contextId:'';
+ $('spinTopic').classList.toggle('hide',!!t);$('topicAfter').classList.toggle('hide',!t);
+ if(t){
+  $('vocabBank').innerHTML=t.vocab.map(v=>'<div><b>'+esc(v[0])+'</b><span>'+esc(v[1])+'</span></div>').join('');
+  document.querySelectorAll('#positionChoices .choice').forEach(b=>b.classList.toggle('selected',b.dataset.pos===S.position));
+  const fb=$('positionFeedback');if(S.position){fb.innerHTML=POSITION_FEEDBACK[S.position];fb.classList.remove('hide');}else fb.classList.add('hide');
+ }
+ $('topicNext').disabled=!(t&&S.position);
+}
+$('spinTopic').addEventListener('click',()=>{
+ if(S.topicIndex!=null)return;const btn=$('spinTopic');btn.disabled=true;
+ const final=Math.floor(Math.random()*TOPICS.length);const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const el=$('topicStatement');el.classList.add('spinning');let i=0;const ticks=reduce?0:18;
+ (function tick(){if(i<ticks){el.textContent=TOPICS[i%TOPICS.length].statement;i++;setTimeout(tick,60+i*9);}else{el.classList.remove('spinning');S.topicIndex=final;matcherCache={key:null,rx:null};save();renderTopic();showToast('🎲 Your topic is ready!');}})();
+});
+$('positionChoices').addEventListener('click',e=>{const b=e.target.closest('[data-pos]');if(!b)return;S.position=b.dataset.pos;renderTopic();save();});
+$('topicNext').addEventListener('click',()=>{if(!(topic()&&S.position))return;if(!S.rewards.topic){S.rewards.topic=true;award(5,'Position chosen!');}go('ideas');});
+
+/* ---------------- Idea bank ---------------- */
+function sparkPool(){const t=topic();if(!t)return [];return S.position==='agree'?t.sparks.pro:S.position==='disagree'?t.sparks.con:[...t.sparks.cond,...t.sparks.pro];}
+function recapHTML(){const t=topic();return t?'<b>Topic:</b> '+esc(t.statement)+'<br><b>Your position:</b> '+esc(POSITION_LABEL[S.position]||'—'):'';}
+function renderIdeas(){
+ $('ideasRecap').innerHTML=recapHTML();
+ const pool=sparkPool(),n=S.sparksBy[S.position]||0;
+ $('sparkList').innerHTML=pool.slice(0,n).map((s,i)=>'<div class="spark">💡 <b>Spark '+(i+1)+':</b> '+esc(s)+'</div>').join('')||'<p class="micro" style="margin:0">Belum ada spark yang dibuka.</p>';
+ $('sparkBalance').textContent='Saldo: '+S.points+' ⭐ · '+(pool.length-n)+' spark tersisa';
+ $('buySpark').disabled=S.points<SPARK_PRICE||n>=pool.length;
+}
+$('buySpark').addEventListener('click',()=>{const pool=sparkPool(),n=S.sparksBy[S.position]||0;if(n>=pool.length)return;if(S.points<SPARK_PRICE){showToast('Pop Points belum cukup. Selesaikan langkah lain dulu, ya!','warn');return;}S.points-=SPARK_PRICE;S.sparksBy[S.position]=n+1;S.sparksBought++;save();renderIdeas();updateStatus();showToast('💡 −3 ⭐ · New idea spark!');});
+
+/* ---------------- Thesis ---------------- */
+function thesisFrames(){const c=(topic()||{}).claim||'___';return S.position==='disagree'?['I disagree that '+c+' because ___ and ___.','I do not believe that '+c+' because ___.']:S.position==='conditional'?['I believe that '+c+', but only if ___.','In my opinion, '+c+' as long as ___ and ___.']:['I believe that '+c+' because ___ and ___.','In my opinion, '+c+'. This is because ___.'];}
+function ideasRecapFor(keys){return keys.map(([k,l])=>'<b>'+l+':</b> '+(esc(F(k))||'<i>(belum diisi)</i>')).join('<br>');}
+function renderThesis(){
+ const c=(topic()||{}).claim||'___';
+ $('thesisRecap').innerHTML='💡 <b>From your Idea Bank</b><br>'+ideasRecapFor([['r1','Reason 1'],['r2','Reason 2']]);
+ $('bgFrames').innerHTML=chipsHTML('bg',['At our school, ___.','Nowadays, many schools ___.','Recently, there has been a debate about whether '+c+'.'],'frame');
+ $('posFrames').innerHTML=chipsHTML('pos',thesisFrames(),'frame');
+ $('posEval').innerHTML=chipsHTML('pos',EVAL_CHIPS,'phrase','eval','Evaluative words:');
+ renderPreview(1);
+}
+
+/* ---------------- Arguments ---------------- */
+function argSectionHTML(n){
+ const k='a'+n,first=n===1,ex=ARG_EXAMPLES[n];
+ return '<div class="chat">'+AV+'<div class="bubble" id="'+k+'Greeting"></div></div>'+
+ '<div class="section-label">Step '+(n+4)+' · Paragraph '+(n+1)+'</div><h2>Argument '+n+' 🧩</h2>'+
+ '<p>Kembangkan satu alasan menjadi satu paragraf: <b>Point → Explanation → Example</b>. Target sekitar 40–55 kata. Gunakan <b>simple present</b> untuk klaim umum (<i>students need…, the rule helps…</i>).</p>'+
+ '<div class="idea-recap" id="'+k+'Recap"></div>'+
+ '<div class="field-label"><span>① Point · Alasan utama</span><small>1 kalimat</small></div><div class="chips">'+chipsHTML(k+'p',first?POINT1:POINT2,'phrase')+'</div>'+
+ '<textarea class="field write" id="f_'+k+'p" data-key="'+k+'p" rows="2" placeholder="'+(first?'First, …':'Furthermore, …')+'"></textarea>'+
+ '<div class="field-label"><span>② Explanation · Jelaskan kenapa</span><small>1–2 kalimat</small></div><div class="chips">'+chipsHTML(k+'e',EXPLAIN,'phrase')+'</div>'+
+ '<textarea class="field write" id="f_'+k+'e" data-key="'+k+'e" rows="3" placeholder="This is because …"></textarea>'+
+ '<div class="field-label"><span>③ Example / evidence · Contoh atau bukti</span><small>1–2 kalimat</small></div><div class="chips">'+chipsHTML(k+'x',EXAMPLE,'phrase')+'</div>'+
+ '<textarea class="field write" id="f_'+k+'x" data-key="'+k+'x" rows="3" placeholder="For example, …"></textarea>'+
+ '<div class="chips" style="margin-top:8px">'+chipsHTML(k+'e',EVAL_CHIPS,'phrase','eval','Evaluative words (ke Explanation):')+'</div>'+
+ '<div class="section-label" style="margin-top:16px">Paragraph '+(n+1)+' · Live preview <span class="wc" id="wc'+(n+1)+'"></span></div>'+
+ '<div class="preview" id="prev'+(n+1)+'"></div><div class="inline-warn" id="warn'+(n+1)+'"></div><div class="mini-legend legend-slot"></div>'+
+ '<details class="maruko-example"><summary>👀 Lihat contoh argument '+n+' Foxy <span>(topik: longer break time)</span></summary><div class="ex-body"><p><span class="ex-tag">Point</span>'+ex.p+'</p><p><span class="ex-tag">Explanation</span>'+ex.e+'</p><p><span class="ex-tag">Example</span>'+ex.x+'</p><p class="micro" style="margin:0">'+ex.note+'</p></div></details>'+
+ '<div id="arg'+n+'Error" class="note hide" aria-live="polite"></div>'+
+ '<div class="bottom-actions"><button class="btn btn-soft" type="button" data-go="'+(first?'thesis':'arg1')+'">← Back</button><span class="nav-right"><button class="btn btn-soft to-review hide" type="button" data-review="arg'+n+'">Back to review ✓</button><button class="btn btn-primary" type="button" data-next="arg'+n+'" data-dest="'+(first?'arg2':'reiteration')+'">'+(first?'Next: Argument 2 →':'Next: Reiteration →')+'</button></span></div>';
+}
+$('arg1').innerHTML=argSectionHTML(1);$('arg2').innerHTML=argSectionHTML(2);
+document.querySelectorAll('.legend-slot').forEach(el=>el.innerHTML=LEGEND_MINI);
+function renderArg(n){$('a'+n+'Recap').innerHTML='💡 <b>From your Idea Bank</b><br>'+ideasRecapFor([['r'+n,'Reason '+n],['e'+n,'Example '+n]]);renderPreview(n+1);}
+
+/* ---------------- Reiteration ---------------- */
+function renderReit(){
+ $('thesisRef').textContent=F('pos')||'(Thesis belum diisi)';
+ $('reitFrames').innerHTML=chipsHTML('reit',REIT_FRAMES,'frame');
+ $('reitConn').innerHTML=chipsHTML('reit',CONCL_CHIPS,'phrase','','Connectors:');
+ $('reitEval').innerHTML=chipsHTML('reit',EVAL_CHIPS,'phrase','eval','Evaluative words:');
+ renderPreview(4);renderSimilarity();
+}
+function renderSimilarity(){const el=$('simMeter');if(!F('reit').trim()){el.textContent='';return;}const s=Math.round(similarity(F('pos'),F('reit'))*100);el.className='sim '+(s>=60?'warn':'ok');el.textContent=s>=60?'⚠️ Kemiripan dengan thesis: '+s+'%. Terlalu mirip! Tegaskan posisimu dengan kata-kata lain.':'✓ Kemiripan dengan thesis: '+s+'%. Bagus, kamu memakai kata-katamu sendiri.';}
+
+/* ---------------- Live previews ---------------- */
+const TARGETS={1:[25,45],2:[40,55],3:[40,55],4:[20,40]};
+function renderPreview(n){
+ const p=paragraphs()[n-1],el=$('prev'+n);if(!el)return;const wc=wordsOf(p).length,[lo,hi]=TARGETS[n];
+ if(!p){el.classList.add('empty');el.textContent='Your paragraph will appear here as you type…';}else{el.classList.remove('empty');el.innerHTML=highlightHTML(p,ALL_ON);}
+ const w=$('wc'+n);w.textContent=wc+' words · target '+lo+'–'+hi;w.className='wc '+(wc>=lo&&wc<=hi+10?'ok':'low');
+ const warns=[],idw=indoWords(p);if(idw.length)warns.push('⚠️ Masih ada kata bahasa Indonesia: '+idw.join(', ')+'.');if(/(^|[\s"“(])i(?=[\s'’,.!?]|$)/.test(p))warns.push('⚠️ Tulis “I” dengan huruf kapital.');$('warn'+n).textContent=warns.join(' ');
+}
+
+/* ---------------- Review ---------------- */
+const PARA_META=[['Paragraph 1 · Thesis','thesis'],['Paragraph 2 · Argument 1','arg1'],['Paragraph 3 · Argument 2','arg2'],['Paragraph 4 · Reiteration','reiteration']];
+function autoChecks(){
+ const P=paragraphs(),all=P.join(' '),tw=totalWords(),res=[];
+ res.push(tw<WORD_MIN?['bad','Jumlah kata: '+tw+'. Minimal '+WORD_MIN+' kata agar bisa dikirim (target '+WORD_TARGET_MIN+'–'+WORD_TARGET_MAX+').']:tw<WORD_TARGET_MIN?['warn','Jumlah kata: '+tw+'. Hampir! Target '+WORD_TARGET_MIN+'–'+WORD_TARGET_MAX+' kata.']:tw>WORD_TARGET_MAX+30?['warn','Jumlah kata: '+tw+'. Agak panjang (target '+WORD_TARGET_MIN+'–'+WORD_TARGET_MAX+'). Cek apakah ada kalimat yang berulang.']:['ok','Jumlah kata: '+tw+'. On target! 🎯']);
+ res.push(STANCE_RX.test(F('pos'))?['ok','Thesis menyatakan posisi dengan jelas.']:['warn','Posisi di thesis belum jelas. Coba pakai “I believe that…”, “should”, atau “I disagree that…”.']);
+ [['a1p','Argument 1'],['a2p','Argument 2']].forEach(([k,l])=>res.push(START_CONN_RX.test(F(k))?['ok',l+' dibuka dengan connector.']:['warn',l+' sebaiknya dibuka dengan connector (First, Furthermore, Moreover…).']));
+ [['a1x','Argument 1'],['a2x','Argument 2']].forEach(([k,l])=>res.push(EXAMPLE_RX.test(F(k))?['ok',l+' punya contoh atau bukti dengan penanda yang jelas.']:['warn',l+': tandai contohmu dengan “For example,” atau “For instance,”.']));
+ res.push(CONCL_RX.test(F('reit'))?['ok','Reiteration dibuka dengan penanda kesimpulan.']:['warn','Reiteration sebaiknya diawali “Therefore,”, “In conclusion,”, atau “To sum up,”.']);
+ const sim=similarity(F('pos'),F('reit'));res.push(sim>=0.6?['warn','Reiteration terlalu mirip dengan thesis ('+Math.round(sim*100)+'%). Tegaskan dengan kata-kata lain.']:['ok','Reiteration memakai kata-katamu sendiri, bukan salinan thesis.']);
+ const {counts}=analyze(all),used=Object.keys(counts).filter(k=>counts[k].length);
+ res.push(used.length>=3?['ok','Fitur bahasa yang terdeteksi: '+used.length+' dari 5 jenis ('+used.map(k=>CAT[k].label).join(', ')+').']:['warn','Baru '+used.length+' jenis fitur bahasa yang terdeteksi. Coba tambah mental verbs, evaluative words, atau istilah topik.']);
+ const idw=indoWords(all);res.push(idw.length?['warn','Masih ada kata bahasa Indonesia: '+idw.join(', ')+'.']:['ok','Tidak ada kata bahasa Indonesia yang terdeteksi.']);
+ const mech=mechanics(P);res.push(mech.length?['warn',mech.join(' ')]:['ok','Huruf kapital dan tanda titik terlihat rapi.']);
+ const gb=(all.match(/\b(good|bad)\b/gi)||[]).length;if(gb>=2)res.push(['warn','Kamu memakai “good/bad” '+gb+'×. Coba kata yang lebih tepat: beneficial, effective, harmful, unfair.']);
+ res.push(wordsOf(F('title')).length>=2&&!/_{2,}/.test(F('title'))?['ok','Judul sudah diisi.']:['bad','Judul belum diisi.']);
+ return res;
+}
+function renderReview(){
+ $('titleFrames').innerHTML=chipsHTML('title',TITLE_FRAMES,'frame');
+ $('manualChecks').innerHTML=CHECKLIST.map((c,i)=>'<label><input type="checkbox" data-check="'+i+'" '+(S.checklist[i]?'checked':'')+'><span>'+esc(c[0])+'<small>'+esc(c[1])+'</small></span></label>').join('');
+ renderReviewDynamic();
+}
+function renderReviewDynamic(){
+ const P=paragraphs(),{counts}=analyze(P.join(' '));
+ $('legend').innerHTML=Object.keys(CAT).map(k=>'<button type="button" class="lg-'+k+(hlOn[k]?'':' off')+'" data-hl="'+k+'" aria-pressed="'+hlOn[k]+'">'+CAT[k].label+' · '+counts[k].length+'</button>').join('');
+ $('finalPreview').innerHTML='<h3 class="final-title">'+(esc(squash(F('title')))||'<span class="micro">(your title)</span>')+'</h3>'+P.map((p,i)=>'<div class="final-para"><div class="para-head"><span class="para-tag">'+PARA_META[i][0]+' · '+wordsOf(p).length+' words</span><button type="button" class="edit-link" data-go="'+PARA_META[i][1]+'">✎ Edit</button></div><p>'+highlightHTML(p,hlOn)+'</p></div>').join('');
+ $('autoChecks').innerHTML=autoChecks().map(([s,t])=>'<li><span class="ic">'+({ok:'✅',warn:'⚠️',bad:'❌'}[s])+'</span><span>'+esc(t)+'</span></li>').join('');
+}
+$('legend').addEventListener('click',e=>{const b=e.target.closest('[data-hl]');if(!b)return;hlOn[b.dataset.hl]=!hlOn[b.dataset.hl];renderReviewDynamic();});
+document.addEventListener('change',e=>{const c=e.target.closest&&e.target.closest('[data-check]');if(!c)return;S.checklist[Number(c.dataset.check)]=c.checked;$('reviewError').classList.add('hide');if(CHECKLIST.every((_,i)=>S.checklist[i])&&!S.rewards.selfcheck){S.rewards.selfcheck=true;award(5,'Self-check complete!');}save();});
+$('submitBtn').addEventListener('click',()=>{
+ const errs=[];['ideas','thesis','arg1','arg2','reiteration'].forEach(s=>validate(s).forEach(x=>errs.push(x)));
+ if(wordsOf(F('title')).length<2||/_{2,}/.test(F('title')))errs.push('Judul belum diisi dengan lengkap (minimal 2 kata, tanpa ___).');
+ const tw=totalWords();if(tw<WORD_MIN)errs.push('Tulisanmu baru '+tw+' kata. Minimal '+WORD_MIN+' kata (target '+WORD_TARGET_MIN+'–'+WORD_TARGET_MAX+').');
+ if(!CHECKLIST.every((_,i)=>S.checklist[i]))errs.push('Centang semua poin self-check setelah kamu membaca ulang tulisanmu.');
+ const box=$('reviewError');
+ if(errs.length){box.innerHTML='<strong>Before sending… 🌸</strong><br>'+errs.map(esc).join('<br>');box.classList.remove('hide');box.scrollIntoView({behavior:'smooth',block:'center'});return;}
+ box.classList.add('hide');$('confirmOverlay').classList.remove('hide');$('confirmYes').focus();
+});
+$('confirmNo').addEventListener('click',()=>$('confirmOverlay').classList.add('hide'));
+$('confirmOverlay').addEventListener('click',e=>{if(e.target===$('confirmOverlay'))$('confirmOverlay').classList.add('hide');});
+$('confirmYes').addEventListener('click',()=>{$('confirmOverlay').classList.add('hide');submitWriting();});
+
+/* ---------------- Submit ---------------- */
+function featureSummary(counts,k){const u=[...new Set(counts[k])];return u.length?u.join(', ')+' ('+counts[k].length+')':'-';}
+function buildPayload(){
+ const P=S.finalParagraphs||paragraphs(),{counts}=analyze(P.join(' ')),t=topic();
+ return {type:'writing',meeting:2,studentName:S.name,studentClass:S.klass,topic:t?t.statement.replace(/[“”]/g,''):'',position:POSITION_LABEL[S.position]||S.position,
+  title:S.finalTitle||squash(F('title')),thesis:P[0],argument1:P[1],argument2:P[2],reiteration:P[3],fullText:S.finalText||buildFinalText(),wordCount:P.reduce((s,p)=>s+wordsOf(p).length,0),
+  connectors:featureSummary(counts,'conn'),mentalVerbs:featureSummary(counts,'mental'),evaluative:featureSummary(counts,'eval'),technicalTerms:featureSummary(counts,'tech'),passive:featureSummary(counts,'passive'),
+  ideaBank:'R1: '+squash(F('r1'))+' | E1: '+squash(F('e1'))+' | R2: '+squash(F('r2'))+' | E2: '+squash(F('e2')),
+  ideaSparksUsed:S.sparksBought,pasteAttemptsBlocked:S.pasteAttempts,timesLeftPage:S.tabLeaves,
+  minutesSpent:Math.max(1,Math.round(((S.submittedAt||Date.now())-(S.firstActivityAt||Date.now()))/60000)),popPoints:S.points,submittedAt:new Date(S.submittedAt||Date.now()).toISOString()};
+}
+function submitWriting(){
+ if(S.submitted)return;
+ S.submitted=true;S.submittedAt=Date.now();S.finalParagraphs=paragraphs();S.finalTitle=squash(F('title'));S.finalText=buildFinalText();
+ if(!S.rewards.submit){S.rewards.submit=true;S.points+=10;}
+ document.querySelectorAll('.write').forEach(el=>el.readOnly=true);
+ save();go('done');showToast('+10 ⭐ Writing sent!');sendToSheets();
+}
+async function sendToSheets(){
+ if(!ENDPOINT_READY){S.sent=false;S.sendNote='not-configured';save();renderSendStatus();return;}
+ renderSendStatus('sending');
+ try{await fetch(WRITING_SHEETS_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(buildPayload())});S.sent=true;S.sendNote='';}
+ catch(err){S.sent=false;S.sendNote='failed';console.warn('Could not send writing to the teacher sheet.',err);}
+ save();renderSendStatus();
+}
+function renderSendStatus(mode){
+ const el=$('sendStatus');
+ if(mode==='sending'){el.innerHTML='<strong>📮 Sending to Mrs. Anja…</strong>';return;}
+ if(S.sent){el.innerHTML='<strong>✅ Sent to Mrs. Anja!</strong><br>Tulisanmu terkirim pada '+esc(new Date(S.submittedAt).toLocaleString('id-ID'))+'. <b>Langkah terakhir:</b> download JPG, lalu serahkan di Google Classroom (panduan ada di bawah).';el.style.background='#e8f7ef';el.style.borderColor='#c3e8d2';}
+ else if(S.sendNote==='not-configured'){el.innerHTML='<strong>💾 Saved on this device.</strong><br><b>Langkah terakhir:</b> download JPG, lalu serahkan di Google Classroom (panduan ada di bawah).';el.style.background='';el.style.borderColor='';}
+ else{el.innerHTML='<strong>⚠️ Belum terkirim.</strong><br>Sepertinya koneksi internet terputus. Cek koneksimu, lalu coba lagi. Tulisanmu tetap aman di perangkat ini.<div class="bottom-actions" style="margin-top:10px"><span></span><button class="btn btn-primary" id="retrySend" type="button">Try sending again ↻</button></div>';el.style.background='#fff3d0';el.style.borderColor='#ead99e';}
+}
+function renderDone(){
+ const P=S.finalParagraphs||paragraphs(),{counts}=analyze(P.join(' ')),tw=P.reduce((s,p)=>s+wordsOf(p).length,0),feats=Object.keys(counts).filter(k=>counts[k].length).length;
+ const mins=Math.max(1,Math.round(((S.submittedAt||Date.now())-(S.firstActivityAt||Date.now()))/60000));
+ $('doneTitle').textContent='You did it, '+S.name+'! 🎉';
+ $('doneIntro').textContent='Your own Analytical Exposition on '+((topic()||{}).statement||'your topic')+' is finished and ready for Mrs. Anja.';
+ $('doneStats').innerHTML=[[tw,'words'],[feats+'/5','language features'],[mins,'minutes'],[S.points,'Pop Points']].map(s=>'<div class="stat"><strong>'+esc(s[0])+'</strong><span>'+s[1]+'</span></div>').join('');
+ const badges=[['✍️','Foxy’s Opinion Writer','Wrote and sent your own Analytical Exposition.',true],['🌈','Language Explorer','Used at least 4 of the 5 language feature types.',feats>=4],['🎯','On Target','Wrote '+WORD_TARGET_MIN+'–'+WORD_TARGET_MAX+' words.',tw>=WORD_TARGET_MIN&&tw<=WORD_TARGET_MAX]];
+ $('badgeCollection').innerHTML=badges.map(b=>'<div class="badge-card '+(b[3]?'earned':'')+'"><span style="font-size:1.6rem">'+b[0]+'</span> <span class="badge-name">'+b[1]+'</span><span class="badge-desc">'+b[2]+'</span><div class="badge-status">'+(b[3]?'★ Earned':'Not this time · next time!')+'</div></div>').join('');
+ $('jpgName').textContent=jpgFileName();$('taskName').textContent=CLASSROOM_TASK_NAME;$('classroomLink').href=CLASSROOM_URL||'https://classroom.google.com';
+ renderSendStatus();prepareJpg();
+}
+
+/* ---------------- Final work as JPG (for Google Classroom) ---------------- */
+const FONT_HEAD='Fredoka, "DM Sans", Arial, sans-serif',FONT_BODY='"DM Sans", Arial, sans-serif';
+const PART_COLORS=['#e8a1be','#edcf68','#edcf68','#a9dce9'];
+const PART_LABELS=['PARAGRAPH 1 · THESIS','PARAGRAPH 2 · ARGUMENT 1','PARAGRAPH 3 · ARGUMENT 2','PARAGRAPH 4 · REITERATION'];
+let jpgURL='';
+function jpgFileName(){return ('Analytical_Exposition_'+S.name+'_'+S.klass).replace(/[^\w-]+/g,'_').replace(/_+/g,'_')+'.jpg';}
+async function fontsReady(){try{if(!document.fonts||!document.fonts.load)return;await Promise.race([Promise.all(['600 44px Fredoka','400 30px "DM Sans"','700 30px "DM Sans"'].map(f=>document.fonts.load(f))),new Promise(r=>setTimeout(r,1500))]);}catch(_){}}
+function wrapLines(ctx,text,maxW){
+ const out=[];let line='';
+ String(text||'').split(/\s+/).filter(Boolean).forEach(w=>{
+  const test=line?line+' '+w:w;
+  if(ctx.measureText(test).width<=maxW){line=test;return;}
+  if(line)out.push(line);
+  if(ctx.measureText(w).width<=maxW){line=w;return;}
+  let chunk='';for(const ch of w){if(ctx.measureText(chunk+ch).width>maxW&&chunk){out.push(chunk);chunk=ch;}else chunk+=ch;}line=chunk;
+ });
+ if(line)out.push(line);return out.length?out:[''];
+}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function spacing(ctx,px){if('letterSpacing' in ctx)ctx.letterSpacing=px+'px';}
+// Lays out the page; draws only when draw=true. Returns the total height.
+function drawWork(ctx,draw,W){
+ const M=36,X=100,CW=W-200,P=S.finalParagraphs||paragraphs(),t=topic();
+ const title=S.finalTitle||squash(F('title')),words=P.reduce((s,p)=>s+wordsOf(p).length,0);
+ const date=new Date(S.submittedAt||Date.now()).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+ const NAME_W=560,CLASS_X=X+NAME_W+24,CLASS_W=CW-NAME_W-24;
+ ctx.font='600 42px '+FONT_HEAD;const nameLines=wrapLines(ctx,S.name,NAME_W-44).slice(0,2),classLines=wrapLines(ctx,S.klass,CLASS_W-44).slice(0,2);
+ ctx.font='400 23px '+FONT_BODY;const topicLines=wrapLines(ctx,'Topic: '+(t?t.statement:''),CW);
+ const boxH=58+50*Math.max(nameLines.length,classLines.length);
+ const eyebrowY=M+64,boxY=eyebrowY+28,topicY=boxY+boxH+46,metaY=topicY+34*topicLines.length,bandEnd=metaY+34;
+ if(draw){
+  const H=ctx.canvas.height;ctx.fillStyle='#f4f8f8';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#c5dddd';for(let gx=9;gx<W;gx+=18)for(let gy=9;gy<H;gy+=18)ctx.fillRect(gx,gy,1.4,1.4);
+  ctx.save();ctx.shadowColor='rgba(45,87,91,.12)';ctx.shadowBlur=30;ctx.shadowOffsetY=10;roundRect(ctx,M,M,W-2*M,H-2*M,30);ctx.fillStyle='#fffefa';ctx.fill();ctx.restore();
+  ctx.save();roundRect(ctx,M,M,W-2*M,H-2*M,30);ctx.clip();const g=ctx.createLinearGradient(M,M,W-M,bandEnd);g.addColorStop(0,'#eaf6f6');g.addColorStop(1,'#fffdf8');ctx.fillStyle=g;ctx.fillRect(M,M,W-2*M,bandEnd-M);ctx.restore();
+  roundRect(ctx,M,M,W-2*M,H-2*M,30);ctx.strokeStyle='#d8e5e5';ctx.lineWidth=2;ctx.stroke();
+  ctx.save();ctx.setLineDash([8,7]);ctx.strokeStyle='#cbdede';ctx.beginPath();ctx.moveTo(M,bandEnd);ctx.lineTo(W-M,bandEnd);ctx.stroke();ctx.restore();
+  ctx.fillStyle='#ffe59a';ctx.save();ctx.translate(W/2,M+2);ctx.rotate(-0.05);ctx.fillRect(-60,-12,120,26);ctx.restore();
+  ctx.fillStyle='#317c80';ctx.font='700 19px '+FONT_BODY;spacing(ctx,3);ctx.fillText('OPINION POP! · ANALYTICAL EXPOSITION · PERTEMUAN 2',X,eyebrowY);spacing(ctx,0);
+  roundRect(ctx,X,boxY,NAME_W,boxH,18);ctx.fillStyle='#ffffff';ctx.fill();ctx.strokeStyle='#d7e5e5';ctx.stroke();
+  roundRect(ctx,CLASS_X,boxY,CLASS_W,boxH,18);ctx.fillStyle='#fff2c6';ctx.fill();ctx.strokeStyle='#f1dda0';ctx.stroke();
+  ctx.font='700 16px '+FONT_BODY;spacing(ctx,2);ctx.fillStyle='#687c82';ctx.fillText('NAME / NAMA',X+22,boxY+36);ctx.fillStyle='#776b53';ctx.fillText('CLASS / KELAS',CLASS_X+22,boxY+36);spacing(ctx,0);
+  ctx.font='600 42px '+FONT_HEAD;ctx.fillStyle='#263d45';nameLines.forEach((l,i)=>ctx.fillText(l,X+22,boxY+86+50*i));classLines.forEach((l,i)=>ctx.fillText(l,CLASS_X+22,boxY+86+50*i));
+  ctx.font='400 23px '+FONT_BODY;ctx.fillStyle='#4d6166';topicLines.forEach((l,i)=>ctx.fillText(l,X,topicY+34*i));
+  ctx.fillText('Position: '+(POSITION_LABEL[S.position]||'-')+'   ·   Words: '+words+'   ·   '+date,X,metaY);
+ }
+ let y=bandEnd+78;
+ ctx.font='600 46px '+FONT_HEAD;const tLines=wrapLines(ctx,title,CW);
+ if(draw){ctx.fillStyle='#263d45';ctx.textAlign='center';tLines.forEach((l,i)=>ctx.fillText(l,W/2,y+58*i));ctx.textAlign='left';}
+ y+=58*(tLines.length-1)+64;
+ P.forEach((p,i)=>{
+  ctx.font='400 29px '+FONT_BODY;const lines=wrapLines(ctx,p,CW-28);
+  if(draw){
+   ctx.font='700 16px '+FONT_BODY;spacing(ctx,2);ctx.fillStyle='#317c80';ctx.fillText(PART_LABELS[i],X+28,y);spacing(ctx,0);
+   ctx.fillStyle=PART_COLORS[i];roundRect(ctx,X,y-16,6,46*lines.length+30,3);ctx.fill();
+   ctx.font='400 29px '+FONT_BODY;ctx.fillStyle='#263d45';lines.forEach((l,j)=>ctx.fillText(l,X+28,y+46+46*j));
+  }
+  y+=46+46*lines.length+30;
+ });
+ y+=10;
+ if(draw){
+  ctx.save();ctx.setLineDash([8,7]);ctx.strokeStyle='#dbe8e8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(X,y);ctx.lineTo(W-X,y);ctx.stroke();ctx.restore();
+  ctx.font='400 19px '+FONT_BODY;ctx.fillStyle='#687c82';ctx.textAlign='center';ctx.fillText('Written in Opinion Pop! Writing Studio · Mrs. Anja’s English class',W/2,y+44);ctx.textAlign='left';
+ }
+ return y+44+34+M;
+}
+async function buildJpgCanvas(){await fontsReady();const W=1080,c=document.createElement('canvas');c.width=W;c.height=100;c.height=Math.ceil(drawWork(c.getContext('2d'),false,W));drawWork(c.getContext('2d'),true,W);return c;}
+async function prepareJpg(){
+ const wrap=$('jpgPreviewWrap');
+ try{
+  const c=await buildJpgCanvas();
+  const blob=await new Promise(r=>{try{c.toBlob(r,'image/jpeg',0.92);}catch(_){r(null);}});
+  if(jpgURL.indexOf('blob:')===0)URL.revokeObjectURL(jpgURL);
+  jpgURL=blob?URL.createObjectURL(blob):c.toDataURL('image/jpeg',0.92);
+  wrap.innerHTML='<img alt="Analytical Exposition by '+esc(S.name)+', '+esc(S.klass)+'" src="'+jpgURL+'">';
+ }catch(err){
+  console.warn('Could not create JPG.',err);jpgURL='';
+  wrap.innerHTML='<p class="micro">Gambar tidak bisa dibuat di perangkat ini. Pakai tombol <b>Copy text</b>, lalu tempel tulisanmu di Google Classroom.</p>';
+ }
+}
+async function downloadJpg(){
+ if(!jpgURL)await prepareJpg();
+ if(!jpgURL){showToast('Gambar belum siap. Coba lagi, ya.','warn');return;}
+ const a=document.createElement('a');a.href=jpgURL;a.download=jpgFileName();document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),800);
+ showToast('🖼️ JPG downloaded! Sekarang upload ke Google Classroom.');
+}
+async function copyText(){
+ const txt=S.finalText||buildFinalText();
+ try{await navigator.clipboard.writeText(txt);showToast('📋 Copied! Tempel di WA/LMS sesuai instruksi Mrs. Anja.');}
+ catch(_){const ta=document.createElement('textarea');ta.value=txt;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;opacity:0;top:0;left:0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){ok=false;}ta.remove();showToast(ok?'📋 Copied!':'Tidak bisa menyalin otomatis. Gunakan tombol Download.',ok?'':'warn');}
+}
+$('copyText').addEventListener('click',copyText);$('downloadJpg').addEventListener('click',downloadJpg);
+
+/* ---------------- Chips & navigation clicks ---------------- */
+let lastFocus=null;
+document.addEventListener('focusin',e=>{const el=e.target.closest&&e.target.closest('.write');if(el){lastFocus=el;if(!lastValues.has(el))lastValues.set(el,el.value);}});
+function insertText(key,text,mode){
+ const el=$('f_'+key);if(!el||el.readOnly)return;
+ const v=el.value;let start=v.length,end=v.length;
+ if(lastFocus===el&&mode!=='frame'&&typeof el.selectionStart==='number'){start=el.selectionStart;end=el.selectionEnd;}
+ const before=v.slice(0,start),after=v.slice(end);let ins=text;
+ if(before&&!/\s$/.test(before))ins=' '+ins;
+ if(!(after&&/^\s/.test(after)))ins=ins+' ';
+ el.value=before+ins+after;lastValues.set(el,el.value);S.fields[key]=el.value;
+ el.focus();lastFocus=el;
+ const blank=el.value.indexOf('___',before.length);
+ try{if(blank>-1&&blank<before.length+ins.length)el.setSelectionRange(blank,blank+3);else{const pos=before.length+ins.length;el.setSelectionRange(pos,pos);}}catch(_){}
+ refreshLive();scheduleSave();
+}
+document.addEventListener('click',e=>{
+ const chip=e.target.closest('.chip[data-insert]');if(chip){insertText(chip.dataset.target,chip.dataset.insert,chip.dataset.mode);return;}
+ const g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return;}
+ const nx=e.target.closest('[data-next]');if(nx){nextFrom(nx.dataset.next,nx.dataset.dest);return;}
+ const rv=e.target.closest('[data-review]');if(rv){nextFrom(rv.dataset.review,'review');return;}
+ if(e.target.closest('#retrySend')){sendToSheets();}
+});
+
+/* ---------------- Anti copy-paste ---------------- */
+let internalClip='',allowPasteUntil=0;
+function blockedPaste(){S.pasteAttempts++;save();showToast('🚫 Copy-paste dari luar tidak diizinkan. Ketik sendiri, ya! ✍️ (dicatat: '+S.pasteAttempts+'×)','warn');}
+function rememberClip(e){const el=e.target.closest&&e.target.closest('.write');if(el&&typeof el.selectionStart==='number')internalClip=el.value.slice(el.selectionStart,el.selectionEnd).trim();}
+document.addEventListener('copy',rememberClip,true);document.addEventListener('cut',rememberClip,true);
+document.addEventListener('paste',e=>{const el=e.target.closest&&e.target.closest('.write');if(!el)return;const txt=((e.clipboardData&&e.clipboardData.getData('text'))||'').trim();if(internalClip&&txt===internalClip){allowPasteUntil=Date.now()+800;return;}e.preventDefault();blockedPaste();},true);
+document.addEventListener('drop',e=>{if(e.target.closest&&e.target.closest('.write')){e.preventDefault();blockedPaste();}},true);
+document.addEventListener('beforeinput',e=>{const el=e.target.closest&&e.target.closest('.write');if(!el)return;if(/^insertFrom(Paste|Drop|Yank)/.test(e.inputType||'')&&Date.now()>allowPasteUntil){e.preventDefault();blockedPaste();}},true);
+document.addEventListener('input',e=>{
+ const el=e.target.closest&&e.target.closest('.write');if(!el)return;
+ const prev=lastValues.has(el)?lastValues.get(el):el.value,grew=el.value.length-prev.length;
+ // Big single insertions (e.g. keyboard clipboard chips on phones) are treated as pastes.
+ if(grew>40&&Date.now()>allowPasteUntil&&!/^history/.test(e.inputType||'')){const pos=Math.max(0,(el.selectionStart||0)-grew);el.value=prev;try{el.setSelectionRange(pos,pos);}catch(_){}blockedPaste();return;}
+ lastValues.set(el,el.value);S.fields[el.dataset.key]=el.value;refreshLive();scheduleSave();
+},true);
+
+/* ---------------- Focus nudge (Foxy is watching) ---------------- */
+const focusOverlay=$('focusOverlay');let focusWasAway=false,focusOverlayDismissed=false,focusEpisodeOpen=false;
+const monitoring=()=>!!S.name&&!S.submitted&&S.current!=='welcome';
+function registerFocusLeave(){if(!monitoring()||focusEpisodeOpen)return;focusEpisodeOpen=true;focusWasAway=true;focusOverlayDismissed=false;S.tabLeaves++;save();}
+function showFocusNudge(){if(document.visibilityState==='visible'&&focusWasAway&&!focusOverlayDismissed){$('focusMessage').textContent='Ehhh, mau ke mana? Balik fokus, yuk! Tulisanmu menunggu, lho! ✍️ Keluar halaman: '+S.tabLeaves+'× (dicatat untuk Mrs. Anja).';focusOverlay.classList.add('show');document.body.style.overflow='hidden';focusEpisodeOpen=false;}}
+function hideFocusNudge(){focusOverlay.classList.remove('show');document.body.style.overflow='';focusOverlayDismissed=true;focusWasAway=false;}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){registerFocusLeave();save();}else if(focusWasAway)showFocusNudge();});
+window.addEventListener('blur',()=>{if(document.visibilityState!=='hidden')registerFocusLeave();});
+window.addEventListener('focus',()=>{if(focusWasAway)showFocusNudge();});
+$('focusReturnButton').addEventListener('click',hideFocusNudge);
+window.addEventListener('pagehide',save);
+
+/* ---------------- Teacher test mode (?test=1) ---------------- */
+(function(){
+ let on=false;try{on=new URLSearchParams(location.search).get('test')==='1';}catch(_){}
+ if(!on)return;
+ $('teacherTest').classList.remove('hide');
+ $('teacherTestInfo').innerHTML=ENDPOINT_READY?'URL Apps Script sudah terisi. Tekan tombol untuk mengirim satu baris uji, lalu cek tab <b>Writing - Pertemuan 2</b> di spreadsheet.':'⚠️ <b>WRITING_SHEETS_ENDPOINT belum diisi</b> (atau bukan URL script.google.com). Tempel URL Web App dulu di kode HTML.';
+ $('sendTestRow').disabled=!ENDPOINT_READY;
+ $('sendTestRow').addEventListener('click',async()=>{
+  const st=$('teacherTestStatus');st.textContent='Mengirim…';
+  const now=new Date().toISOString();
+  const payload={type:'writing',meeting:2,studentName:'TEST – Mrs. Anja',studentClass:'TEST',topic:'(data uji koneksi)',position:'-',title:'Connection test',thesis:'This is a test row.',argument1:'-',argument2:'-',reiteration:'-',fullText:'This is a test row sent from teacher test mode.',wordCount:0,connectors:'-',mentalVerbs:'-',evaluative:'-',technicalTerms:'-',passive:'-',ideaBank:'-',ideaSparksUsed:0,pasteAttemptsBlocked:0,timesLeftPage:0,minutesSpent:0,popPoints:0,submittedAt:now};
+  try{await fetch(WRITING_SHEETS_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+   st.innerHTML='✅ Terkirim dari sisi app. Buka spreadsheet dan tunggu 5–10 detik. Kalau muncul baris <b>TEST – Mrs. Anja</b>, berarti sudah tersambung (baris uji itu boleh dihapus). Kalau tidak muncul, cek lagi pengaturan <b>Who has access: Anyone</b> dan SPREADSHEET_ID.';}
+  catch(err){st.textContent='❌ Gagal mengirim. Cek koneksi internet, lalu coba lagi.';}
+ });
+})();
+</script>
+</body>
+</html>
